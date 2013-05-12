@@ -8,5 +8,5 @@ package asgn2Test;
  *
  */
 public class RollingStockTests {
-	static void soemthingelse(){}
+	static void testpush(){}
 }
