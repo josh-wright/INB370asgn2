@@ -10,13 +10,15 @@ import asgn2Exceptions.TrainException;
  *
  */
 public abstract class RollingStock extends Object {
+	private static final Integer FreightLowerLimit = 1;
+	
 	// fields
 	private Integer grossWeight;
-	private final Integer FREIGHT_LOWER_LIMIT = 1;
+	
 	
 	// Constructor
 	public RollingStock(Integer grossWeight) throws TrainException {
-		if (grossWeight < FREIGHT_LOWER_LIMIT) {
+		if (grossWeight < FreightLowerLimit) {
 			throw new TrainException("Freight must be greater than zero (0)");
 		}
 		this.grossWeight = grossWeight;

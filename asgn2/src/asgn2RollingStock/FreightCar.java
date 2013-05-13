@@ -10,20 +10,19 @@ import asgn2Exceptions.TrainException;
  *
  */
 public class FreightCar extends RollingStock {
-	private final String GENERAL = "G";
-	private final String REFRIGERATED = "R";
-	private final String DANGEROUS = "D";
+	private static final String General = "G";
+	private static String Refrigerated = "R";
+	private static final String Dangerous = "D";
 	
 	private String goodsType;		
 	
 	public FreightCar(Integer grossWeight, String goodsType) throws TrainException {
 		super(grossWeight);
-		if (goodsType != GENERAL && goodsType != REFRIGERATED && goodsType != DANGEROUS) {
+		if (goodsType != General && goodsType != Refrigerated && goodsType != Dangerous) {
 			throw new TrainException ("Goods type must be one of the following: " +
-					GENERAL + ", " + REFRIGERATED + ",  or " + DANGEROUS);
-		} else {
-			this.goodsType = goodsType;
+					General + ", " + Refrigerated + ",  or " + Dangerous);
 		}
+		this.goodsType = goodsType;
 	}
 	
 	public String goodsType() {

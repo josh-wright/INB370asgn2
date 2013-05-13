@@ -11,11 +11,11 @@ import asgn2Exceptions.TrainException;
  */
 public class Locomotive extends RollingStock {
 	
-	final Integer POWER_CLASS_MINIMUM = 1;
-	final Integer POWER_CLASS_MAXIMUM = 9;
-	final char ENGINE_ELECTRIC = 'E';
-	final char ENGINE_DIESEL = 'D';
-	final char ENGINE_STEAM = 'S';
+	final static Integer PowerClassMinimum = 1;
+	final static Integer PowerClassMaximum = 9;
+	final static char EngineElectric = 'E';
+	final static char EngineDiesel = 'D';
+	final static char EngineSteam = 'S';
 		
 	public String classification;
 	private int powerClass;
@@ -28,27 +28,26 @@ public class Locomotive extends RollingStock {
 		
 		if (!Character.isLetter(engineType)) {
 			throw new TrainException("Second character of classification must be a letter matching" +
-									 "either of the following: " + ENGINE_ELECTRIC + ", " + ENGINE_DIESEL
-									 + ", or " + ENGINE_STEAM);
+									 "either of the following: " + EngineElectric + ", " + EngineDiesel
+									 + ", or " + EngineSteam);
 		}
 		
 		try {
 			powerClass = Integer.parseInt(classString);
 		} catch (NumberFormatException nfe) {
 			throw new TrainException ("First character of classification must be an integer between " + 
-									   POWER_CLASS_MINIMUM + " and " + POWER_CLASS_MAXIMUM);
+									   PowerClassMinimum + " and " + PowerClassMaximum);
 		}
 			
-		if (powerClass < POWER_CLASS_MINIMUM) {
-			throw new TrainException("Locomotive must have a power class of at least " + POWER_CLASS_MINIMUM);
-		} else if (powerClass > POWER_CLASS_MAXIMUM) {
-			throw new TrainException("Locomotive must have a power class of less than " + POWER_CLASS_MAXIMUM);
+		if (powerClass < PowerClassMinimum) {
+			throw new TrainException("Locomotive must have a power class of at least " + PowerClassMinimum);
+		} else if (powerClass > PowerClassMaximum) {
+			throw new TrainException("Locomotive must have a power class of less than " + PowerClassMaximum);
 		} else if (engineType != 'E' && engineType != 'D' && engineType != 'S') {
-			throw new TrainException("Locomotive must have an engine class of either " + ENGINE_ELECTRIC + 
-					", " + ENGINE_DIESEL + ", or " + ENGINE_STEAM);
-		} else {
-			this.classification = classification;
+			throw new TrainException("Locomotive must have an engine class of either " + EngineElectric + 
+					", " + EngineDiesel + ", or " + EngineSteam);
 		}
+		this.classification = classification;
 	}
 	
 	public Integer power() {
