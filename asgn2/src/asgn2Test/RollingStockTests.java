@@ -263,6 +263,198 @@ public class RollingStockTests {
 
 	/* - Passenger Car Tests ---------------------- */
 	
-		/* TODO Passenger Car Tests*/
-		//Tests Required
+	/**
+	 * Tests that the number of passengers have boarded correctly
+	 * with no returned passengers
+	 * @throws TrainException
+	 */
+	@Test
+	public void testPassengerBoard() 
+			throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		final int PASSENGERS = 5;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		int noRoom = passengerCar.board(PASSENGERS);
+		
+		assertEquals(PASSENGERS, passengerCar.numberOnBoard());
+	}
+	
+	@Test
+	public void testPassengerBoardReturnUnboarded() 
+			throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		final int PASSENGERS = 25;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		int noRoom = int noRoom = passengerCar.board(PASSENGERS);		
+		assertEquals(PASSENGERS-NUMBEROFSEATS, noRoom);
+	}
+	
+	/**
+	 * Tests that the number of passengers have alighted correctly
+	 * with no exceptions
+	 * @throws TrainException
+	 */
+	@Test
+	public void testPassengerAlight()
+		throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		final int PASSENGERSBOARD = 10;
+		final int PASSENGERSALIGHT = 5;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		int noRoom = passengerCar.board(PASSENGERSBOARD);		
+		assertEquals(PASSENGERSBOARD, passengerCar.numberOnBoard());
+		
+		passengerCar.alight(PASSENGERSALIGHT);
+		assertEquals(PASSENGERSBOARD-PASSENGERSALIGHT, passengerCar.numberOnBoard());
+	}
+	
+	/**
+	 * Tests that Alight Throws Exception when too many passengers try to 
+	 * alight
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testPassengerAlightMoreThanBoard()
+		throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		final int PASSENGERSBOARD = 10;
+		final int PASSENGERSALIGHT = 20;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		int noRoom = passengerCar.board(PASSENGERSBOARD);		
+		assertEquals(PASSENGERSBOARD, passengerCar.numberOnBoard());
+		
+		passengerCar.alight(PASSENGERSALIGHT);
+	}
+	
+	/**
+	 * Tests PassengerCar Constructor with valid constraints
+	 * @throws TrainException
+	 */
+	@Test
+	public void testPassengerCarConstructorValid()
+		throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		assertEquals(NUMBEROFSEATS, passengerCar.numberOfSeats());
+	}
+	
+	/**
+	 * Tests PassengerCar with invalid seat configuration
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testPassengerCarConstructorNegativeSeats()
+		throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = -20;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+	}
+	
+	/**
+	 * Tests PassengerCar with zero seat configuration
+	 * Acceptable according to specification
+	 * @throws TrainException
+	 */
+	@Test
+	public void testPassengerCarConstructorZeroSeats()
+		throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 0;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		assertEquals(NUMBEROFSEATS, passengerCar.numberOfSeats());
+	}
+	
+	/**
+	 * Tests PassengerCar constructor with negative weight
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testPassengerCarConstructorNegativeWeight()
+		throws TrainException {
+		final int GROSSWEIGHT = -10;
+		final int NUMBEROFSEATS = 20;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+	}
+	
+	/**
+	 * Tests PassengerCar constructor with zero weight
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testPassengerCarConstructorZeroWeight()
+		throws TrainException {
+		final int GROSSWEIGHT = 0;
+		final int NUMBEROFSEATS = 20;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+	}
+	
+	/**
+	 * Tests that numberOfSeats returns correctly
+	 * @throws TrainException
+	 */
+	@Test
+	public void testPassengerCarNumberOfSeats() 
+			throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		assertEquals(NUMBEROFSEATS, passengerCar.numberOfSeats());
+	}
+	
+	/**
+	 * Tests that numberOnBoard returns correctly
+	 * @throws TrainException
+	 */
+	@Test
+	public void testPassengerCarNumberOnBoard() 
+			throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		final int BOARDING = 19;
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		int noRoom = passengerCar.board(BOARDING);
+		
+		assertEquals(BOARDING, passengerCar.numberOnBoard());
+	}
+	
+	/**
+	 * Tests ToString functions correctly
+	 * @throws TrainException
+	 */
+	@Test
+	public void testPassengerCarToString() 
+			throws TrainException {
+		final int GROSSWEIGHT = 90;
+		final int NUMBEROFSEATS = 20;
+		final int BOARDING = 19;
+		final String TOSTRING = "Passenger(" + BOARDING + "/" + NUMBEROFSEATS + ")";
+		
+		PassengerCar passengerCar = new PassengerCar(GROSSWEIGHT, NUMBEROFSEATS);
+		int noRoom = passengerCar.board(BOARDING);
+		
+		assertEquals(TOSTRING, passengerCar.ToString());
+	}
+	
+	
+	
+	
+	
+	
+	
 }
