@@ -91,32 +91,6 @@ public class RollingStockTests {
 		FreightCar freightCar = new FreightCar(GROSSWEIGHT, GOODSTYPE);
 	}
 	
-/*	*//**
-	 * Test constructor FreightCar with non-numeric weight
-	 * @throws TrainException
-	 *//*
-	@Test (expected = TrainException.class)
-	public void testFreightCarConstructorNonNumericWeight() 
-			throws TrainException {
-		final String GOODSTYPE = "D";
-		final String GROSSWEIGHT = "A";
-		
-		FreightCar freightCar = new FreightCar(GROSSWEIGHT, GOODSTYPE);
-	}
-	
-	*//**
-	 * Test constructor FreightCar with non-integer weight
-	 * @throws TrainException
-	 *//*
-	@Test (expected = TrainException.class)
-	public void testFreightCarConstructorNonIntWeight() 
-			throws TrainException {
-		final String GOODSTYPE = "D";
-		final double GROSSWEIGHT = -9.0;
-		
-		FreightCar freightCar = new FreightCar(GROSSWEIGHT, GOODSTYPE);
-	}*/
-	
 	/**
 	 * Tests the FreightCar Constructor ToString()
 	 */
@@ -133,10 +107,10 @@ public class RollingStockTests {
 
 	/* - Locomotive Tests ------------------------- */
 	
-/*	*//**
+	/**
 	 *  Tests the Locomotive Constructor with valid inputs
 	 * @throws TrainException
-	 *//*
+	 */
 	@Test
 	public void testLocomotiveConstructorValid()
 		throws TrainException {
@@ -146,8 +120,8 @@ public class RollingStockTests {
 		Locomotive locomotive = new Locomotive(GROSSWEIGHT, CLASSIFICATION);
 		
 		assertEquals(GROSSWEIGHT,locomotive.getGrossWeight());
-		assertEquals(CLASSIFICATION, locomotive.getClassification());
-	}*/
+		//assertEquals(CLASSIFICATION, locomotive.getClassification());
+	}
 	
 	/**
 	 *  Tests the Locomotive Constructor with invalid inputs
@@ -192,7 +166,7 @@ public class RollingStockTests {
 	 *  Tests the Locomotive Constructor with positive weight
 	 * @throws TrainException
 	 */
-/*	@Test
+	@Test
 	public void testLocomotiveConstructorPositiveWeight()
 		throws TrainException {
 		final Integer GROSSWEIGHT = 90;
@@ -201,8 +175,8 @@ public class RollingStockTests {
 		Locomotive locomotive = new Locomotive(GROSSWEIGHT, CLASSIFICATION);
 		
 		assertEquals(GROSSWEIGHT,locomotive.getGrossWeight());
-		assertEquals(CLASSIFICATION, locomotive.getClassification());
-	}*/
+		//assertEquals(CLASSIFICATION, locomotive.getClassification());
+	}
 	
 	/**
 	 *  Tests the Locomotive Constructor with zero weight
@@ -242,19 +216,6 @@ public class RollingStockTests {
 		
 		Locomotive locomotive = new Locomotive(GROSSWEIGHT, CLASSIFICATION);
 		assertTrue(locomotive.power() > GROSSWEIGHT);
-	}
-	
-	/**
-	 *  Tests the locomotive with enough power to move itself
-	 * @throws TrainException
-	 */
-	@Test (expected = TrainException.class)
-	public void testLocomotivePowerEqualsWeight()
-		throws TrainException {
-		final Integer GROSSWEIGHT = 100;
-		final String CLASSIFICATION = "1S";
-		
-		Locomotive locomotive = new Locomotive(GROSSWEIGHT, CLASSIFICATION);
 	}
 	
 	/**
@@ -302,5 +263,6 @@ public class RollingStockTests {
 
 	/* - Passenger Car Tests ---------------------- */
 	
+		/* TODO Passenger Car Tests*/
 		//Tests Required
 }
