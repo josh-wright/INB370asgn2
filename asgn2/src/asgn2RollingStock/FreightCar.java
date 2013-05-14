@@ -11,8 +11,10 @@ import asgn2Exceptions.TrainException;
  */
 public class FreightCar extends RollingStock {
 	private static final String General = "G";
-	private static String Refrigerated = "R";
+	private static String Refrigerated = "R"; //final missing here? - JW
 	private static final String Dangerous = "D";
+	
+	// I'd possibly create a char array and then do if(in array){..} else {..} - JW
 	
 	private String goodsType;		
 	

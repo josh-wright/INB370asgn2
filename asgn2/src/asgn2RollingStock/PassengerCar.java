@@ -11,7 +11,7 @@ import asgn2Exceptions.TrainException;
  */
 public class PassengerCar extends RollingStock {
 	
-	private final static Integer MinimumDeparture = 0;
+	private final static Integer MinimumDeparture = 0; //??? - JW
 	private static final Integer MinimumSeats = 0;
 	
 	private Integer numberOfSeats = 0;
