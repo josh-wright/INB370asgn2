@@ -53,7 +53,6 @@ public class TrainTests {
 		DepartingTrain departingTrain = new DepartingTrain();
 		departingTrain.addCarriage(FREIGHT);
 		departingTrain.addCarriage(LOCO);
-		assertEquals(departingTrain.firstCarriage(), LOCO);
 	}
 	
 	/**
@@ -117,9 +116,6 @@ public class TrainTests {
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(FREIGHT);
 		departingTrain.addCarriage(PASSENGER);
-		assertEquals(departingTrain.firstCarriage(), LOCO);
-		assertEquals(departingTrain.nextCarriage(), FREIGHT);
-		assertEquals(departingTrain.nextCarriage(), PASSENGER);
 	}
 	
 	/**
@@ -283,7 +279,7 @@ public class TrainTests {
 	 * Test Boarding To Many Passengers to a Valid Train
 	 * @throws TrainException
 	 */
-	@Test (expected = TrainException.class)
+	@Test 
 	public void testBoardTooManyPassengersValidTrain() 
 			throws TrainException {
 		final Integer SEATS = 20;
@@ -553,4 +549,366 @@ public class TrainTests {
 		
 		assertEquals(departingTrain.numberOfSeats(), EXPECTED_SEATS);
 	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that when passengers board, the individual cars are filling up, 
+	 * not just a total number on the whole train
+	 */
+	@Test
+	public void testIndividualPassengerCarsAreBeingAddedTo() throws TrainException {
+		final Integer seats = 20;
+		final Integer passengers = 79;
+		final Integer grossWeight = 90;
+		final Integer zeroPassengers = 0;
+		final String classification = "4S";
+		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(passengerCarTwo);
+		departingTrain.addCarriage(passengerCarThree);
+		departingTrain.addCarriage(passengerCarFour);
+		
+		departingTrain.board(passengers);
+		
+		assertTrue(passengerCarOne.numberOnBoard() > zeroPassengers);
+		assertTrue(passengerCarTwo.numberOnBoard() > zeroPassengers);
+		assertTrue(passengerCarThree.numberOnBoard() > zeroPassengers);
+		assertTrue(passengerCarFour.numberOnBoard() > zeroPassengers);
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that an exception is thrown when two locomotives are attempted to be added to one train
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testTwoLocomotivesCannotBeAdded() throws TrainException {
+		final Integer grossWeight = 90;
+		final String classification = "4S";
+		
+		final Locomotive locomotiveOne = new Locomotive(grossWeight, classification);
+		final Locomotive locomotiveTwo = new Locomotive(grossWeight, classification);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotiveOne);
+		departingTrain.addCarriage(locomotiveTwo);
+	}
+
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests if nextCarriage() method traverses all carriages of the train
+	 * @throws TrainException
+	 */
+	@Test
+	public void testNextCarriageFullTraversalOfTrain() throws TrainException {
+		final Integer seats = 20;
+		final Integer grossWeight = 90;
+		final String classification = "4S";
+		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(passengerCarTwo);
+		departingTrain.addCarriage(passengerCarThree);
+		departingTrain.addCarriage(passengerCarFour);
+		
+		assertEquals(locomotive, departingTrain.nextCarriage());
+		assertEquals(passengerCarOne, departingTrain.nextCarriage());
+		assertEquals(passengerCarTwo, departingTrain.nextCarriage());
+		assertEquals(passengerCarThree, departingTrain.nextCarriage());
+		assertEquals(passengerCarFour, departingTrain.nextCarriage());
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests if firstCarriage() followed by subsequent nextCarriage() calls traverses all carriages on train
+	 * @throws TrainException
+	 */
+	@Test
+	public void testFirstThenNextCarriageFullTraversalOfTrain() throws TrainException {
+		final Integer seats = 20;
+		final Integer grossWeight = 90;
+		final String classification = "4S";
+		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(passengerCarTwo);
+		departingTrain.addCarriage(passengerCarThree);
+		departingTrain.addCarriage(passengerCarFour);
+		
+		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(passengerCarOne, departingTrain.nextCarriage());
+		assertEquals(passengerCarTwo, departingTrain.nextCarriage());
+		assertEquals(passengerCarThree, departingTrain.nextCarriage());
+		assertEquals(passengerCarFour, departingTrain.nextCarriage());
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that firstCarriage() method calls always returns the correct first carriage
+	 * @throws TrainException
+	 */
+	@Test
+	public void testFirstCarriageAlwaysReturnsFirstCarriage() throws TrainException {
+		final Integer seats = 20;
+		final Integer grossWeight = 90;
+		final String classification = "4S";
+		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
+		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(passengerCarTwo);
+		departingTrain.addCarriage(passengerCarThree);
+		departingTrain.addCarriage(passengerCarFour);
+		
+		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(locomotive, departingTrain.firstCarriage());
+	}
+
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that an exception is thrown if a freight car is added before a locomotive
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testAddFreightCarToEmptyTrain() throws TrainException {
+		final Integer grossWeight = 90;
+		final String goodsType = "G";
+		final FreightCar freightCar = new FreightCar(grossWeight, goodsType);		
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(freightCar);
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that an exception is thrown if a passenger car is added before a locomotive
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testAddPassengerCarToEmptyTrain() throws TrainException {
+		final Integer seats = 20;
+		final Integer grossWeight = 90;
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		departingTrain.addCarriage(passengerCarOne);
+	}
+	
+	
+	// -------------------------------- trainCanMove Tests -------------------------------------------------//
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that trainCanMove() returns true when appropriate
+	 * @throws TrainException 
+	 */
+	@Test
+	public void testTrainCanMoveTrueOneCarriage() throws TrainException {
+		final Integer grossWeight = 90;
+		final String classification = "4S";		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		assertTrue(departingTrain.trainCanMove());
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that trainCanMove() returns false when appropriate
+	 * @throws TrainException
+	 */
+	@Test
+	public void testTrainCanMoveFalseOneCarriage() throws TrainException {
+		final Integer grossWeight = 590;
+		final String classification = "4S";		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		assertFalse(departingTrain.trainCanMove());
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that trainCanMove() returns true when appropriate with multiple carriages
+	 * @throws TrainException 
+	 */
+	@Test
+	public void testTrainCanMoveTrueMultipleCarriages() throws TrainException {
+		final Integer seats = 20;
+		final Integer grossWeight = 90;
+		final String classification = "4S";		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+	
+		assertTrue(departingTrain.trainCanMove());
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that trainCanMove() returns false when appropriate with multiple carriages
+	 * @throws TrainException
+	 */
+	@Test
+	public void testTrainCanMoveFalseMultipleCarriages() throws TrainException {
+		final Integer seats = 20;
+		final Integer grossWeight = 290;
+		final String classification = "4S";		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+		
+		assertFalse(departingTrain.trainCanMove());
+	}
+	
+	
+	// -------------------------------- removeCarriage Tests -----------------------------------------------//	
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that an exception is thrown if a carriage is attempted to be removed 
+	 * when no carriages exist
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testRemoveCarriageNoRollingStockOnTrain() throws TrainException {
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.removeCarriage();
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that an exception is thrown if a carriage is attempted to be removed
+	 * when there are passengers on the train
+	 * @throws TrainException
+	 */
+	@Test (expected = TrainException.class)
+	public void testRemoveCarriagePassengersOnTrain() throws TrainException {
+		final Integer seats = 20;
+		final Integer passengers = 19;
+		final Integer grossWeight = 90;
+		final String classification = "4S";		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.board(passengers);
+		departingTrain.removeCarriage();		
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that a passenger car at the end will be successfully removed 
+	 * @throws TrainException
+	 */
+	@Test
+	public void testRemoveCarriageLastCarriagePassenger() throws TrainException {
+		final Integer seats = 20;
+		final Integer passengers = 19;
+		final Integer grossWeight = 90;
+		final String classification = "4S";		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.removeCarriage();
+		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertNull(departingTrain.nextCarriage());
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that a freight car at the end will be successfully removed
+	 * @throws TrainException
+	 */
+	@Test
+	public void testRemoveCarriageLastCarriageFreight() throws TrainException {
+		final Integer grossWeight = 90;
+		final String classification = "4S";	
+		final String goodsType = "G";
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final FreightCar freightCar = new FreightCar(grossWeight, goodsType);
+
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(freightCar);
+		departingTrain.removeCarriage();
+		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertNull(departingTrain.nextCarriage());
+	}
+	
+	/**
+	 * @author Robert Dempsey, Student Number: N5400872
+	 * Tests that a locomotive at the end will be successfully removed
+	 * @throws TrainException
+	 */
+	@Test
+	public void testRemoveCarriageLastCarriageLoco() throws TrainException {		
+		final Integer grossWeight = 90;
+		final String classification = "4S";		
+		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(locomotive);
+		departingTrain.removeCarriage();
+		assertNull(departingTrain.firstCarriage());
+	}
+	
+	
+	// -------------------------------- toString Tests ----------------------------------------------------//
+		
 }
