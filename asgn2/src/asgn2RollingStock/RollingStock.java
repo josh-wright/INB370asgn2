@@ -6,17 +6,19 @@ package asgn2RollingStock;
 import asgn2Exceptions.TrainException;
 
 /**
- * @author Robert
+ * @author Robert Dempsey (Student Number: N5400872)
  *
  */
 public abstract class RollingStock extends Object {
 	private static final Integer FreightLowerLimit = 1;
 	
-	// fields
-	private Integer grossWeight;
+	private Integer grossWeight;	
 	
-	
-	// Constructor
+	/**
+	 * Construct the carriage
+	 * @param Integer grossWeight - gross weight of the carriage
+	 * @throws TrainException if gross weight is 0 or less
+	 */
 	public RollingStock(Integer grossWeight) throws TrainException {
 		if (grossWeight < FreightLowerLimit) {
 			throw new TrainException("Freight must be greater than zero (0)");
@@ -24,12 +26,18 @@ public abstract class RollingStock extends Object {
 		this.grossWeight = grossWeight;
 	}
 	
-	// Accessor for grossWeight;
+	
+	/**
+	 * Get gross weight of carriage
+	 * @return Integer - gross weight
+	 */
 	public Integer getGrossWeight() {
 		return grossWeight;
 	}
 	
-	// Overrides toString() in Object to output train details in human readable format
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public abstract String toString();
 }

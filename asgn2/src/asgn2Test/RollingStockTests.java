@@ -487,10 +487,41 @@ public class RollingStockTests {
 		assertEquals(TO_STRING, passengerCar.toString());
 	}
 	
+	/**
+	 * @author Robert Dempsey Student Number: N5400872
+	 * Tests that when more passengers than there are seats try to board, the carriage will
+	 * be at full capacity; no more, no less
+	 * @throws TrainException
+	 */
+	@Test
+	public void testExcessPassengersNotAllowedToBoard() throws TrainException {
+		final Integer grossWeight = 90;
+		final Integer numberOfSeats = 20;
+		final Integer boarding = 40;
+
+		PassengerCar passengerCar = new PassengerCar(grossWeight, numberOfSeats);
+				
+		passengerCar.board(boarding);
+		
+		assertEquals(numberOfSeats, passengerCar.numberOnBoard());
+	}
 	
-	
-	
-	
-	
+	/**
+	 * @author Robert Dempsey Student Number: N5400872
+	 * Tests board function will return zero if less passengers than there are seats
+	 * try to board
+	 * @throws TrainException
+	 */
+	@Test
+	public void testBoardReturnsZeroIfCarriageNotFull() throws TrainException {
+		final Integer grossWeight = 90;
+		final Integer numberOfSeats = 20;
+		final Integer boarding = 15;
+		final Integer remainder = 0;
+		
+		PassengerCar passengerCar = new PassengerCar(grossWeight, numberOfSeats);
+			
+		assertEquals(remainder, passengerCar.board(boarding));
+	}
 	
 }

@@ -25,7 +25,7 @@ public class TrainTests {
 			throws TrainException {
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		assertNull(departingTrain.firstCarriage(), null);
+		assertNull(departingTrain.firstCarriage());
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class TrainTests {
 	 * Tests Add PassengerCar to Departing Train with Loco, Freight
 	 * @throws TrainException
 	 */
-	@Test
+	@Test (expected = TrainException.class)
 	public void testAddPassengerToLocoFreight() 
 			throws TrainException {
 		final Locomotive LOCO = new Locomotive(90, "4S");
@@ -197,7 +197,8 @@ public class TrainTests {
 		
 		DepartingTrain departingTrain = new DepartingTrain();
 		departingTrain.addCarriage(LOCO);
-		departingTrain.addCarriage(PASSENGERS);
+		departingTrain.addCarriage(PASSENGER);
+		@SuppressWarnings("unused")
 		Integer noSeats = departingTrain.board(PASSENGERS);
 	}
 	
@@ -249,8 +250,8 @@ public class TrainTests {
 		DepartingTrain departingTrain = new DepartingTrain();
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(PASSENGER01);
-		departingTrain.addCarriage(FREIGHT);
 		departingTrain.addCarriage(PASSENGER02);
+		departingTrain.addCarriage(FREIGHT);
 		Integer noSeats = departingTrain.board(PASSENGERS_TOTAL);
 		assertEquals(departingTrain.numberOnBoard(), PASSENGERS_TOTAL);
 	}
@@ -259,7 +260,7 @@ public class TrainTests {
 	 * Test Boarding Passengers to a Invalid Train
 	 * @throws TrainException
 	 */
-	@Test (expected = TrainException.class)
+	@Test 
 	public void testBoardPassengersInvalidTrain() 
 			throws TrainException {
 		final Integer PASSENGERS = 20;
@@ -274,6 +275,8 @@ public class TrainTests {
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(FREIGHT);
 		Integer noSeats = departingTrain.board(PASSENGERS);
+		
+		assertEquals(noSeats, PASSENGERS);
 	}
 	
 	/**
@@ -285,7 +288,7 @@ public class TrainTests {
 			throws TrainException {
 		final Integer SEATS = 20;
 		final Integer PASSENGERS = 40;
-		final Integer EXPECTED_OVER = PASSENGERS-SEATS;
+		final Integer EXPECTED_OVER = PASSENGERS - SEATS;
 		final Integer GROSS_WEIGHT = 90;
 		final String POWER_CLASS = "4S";
 		
@@ -339,7 +342,7 @@ public class TrainTests {
 		final Integer GROSS_WEIGHT = 90;
 		final String POWER_CLASS = "4S";
 		final Integer SEATS = 20;
-		final String Freight = "G";
+		final String GOODS_TYPE = "G";
 		
 		final Locomotive LOCO = new Locomotive(GROSS_WEIGHT, POWER_CLASS);
 		final PassengerCar PASSENGER = new PassengerCar(GROSS_WEIGHT, SEATS);
@@ -513,8 +516,8 @@ public class TrainTests {
 		DepartingTrain departingTrain = new DepartingTrain();
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(PASSENGER01);
-		departingTrain.addCarriage(FREIGHT);
 		departingTrain.addCarriage(PASSENGER02);
+		departingTrain.addCarriage(FREIGHT);
 		
 		assertEquals(departingTrain.numberOfSeats(), EXPECTED_SEATS);
 	}
@@ -543,10 +546,10 @@ public class TrainTests {
 		DepartingTrain departingTrain = new DepartingTrain();
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(PASSENGER01);
-		departingTrain.addCarriage(FREIGHT);
 		departingTrain.addCarriage(PASSENGER02);
 		departingTrain.addCarriage(PASSENGER03);
 		departingTrain.addCarriage(PASSENGER04);
+		departingTrain.addCarriage(FREIGHT);
 		
 		assertEquals(departingTrain.numberOfSeats(), EXPECTED_SEATS);
 	}
