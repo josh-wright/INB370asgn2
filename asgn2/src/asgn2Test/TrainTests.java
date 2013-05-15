@@ -232,24 +232,24 @@ public class TrainTests {
 	@Test
 	public void testBoardPassengersValidComboTrainPassengerMultiple() 
 			throws TrainException {
-		final Integer PASSENGERS_CAR = 20;
-		final Integer PASSENGERS_TOTAL = PASSENGERS_CAR * 2;
+		final Integer SEATS = 20;
+		final Integer PASSENGERS = SEATS * 2;
 		final Integer GROSS_WEIGHT = 90;
 		final String POWER_CLASS = "4S";
 		final String GOODS_TYPE = "G";
 		
 		final Locomotive LOCO = new Locomotive(GROSS_WEIGHT, POWER_CLASS);
 		final FreightCar FREIGHT = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
-		final PassengerCar PASSENGER01 = new PassengerCar(GROSS_WEIGHT, PASSENGERS_CAR);
-		final PassengerCar PASSENGER02 = new PassengerCar(GROSS_WEIGHT, PASSENGERS_CAR);
+		final PassengerCar PASSENGER01 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGER02 = new PassengerCar(GROSS_WEIGHT, SEATS);
 
 		DepartingTrain departingTrain = new DepartingTrain();
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(PASSENGER01);
 		departingTrain.addCarriage(PASSENGER02);
 		departingTrain.addCarriage(FREIGHT);
-		Integer noSeats = departingTrain.board(PASSENGERS_TOTAL);
-		assertEquals(departingTrain.numberOnBoard(), PASSENGERS_TOTAL);
+		Integer noSeats = departingTrain.board(PASSENGERS);
+		assertEquals(departingTrain.numberOnBoard(), PASSENGERS);
 	}
 	
 	/**
@@ -627,7 +627,7 @@ public class TrainTests {
 		departingTrain.addCarriage(passengerCarThree);
 		departingTrain.addCarriage(passengerCarFour);
 		
-		assertEquals(locomotive, departingTrain.nextCarriage());
+		assertEquals(locomotive, departingTrain.firstCarriage());
 		assertEquals(passengerCarOne, departingTrain.nextCarriage());
 		assertEquals(passengerCarTwo, departingTrain.nextCarriage());
 		assertEquals(passengerCarThree, departingTrain.nextCarriage());
@@ -910,5 +910,87 @@ public class TrainTests {
 	
 	
 	// -------------------------------- toString Tests ----------------------------------------------------//
+	
+	@Test
+	public void testToStringNull() throws TrainException {
+		DepartingTrain departingTrain = new DepartingTrain();
+		assertNull(departingTrain.toString());
+	}
+	
+	@Test
+	public void testToStringSingleCarriage() throws TrainException {
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";
+		final Locomotive LOCO = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final String TO_STRING = "Loco(4S)";
 		
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(LOCO);
+		
+		assertEquals(TO_STRING, departingTrain.toString());
+	}
+	
+	@Test
+	public void testToStringMultipleCarriageNoPassengers() throws TrainException {
+		final Integer GROSS_WEIGHT = 90;
+		final String GOODS_TYPE = "G";
+		final Integer SEATS = 20;
+		final Integer PASSENGERS = 0;
+		final String CLASSIFICATION = "4S";
+		
+		final Locomotive LOCO = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final FreightCar FREIGHT = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
+		final PassengerCar PASSENGER = new PassengerCar(GROSS_WEIGHT, SEATS);
+		
+		final String TO_STRING = "Loco("
+							   + CLASSIFICATION
+							   + ")-Passenger("
+							   + PASSENGERS
+							   + "/"
+							   + SEATS
+							   + ")-Freight("
+							   + GOODS_TYPE
+							   + ")";
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(LOCO);
+		departingTrain.addCarriage(PASSENGER);
+		departingTrain.addCarriage(FREIGHT);
+		
+		assertEquals(TO_STRING, departingTrain.toString());
+	}
+	
+	@Test
+	public void testToStringMultipleCarriagePassengers() throws TrainException {
+		final Integer GROSS_WEIGHT = 90;
+		final String GOODS_TYPE = "G";
+		final Integer SEATS = 20;
+		final Integer PASSENGERS = 10;
+		final String CLASSIFICATION = "4S";
+		
+		final Locomotive LOCO = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final FreightCar FREIGHT = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
+		final PassengerCar PASSENGER = new PassengerCar(GROSS_WEIGHT, SEATS);
+		
+		final String TO_STRING = "Loco("
+							   + CLASSIFICATION
+							   + ")-Passenger("
+							   + PASSENGERS
+							   + "/"
+							   + SEATS
+							   + ")-Freight("
+							   + GOODS_TYPE
+							   + ")";
+		
+		DepartingTrain departingTrain = new DepartingTrain();
+		
+		departingTrain.addCarriage(LOCO);
+		departingTrain.addCarriage(PASSENGER);
+		departingTrain.addCarriage(FREIGHT);
+		departingTrain.board(PASSENGERS);
+		
+		assertEquals(TO_STRING, departingTrain.toString());
+	}
 }

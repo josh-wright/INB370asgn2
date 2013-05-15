@@ -11,6 +11,7 @@ import asgn2RollingStock.RollingStock;
 /**
  *
  * @author Robert Dempsey (Student Number: N5400872)
+ * @author JoshuaWright(n6366066)
  */
 public class DepartingTrain {
 	
@@ -97,32 +98,39 @@ public class DepartingTrain {
 	 */
 	public Integer board(Integer newPassengers)
             throws TrainException {
+		Integer remainingPassengers = newPassengers;
 		
-		final Integer MinimumBoard = 0;
-		Integer excessPassengers = 0;
+		firstCarriage(); //Skip Loco
 		
-		if (newPassengers < MinimumBoard) {
-			throw new TrainException("Number of passengers boarding must be greater than " + 
-									  MinimumBoard + ".");
+		for (int i = 0; i < departingTrain.size()-1; i++){
+			RollingStock carriage = nextCarriage();
+			if (carriage.getClass() == PassengerCar.class) {
+				if (((PassengerCar)carriage).numberOfSeats() >= ((PassengerCar)carriage).numberOnBoard()){
+					Integer board = ((PassengerCar)carriage).numberOfSeats() - ((PassengerCar)carriage).numberOnBoard();
+					if (board >= remainingPassengers){
+						remainingPassengers = ((PassengerCar)carriage).board(remainingPassengers);
+					} else {
+						remainingPassengers -= board;
+						((PassengerCar)carriage).board(board);
+					}
+				}
+			}
 		}
-		
-		// if boarding passengers would cause the train to be overloaded, fill the carriage 
-		if ((numberOnBoard() + newPassengers) > numberOfSeats()) {
-			excessPassengers = numberOnBoard() + newPassengers - numberOfSeats();
-			numberOnBoard = numberOfSeats();
-		} else {
-			numberOnBoard += newPassengers;
-		}
-		return excessPassengers;
+		return remainingPassengers;
 	}
 	
 	/**
 	 * @return
 	 */
 	public boolean trainCanMove() {
+		Integer power = ((Locomotive) firstCarriage()).power();
+		Integer weight = firstCarriage().getGrossWeight();
 		
-		// not yet implemented
-		return false;
+		for (int i = 0; i < departingTrain.size()-1; i++){
+			weight += nextCarriage().getGrossWeight();
+		}
+		
+		if (power > weight) { return true; } else { return false; }
 	}
 	
 	/**
@@ -139,7 +147,9 @@ public class DepartingTrain {
 			throw new TrainException("First carriage of a train must be a Locomotive.");	
 		} else if (numberOnBoard() > 0) {
 			throw new TrainException("A new carriage cannot be added when there are passengers on board.");		
-		} 
+		} else if (this.firstCarriage() != null && newCarriage.getClass() == Locomotive.class){
+			throw new TrainException("Only one locomotive is allowed per train");		
+		}
 		
 		// ensure a passenger car cannot be added after a freight car
 		for (int i = 0; i < departingTrain.size(); i++) {
@@ -156,13 +166,36 @@ public class DepartingTrain {
 	 * @throws TrainException
 	 */
 	public void removeCarriage()
-             throws TrainException {		 
+             throws TrainException {
+		if (numberOnBoard() > 0) {
+			throw new TrainException("Cannot shunt a train whilst passengers are on board");
+		} else if(departingTrain.size() == 0){
+			throw new TrainException("No carriages to remove from train");
+		} else {
+			departingTrain.remove(departingTrain.size()-1);
+		}
 	 }
 	 
 	 /* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		 return null;
+		String trainString = null;
+		RollingStock firstcar = firstCarriage();
+		if (firstcar == null){ return null;}
+		else {
+			trainString = ((Locomotive)firstcar).toString();
+			for (int i = 0; i < departingTrain.size()-1; i++){
+				trainString += "-";
+				RollingStock car = nextCarriage();
+				if (car.getClass() == PassengerCar.class){
+					trainString += ((PassengerCar) car).toString();
+				} else {
+					trainString += ((FreightCar) car).toString();
+				}
+			}
+		}
+		
+		return trainString;
 	 }
 }
