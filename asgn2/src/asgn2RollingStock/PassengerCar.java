@@ -55,12 +55,21 @@ public class PassengerCar extends RollingStock {
 	 * @throws TrainException if negative passengers try to board the train
 	 */
 	public Integer board(Integer newPassengers) throws TrainException {
+		final int zeroExcess = 0;
+		
 		if (newPassengers < MinimumBoard) {
 			throw new TrainException("Number of passengers boarding must be greater than " + 
 									  MinimumBoard + ".");
 		}
-		numberOnBoard += newPassengers;
-		return numberOnBoard - numberOfSeats();
+		
+		if (numberOnBoard() + newPassengers > numberOfSeats) {
+			Integer excessPassengers = numberOnBoard() + newPassengers - numberOfSeats();
+			numberOnBoard = numberOfSeats;
+			return excessPassengers;
+		} else {
+			numberOnBoard += newPassengers;
+			return zeroExcess;
+		}	
 	}
 	
 	/**

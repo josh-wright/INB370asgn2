@@ -17,12 +17,12 @@ public class DepartingTrain {
 	
 	// initialise private variables
 	private ArrayList<RollingStock> departingTrain;
-	private Integer currentCarriage = 0;
+	private Integer currentCarriage = -1;
 	private Integer numberOnBoard = 0;
 	private Integer numberOfSeats = 0;
 	
 	/**
-	 * Constructs empty train
+	 * Constructs train with no rolling stock attached
 	 */
 	public DepartingTrain() {
 		departingTrain = new ArrayList<RollingStock>();
@@ -33,11 +33,12 @@ public class DepartingTrain {
 	 * @return RollingStock - first carriage of train
 	 */
 	public RollingStock firstCarriage() {
-		final int FirstCarriage = 0;
-		
+		final Integer firstCarriage = 0;
+		currentCarriage = firstCarriage;
+
 		// return first carriage or null if none exists
 		try {
-			return departingTrain.get(FirstCarriage);
+			return departingTrain.get(firstCarriage);
 		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
@@ -49,7 +50,7 @@ public class DepartingTrain {
 	 */
 	public RollingStock nextCarriage() {
 		currentCarriage++;
-		
+
 		// return next carriage or null if none exists
 		try {
 			return departingTrain.get(currentCarriage);
@@ -126,7 +127,7 @@ public class DepartingTrain {
 		Integer power = ((Locomotive) firstCarriage()).power();
 		Integer weight = firstCarriage().getGrossWeight();
 		
-		for (int i = 0; i < departingTrain.size()-1; i++){
+		for (int i = 0; i < departingTrain.size() - 1; i++){
 			weight += nextCarriage().getGrossWeight();
 		}
 		
@@ -142,12 +143,14 @@ public class DepartingTrain {
 	public void addCarriage(RollingStock newCarriage)
             throws TrainException {
 		
+		boolean trainEmpty = departingTrain.size() == 0;
+		
 		// ensure first carriage is a Locomotive
-		if (this.firstCarriage() == null && newCarriage.getClass() != Locomotive.class) {
+		if (trainEmpty && newCarriage.getClass() != Locomotive.class) {
 			throw new TrainException("First carriage of a train must be a Locomotive.");	
 		} else if (numberOnBoard() > 0) {
 			throw new TrainException("A new carriage cannot be added when there are passengers on board.");		
-		} else if (this.firstCarriage() != null && newCarriage.getClass() == Locomotive.class){
+		} else if (!trainEmpty && newCarriage.getClass() == Locomotive.class) {
 			throw new TrainException("Only one locomotive is allowed per train");		
 		}
 		
@@ -182,10 +185,10 @@ public class DepartingTrain {
 	public String toString() {
 		String trainString = null;
 		RollingStock firstcar = firstCarriage();
-		if (firstcar == null){ return null;}
+		if (firstcar == null) { return null; }
 		else {
 			trainString = ((Locomotive)firstcar).toString();
-			for (int i = 0; i < departingTrain.size()-1; i++){
+			for (int i = 0; i < departingTrain.size() - 1; i++){
 				trainString += "-";
 				RollingStock car = nextCarriage();
 				if (car.getClass() == PassengerCar.class){

@@ -627,7 +627,7 @@ public class TrainTests {
 		departingTrain.addCarriage(passengerCarThree);
 		departingTrain.addCarriage(passengerCarFour);
 		
-		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(locomotive, departingTrain.nextCarriage());
 		assertEquals(passengerCarOne, departingTrain.nextCarriage());
 		assertEquals(passengerCarTwo, departingTrain.nextCarriage());
 		assertEquals(passengerCarThree, departingTrain.nextCarriage());
