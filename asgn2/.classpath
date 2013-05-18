@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="JUnit/junit-4.11-javadoc.jar"/>
 	<classpathentry kind="lib" path="JUnit/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="lib" path="JUnit/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
