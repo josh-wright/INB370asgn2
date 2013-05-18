@@ -13,6 +13,10 @@ import javax.swing.border.EmptyBorder;
 
 public class DepartingTrainGUI extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3220004779529322252L;
 	private JPanel contentPane;
 
 	/**

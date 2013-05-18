@@ -172,6 +172,7 @@ public class TrainTests {
 		DepartingTrain departingTrain = new DepartingTrain();
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(PASSENGER);
+		@SuppressWarnings("unused")
 		Integer noSeats = departingTrain.board(PASSENGERS);
 		assertEquals(departingTrain.numberOnBoard(), PASSENGERS);
 	}	
@@ -219,6 +220,7 @@ public class TrainTests {
 		departingTrain.addCarriage(LOCO);
 		departingTrain.addCarriage(PASSENGER);
 		departingTrain.addCarriage(FREIGHT);
+		@SuppressWarnings("unused")
 		Integer noSeats = departingTrain.board(PASSENGERS);
 		
 		assertEquals(departingTrain.numberOnBoard(), PASSENGERS);
@@ -248,6 +250,7 @@ public class TrainTests {
 		departingTrain.addCarriage(PASSENGER01);
 		departingTrain.addCarriage(PASSENGER02);
 		departingTrain.addCarriage(FREIGHT);
+		@SuppressWarnings("unused")
 		Integer noSeats = departingTrain.board(PASSENGERS);
 		assertEquals(departingTrain.numberOnBoard(), PASSENGERS);
 	}
@@ -853,6 +856,7 @@ public class TrainTests {
 	@Test
 	public void testRemoveCarriageLastCarriagePassenger() throws TrainException {
 		final Integer seats = 20;
+		@SuppressWarnings("unused")
 		final Integer passengers = 19;
 		final Integer grossWeight = 90;
 		final String classification = "4S";		
