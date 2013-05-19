@@ -9,7 +9,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class TestGUI extends JFrame {
+public class testGUI extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5400452591692641009L;
 	/* Declare Objects Here */
 	final int DEFAULT_PADDING_POS = 10;
 	final int DEFAULT_PADDING_NEG = -10;
@@ -22,7 +26,7 @@ public class TestGUI extends JFrame {
 	SpringLayout shuntTrainLayout = new SpringLayout();
 	SpringLayout addCarriageLayout = new SpringLayout();
 	
-	public TestGUI(String name) {
+	public testGUI(String name) {
 		super(name);
 		setResizable(true);
 	}
@@ -44,6 +48,7 @@ public class TestGUI extends JFrame {
 		final JPanel trainControl = new JPanel();
 		trainControl.setLayout(baseLayout);
 		trainControl.setSize(screenSize);
+		this.add(trainControl);
 		
 		/* - train (Part of trainControl) ----------------------------------------------------------------------------------------------------------------------------- */
 		
@@ -51,7 +56,7 @@ public class TestGUI extends JFrame {
 		train.setBackground(Color.RED);
 		train.setLayout(trainLayout);
 		trainControl.add(train);
-		
+				
 		JLabel trainTitle = new JLabel("Train Information");
 		trainTitle.setFont(new Font("Verdana", Font.BOLD, 20));
 		trainLayout.putConstraint(SpringLayout.NORTH, trainTitle, 20, SpringLayout.NORTH, train);
@@ -201,7 +206,7 @@ public class TestGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TestGUI frame = new TestGUI("Train Controller Test");
+					testGUI frame = new testGUI("Train Controller Test");
 					frame.addComponentsToPanel(frame.getContentPane());
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setPreferredSize(screenSize);
