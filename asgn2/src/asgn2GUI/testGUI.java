@@ -417,7 +417,6 @@ public class testGUI extends JFrame implements ActionListener {
 		alightPassengersButton.setEnabled(false);
 		conductor.add(alightPassengersButton);
 		
-		
 	}
 	
 	/**
@@ -449,15 +448,6 @@ public class testGUI extends JFrame implements ActionListener {
 		case "Begin Train":
 			departingTrain = new DepartingTrain();
 			
-			newTrainButton.setEnabled(false);
-			resetTrainButton.setEnabled(true);
-			shuntTrainButton.setEnabled(true);
-			joinTrainButton.setEnabled(true);
-			addCarriageButton.setEnabled(true);
-			removeCarriageButton.setEnabled(true);
-			boardPassengersButton.setEnabled(true);
-			alightPassengersButton.setEnabled(true);
-			
 			beginTrain.setVisible(true);
 			addCarriage.setVisible(false);
 			shuntTrain.setVisible(false);
@@ -470,15 +460,7 @@ public class testGUI extends JFrame implements ActionListener {
 			
 			trainInfo.removeAll();
 			trainInfo.repaint();
-			
-			newTrainButton.setEnabled(true);
-			resetTrainButton.setEnabled(false);
-			shuntTrainButton.setEnabled(false);
-			joinTrainButton.setEnabled(false);
-			addCarriageButton.setEnabled(false);
-			removeCarriageButton.setEnabled(false);
-			boardPassengersButton.setEnabled(false);
-			alightPassengersButton.setEnabled(false);
+			DriverButtonEnable(false);
 			
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(false);
@@ -498,18 +480,6 @@ public class testGUI extends JFrame implements ActionListener {
 			shuntTrain.setVisible(false);
 			break;
 		case "Add New Carriage":
-/*			try {
-				Locomotive freight = new Locomotive(90, "4D");
-				departingTrain.addCarriage(freight);
-				JLabel carriage = new JLabel(freight.toString());
-				trainInfo.add(carriage);
-				PassengerCar hello = new PassengerCar(90, 20);
-				departingTrain.addCarriage(hello);
-				carriage = new JLabel(hello.toString());
-				trainInfo.add(carriage);
-			} catch (TrainException trainException) {				
-			}	*/		
-			//this.pack();
 			trainInfo.repaint();
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(true);
@@ -537,6 +507,7 @@ public class testGUI extends JFrame implements ActionListener {
 				JLabel locomotiveLabel = new JLabel(loco.toString());
 				trainInfo.add(locomotiveLabel);
 				this.pack();
+				DriverButtonEnable(true);
 				trainInfo.repaint();
 			} catch (TrainException e1) {
 				JOptionPane.showMessageDialog(null, e1);
@@ -609,5 +580,18 @@ public class testGUI extends JFrame implements ActionListener {
 		numberOfSeatsLabel.setVisible(visible);
 		grossWeightPassengerInput.setVisible(visible);
 		grossWeightPassengerLabel.setVisible(visible);
+	}
+	
+	private void DriverButtonEnable(boolean enabled){
+		if (enabled) { newTrainButton.setEnabled(false); }
+		else { newTrainButton.setEnabled(true); }
+		
+		resetTrainButton.setEnabled(enabled);
+		shuntTrainButton.setEnabled(enabled);
+		joinTrainButton.setEnabled(enabled);
+		addCarriageButton.setEnabled(enabled);
+		removeCarriageButton.setEnabled(enabled);
+		boardPassengersButton.setEnabled(enabled);
+		alightPassengersButton.setEnabled(enabled);
 	}
 }
