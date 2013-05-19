@@ -110,6 +110,7 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.NORTH, resetTrainButton, 0, SpringLayout.SOUTH, newTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, resetTrainButton, 10, SpringLayout.WEST, driver);
 		driver.add(resetTrainButton);
+		resetTrainButton.addActionListener(this);
 
 		
 		JButton shuntTrainButton = new JButton("Shunt Train");
@@ -117,6 +118,7 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.NORTH, shuntTrainButton, 0, SpringLayout.SOUTH, resetTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, shuntTrainButton, 10, SpringLayout.WEST, driver);
 		driver.add(shuntTrainButton);
+		shuntTrainButton.addActionListener(this);
 
 		
 		JButton joinTrainButton = new JButton ("Connect Shunted Train");
@@ -124,6 +126,7 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.NORTH, joinTrainButton, 0, SpringLayout.SOUTH, shuntTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, joinTrainButton, 10, SpringLayout.WEST, driver);
 		driver.add(joinTrainButton);
+		joinTrainButton.addActionListener(this);
 
 		
 		JButton addCarriageButton = new JButton ("Add New Carriage");
@@ -131,6 +134,7 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.NORTH, addCarriageButton, 0, SpringLayout.SOUTH, joinTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, addCarriageButton, 10, SpringLayout.WEST, driver);
 		driver.add(addCarriageButton);
+		addCarriageButton.addActionListener(this);
 
 		
 		JButton removeCarriageButton = new JButton ("Remove Selected Carriage");
@@ -138,6 +142,7 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.NORTH, removeCarriageButton, 0, SpringLayout.SOUTH, addCarriageButton);
 		driverLayout.putConstraint(SpringLayout.WEST, removeCarriageButton, 10, SpringLayout.WEST, driver);
 		driver.add(removeCarriageButton);
+		removeCarriageButton.addActionListener(this);
 		
 		final JPanel shuntTrain = new JPanel();
 		shuntTrain.setLayout(shuntTrainLayout);
@@ -179,6 +184,7 @@ public class testGUI extends JFrame implements ActionListener {
 		conductorLayout.putConstraint(SpringLayout.NORTH, boardPassengersButton, 20, SpringLayout.SOUTH, conductorTitle);
 		conductorLayout.putConstraint(SpringLayout.WEST, boardPassengersButton, 10, SpringLayout.WEST, conductor);
 		conductor.add(boardPassengersButton);
+		boardPassengersButton.addActionListener(this);
 		
 		
 		JButton alightPassengersButton = new JButton("Alight Passengers");
@@ -186,6 +192,7 @@ public class testGUI extends JFrame implements ActionListener {
 		conductorLayout.putConstraint(SpringLayout.NORTH, alightPassengersButton, 0, SpringLayout.SOUTH, boardPassengersButton);
 		conductorLayout.putConstraint(SpringLayout.WEST, alightPassengersButton, 10, SpringLayout.WEST, conductor);
 		conductor.add(alightPassengersButton);
+		alightPassengersButton.addActionListener(this);
 		
 	}
 	
@@ -212,7 +219,11 @@ public class testGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		String buttonString = e.getActionCommand();
+		
+		switch(buttonString) {
+
+		}
 		
 	}
 
