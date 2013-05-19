@@ -570,10 +570,6 @@ public class testGUI extends JFrame implements ActionListener {
 			Integer grossWeightFreight = Integer.parseInt(grossWeightFreightInput.getText());
 			String goodsType = goodsTypeInput.getSelectedItem().toString().substring(0,1);
 			
-			if (goodsType != "G") {
-				JOptionPane.showMessageDialog(null, "Not Matching '" + goodsType +"' and 'G'");				
-			}
-			
 			try {
 				FreightCar freightCar = new FreightCar(grossWeightFreight, goodsType);
 				departingTrain.addCarriage(freightCar);
