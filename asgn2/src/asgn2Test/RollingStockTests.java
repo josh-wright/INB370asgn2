@@ -21,9 +21,51 @@ public class RollingStockTests {
 	 * Tests the FreightCar Constructor with valid constraints
 	 */
 	@Test
-	public void testFreightCarConstructorValid() 
+	public void testFreightCarConstructorValidG() 
 			throws TrainException {
 		final String GOODS_TYPE = "G";
+		final Integer GROSS_WEIGHT = 9;
+		
+		FreightCar freightCar = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
+		assertEquals(GOODS_TYPE, freightCar.goodsType());
+		assertEquals(GROSS_WEIGHT, freightCar.getGrossWeight(), 0);
+	}
+	
+	/**
+	 * Tests the FreightCar Constructor with valid constraints
+	 */
+	@Test
+	public void testFreightCarConstructorValidR() 
+			throws TrainException {
+		final String GOODS_TYPE = "R";
+		final Integer GROSS_WEIGHT = 9;
+		
+		FreightCar freightCar = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
+		assertEquals(GOODS_TYPE, freightCar.goodsType());
+		assertEquals(GROSS_WEIGHT, freightCar.getGrossWeight(), 0);
+	}
+	
+	/**
+	 * Tests the FreightCar Constructor with valid constraints
+	 */
+	@Test
+	public void testFreightCarConstructorValidD() 
+			throws TrainException {
+		final String GOODS_TYPE = "D";
+		final Integer GROSS_WEIGHT = 9;
+		
+		FreightCar freightCar = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
+		assertEquals(GOODS_TYPE, freightCar.goodsType());
+		assertEquals(GROSS_WEIGHT, freightCar.getGrossWeight(), 0);
+	}
+	
+	/**
+	 * Tests the FreightCar Constructor with valid constraints
+	 */
+	@Test
+	public void testFreightCarConstructorValid() 
+			throws TrainException {
+		final String GOODS_TYPE = "General Goods".substring(0,1);
 		final Integer GROSS_WEIGHT = 9;
 		
 		FreightCar freightCar = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
