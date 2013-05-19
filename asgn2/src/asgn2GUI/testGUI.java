@@ -7,7 +7,11 @@ package asgn2GUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import asgn2Exceptions.TrainException;
@@ -500,12 +504,34 @@ public class testGUI extends JFrame implements ActionListener {
 			Integer grossWeight = Integer.parseInt(grossWeightInput.getText());
 			Integer powerClass = powerClassInput.getSelectedIndex() + 1;
 			String engineType = engineTypeInput.getSelectedItem().toString().substring(0, 1);
+			File locoImgFile = null;
+			BufferedImage locoImg = null;
+			switch(engineType){
+			case "D":
+				locoImgFile = new File("rsc/diesel.jpg");
+				break;
+			case "E":
+				locoImgFile = new File("rsc/electric.jpg");
+				break;
+			case "S":
+				locoImgFile = new File("rsc/steam.jpg");
+				break;
+			}
 			String classification = powerClass + engineType;
 			try {
 				Locomotive loco = new Locomotive(grossWeight, classification);
 				departingTrain.addCarriage(loco);
+				JPanel locomotive = new JPanel();
+				try {                
+			          locoImg = ImageIO.read(locoImgFile);
+			       } catch (IOException ex) {
+			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + locoImgFile);
+			       }
 				JLabel locomotiveLabel = new JLabel(loco.toString());
-				trainInfo.add(locomotiveLabel);
+				JLabel locoImgLabel = new JLabel(new ImageIcon( locoImg ));
+				locomotive.add(locoImgLabel);
+				locomotive.add(locomotiveLabel);
+				trainInfo.add(locomotive);
 				this.pack();
 				DriverButtonEnable(true);
 				trainInfo.repaint();
@@ -529,7 +555,16 @@ public class testGUI extends JFrame implements ActionListener {
 			try {
 				PassengerCar passengerCar = new PassengerCar(grossWeightPassenger, numberOfSeats);
 				departingTrain.addCarriage(passengerCar);
+				File passengerImgFile = new File("rsc/passenger.jpg");
+				BufferedImage passengerImg = null;
+				try {                
+			          passengerImg = ImageIO.read(passengerImgFile);
+			       } catch (IOException ex) {
+			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + passengerImgFile);
+			       }
+				JLabel passengerImgLabel = new JLabel(new ImageIcon( passengerImg ));
 				JLabel passengerCarLabel = new JLabel(passengerCar.toString());
+				trainInfo.add(passengerImgLabel);
 				trainInfo.add(passengerCarLabel);
 				this.pack();
 				trainInfo.repaint();
@@ -544,7 +579,16 @@ public class testGUI extends JFrame implements ActionListener {
 			try {
 				FreightCar freightCar = new FreightCar(grossWeightFreight, goodsType);
 				departingTrain.addCarriage(freightCar);
+				File freightImgFile = new File("rsc/freight.jpg");
+				BufferedImage freightImg = null;
+				try {                
+			          freightImg = ImageIO.read(freightImgFile);
+			       } catch (IOException ex) {
+			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + freightImgFile);
+			       }
+				JLabel freightImgLabel = new JLabel(new ImageIcon( freightImg ));
 				JLabel freightCarLabel = new JLabel(freightCar.toString());
+				trainInfo.add(freightImgLabel);
 				trainInfo.add(freightCarLabel);
 				this.pack();
 				trainInfo.repaint();
