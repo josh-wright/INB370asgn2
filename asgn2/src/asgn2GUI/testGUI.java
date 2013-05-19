@@ -56,10 +56,18 @@ public class testGUI extends JFrame implements ActionListener {
 	private JTextField grossWeightInput;
 	private JComboBox<Integer> powerClassInput;
 	private JComboBox<String> engineTypeInput;
-	private JTextField grossWeightPassInput;
 	private JComboBox<String> goodsTypeInput;
 	private JButton addFreightButton;
 	private JTextField grossWeightFreightInput;
+	private JRadioButton freightCarSelect;
+	private JRadioButton passengerCarSelect;
+	private JLabel goodsTypeLabel;
+	private JLabel grossWeightFreightLabel;
+	private JLabel grossWeightPassengerLabel;
+	private JTextField grossWeightPassengerInput;
+	private JButton addPassengerButton;
+	private JTextField numberOfSeatsInput;
+	private JLabel numberOfSeatsLabel;
 	
 	public testGUI(String name) {
 		super(name);
@@ -275,7 +283,6 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.SOUTH, addCarriage, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
 		driver.add(addCarriage);
 		
-		/* FREIGHTCAR *******************************************/
 		
 		JLabel addCarriageTitle = new JLabel("Add a Carriage");
 		addCarriageTitle.setFont(new Font("Verdana", Font.BOLD, 14));
@@ -283,20 +290,35 @@ public class testGUI extends JFrame implements ActionListener {
 		addCarriageLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, addCarriageTitle, 0, SpringLayout.HORIZONTAL_CENTER, addCarriage);
 		addCarriage.add(addCarriageTitle);
 		
-		JLabel grossWeightFreightLabel = new JLabel("Gross Weight (t)");
+		JPanel radioBox = new JPanel();
+		radioBox.setLayout(new GridLayout(0,2));
+		freightCarSelect = new JRadioButton("Freight Car");
+		freightCarSelect.addActionListener(this);
+		passengerCarSelect = new JRadioButton("Passenger Car");
+		passengerCarSelect.addActionListener(this);
+		radioBox.add(freightCarSelect);
+		radioBox.add(passengerCarSelect);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, radioBox, 5, SpringLayout.SOUTH, addCarriageTitle);
+		addCarriageLayout.putConstraint(SpringLayout.EAST, radioBox, -30, SpringLayout.EAST, addCarriage);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, radioBox, 30, SpringLayout.WEST, addCarriage);
+		addCarriage.add(radioBox);
+		
+		/* FREIGHTCAR *******************************************/
+		
+		grossWeightFreightLabel = new JLabel("Gross Weight (t)");
 		grossWeightFreightLabel.setPreferredSize(driverButtonSize);
-		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightFreightLabel, 20, SpringLayout.SOUTH, addCarriageTitle);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightFreightLabel, 20, SpringLayout.SOUTH, radioBox);
 		addCarriageLayout.putConstraint(SpringLayout.WEST, grossWeightFreightLabel, 10, SpringLayout.WEST, addCarriage);
 		addCarriage.add(grossWeightFreightLabel);
 		
 		grossWeightFreightInput = new JTextField(10);
-		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightFreightInput, 20, SpringLayout.SOUTH, addCarriageTitle);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightFreightInput, 0, SpringLayout.NORTH, grossWeightFreightLabel);
 		addCarriageLayout.putConstraint(SpringLayout.WEST, grossWeightFreightInput, 0, SpringLayout.EAST, grossWeightFreightLabel);
 		addCarriageLayout.putConstraint(SpringLayout.EAST, grossWeightFreightInput, -10, SpringLayout.EAST, addCarriage);
 		addCarriageLayout.putConstraint(SpringLayout.SOUTH, grossWeightFreightInput, 0, SpringLayout.SOUTH, grossWeightFreightLabel);
 		addCarriage.add(grossWeightFreightInput);
 		
-		JLabel goodsTypeLabel = new JLabel("Goods Type");
+		goodsTypeLabel = new JLabel("Goods Type");
 		goodsTypeLabel.setPreferredSize(driverButtonSize);
 		addCarriageLayout.putConstraint(SpringLayout.NORTH, goodsTypeLabel, 5, SpringLayout.SOUTH, grossWeightFreightLabel);
 		addCarriageLayout.putConstraint(SpringLayout.WEST, goodsTypeLabel, 10, SpringLayout.WEST, addCarriage);
@@ -319,7 +341,48 @@ public class testGUI extends JFrame implements ActionListener {
 		addFreightButton.setEnabled(true);
 		addCarriage.add(addFreightButton);
 		
+		SetFreightVisible(false);
 		
+		/****************************************************************************************************************************************************************/
+		/* PASSENGERCAR *******************************************/
+		
+		grossWeightPassengerLabel = new JLabel("Gross Weight (t)");
+		grossWeightPassengerLabel.setPreferredSize(driverButtonSize);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightPassengerLabel, 20, SpringLayout.SOUTH, radioBox);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, grossWeightPassengerLabel, 10, SpringLayout.WEST, addCarriage);
+		addCarriage.add(grossWeightPassengerLabel);
+		
+		grossWeightPassengerInput = new JTextField(10);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightPassengerInput, 0, SpringLayout.NORTH, grossWeightPassengerLabel);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, grossWeightPassengerInput, 0, SpringLayout.EAST, grossWeightPassengerLabel);
+		addCarriageLayout.putConstraint(SpringLayout.EAST, grossWeightPassengerInput, -10, SpringLayout.EAST, addCarriage);
+		addCarriageLayout.putConstraint(SpringLayout.SOUTH, grossWeightPassengerInput, 0, SpringLayout.SOUTH, grossWeightPassengerLabel);
+		addCarriage.add(grossWeightPassengerInput);
+		
+		numberOfSeatsLabel = new JLabel("Number of Seats");
+		numberOfSeatsLabel.setPreferredSize(driverButtonSize);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, numberOfSeatsLabel, 5, SpringLayout.SOUTH, grossWeightPassengerLabel);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, numberOfSeatsLabel, 10, SpringLayout.WEST, addCarriage);
+		addCarriage.add(numberOfSeatsLabel);
+		
+		numberOfSeatsInput = new JTextField(10);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, numberOfSeatsInput, 5, SpringLayout.SOUTH, grossWeightPassengerInput);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, numberOfSeatsInput, 0, SpringLayout.EAST, numberOfSeatsLabel);
+		addCarriageLayout.putConstraint(SpringLayout.EAST, numberOfSeatsInput, -10, SpringLayout.EAST, addCarriage);
+		addCarriageLayout.putConstraint(SpringLayout.SOUTH, numberOfSeatsInput, 0, SpringLayout.SOUTH, numberOfSeatsLabel);
+		addCarriage.add(numberOfSeatsInput);
+		
+		addPassengerButton = new JButton ("Add Passenger Car");
+		addPassengerButton.setPreferredSize(driverButtonSize);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, addPassengerButton, 10, SpringLayout.SOUTH, numberOfSeatsInput);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, addPassengerButton, 5, SpringLayout.WEST, addCarriage);
+		addPassengerButton.addActionListener(this);
+		addPassengerButton.setEnabled(true);
+		addCarriage.add(addPassengerButton);
+		
+		SetPassengerVisible(false);
+		
+		/****************************************************************************************************************************************************************/
 		
 		/* - Conductor (Part of user) --------------------------------------------------------------------------------------------------------------------------------- */
 		
@@ -470,7 +533,7 @@ public class testGUI extends JFrame implements ActionListener {
 			String classification = powerClass + engineType;
 			try {
 				Locomotive loco = new Locomotive(grossWeight, classification);
-				departingTrain.addCarriage(new Locomotive(grossWeight, classification));
+				departingTrain.addCarriage(loco);
 				JLabel locomotiveLabel = new JLabel(loco.toString());
 				trainInfo.add(locomotiveLabel);
 				this.pack();
@@ -479,7 +542,76 @@ public class testGUI extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, e1);
 			}
 			break;
+		case "Freight Car":
+			passengerCarSelect.setSelected(false);
+			SetFreightVisible(true);
+			SetPassengerVisible(false);
+			break;
+		case "Passenger Car":
+			freightCarSelect.setSelected(false);
+			SetFreightVisible(false);
+			SetPassengerVisible(true);
+			break;
+		case "Add Passenger Car":
+			Integer grossWeightPassenger = Integer.parseInt(grossWeightPassengerInput.getText());
+			Integer numberOfSeats = Integer.parseInt(numberOfSeatsInput.getText());
+			try {
+				PassengerCar passengerCar = new PassengerCar(grossWeightPassenger, numberOfSeats);
+				departingTrain.addCarriage(passengerCar);
+				JLabel passengerCarLabel = new JLabel(passengerCar.toString());
+				trainInfo.add(passengerCarLabel);
+				this.pack();
+				trainInfo.repaint();
+			} catch (TrainException e1) {
+				JOptionPane.showMessageDialog(null, e1);
+			}
+			break;
+		case "Add Freight Car":
+			Integer grossWeightFreight = Integer.parseInt(grossWeightFreightInput.getText());
+			String goodsType = goodsTypeInput.getSelectedItem().toString().substring(0,1);
+			
+			if (goodsType != "G") {
+				JOptionPane.showMessageDialog(null, "Not Matching '" + goodsType +"' and 'G'");				
+			}
+			
+			try {
+				FreightCar freightCar = new FreightCar(grossWeightFreight, goodsType);
+				departingTrain.addCarriage(freightCar);
+				JLabel freightCarLabel = new JLabel(freightCar.toString());
+				trainInfo.add(freightCarLabel);
+				this.pack();
+				trainInfo.repaint();
+			} catch (TrainException e1) {
+				JOptionPane.showMessageDialog(null, e1);
+			}
+			break;
 		}
 		
+	}
+	
+	/**
+	 * Sets visibility for the fields required to add a FreightCar 
+	 * @author JoshuaWright(n6366066)
+	 * @param visible (boolean) are these items visible?
+	 */
+	private void SetFreightVisible(boolean visible){
+		addFreightButton.setVisible(visible);
+		goodsTypeInput.setVisible(visible);
+		goodsTypeLabel.setVisible(visible);
+		grossWeightFreightInput.setVisible(visible);
+		grossWeightFreightLabel.setVisible(visible);
+	}
+	
+	/**
+	 * Sets visibility for the fields required to add a PassengerCar 
+	 * @author JoshuaWright(n6366066)
+	 * @param visible (boolean) are these items visible?
+	 */
+	private void SetPassengerVisible(boolean visible){
+		addPassengerButton.setVisible(visible);
+		numberOfSeatsInput.setVisible(visible);
+		numberOfSeatsLabel.setVisible(visible);
+		grossWeightPassengerInput.setVisible(visible);
+		grossWeightPassengerLabel.setVisible(visible);
 	}
 }
