@@ -7,9 +7,11 @@ package asgn2GUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventListener;
+
 import javax.swing.*;
 
-public class testGUI extends JFrame {
+public class testGUI extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -65,7 +67,7 @@ public class testGUI extends JFrame {
 		
 		/* - trainInfo (Part of train) -------------------------------------------------------------------------------------------------------------------------------- */
 		
-		JPanel trainInfo = new JPanel();
+		final JPanel trainInfo = new JPanel();
 		trainInfo.setBackground(Color.cyan);
 		trainInfo.setLayout(trainInfoLayout);
 		trainLayout.putConstraint(SpringLayout.NORTH, trainInfo, 20, SpringLayout.SOUTH, trainTitle);
@@ -100,6 +102,7 @@ public class testGUI extends JFrame {
 		driverLayout.putConstraint(SpringLayout.NORTH, newTrainButton, 20, SpringLayout.SOUTH, driverTitle);
 		driverLayout.putConstraint(SpringLayout.WEST, newTrainButton, 10, SpringLayout.WEST, driver);
 		driver.add(newTrainButton);
+		newTrainButton.addActionListener(this);
 		
 		
 		JButton resetTrainButton = new JButton("Cancel Train");
@@ -149,25 +152,12 @@ public class testGUI extends JFrame {
 		final JPanel addCarriage = new JPanel();
 		addCarriage.setLayout(addCarriageLayout);
 		addCarriage.setBackground(Color.magenta);
-		shuntTrain.setVisible(false);
+		addCarriage.setVisible(false);
 		driverLayout.putConstraint(SpringLayout.NORTH, addCarriage, 20, SpringLayout.SOUTH, driverTitle);
 		driverLayout.putConstraint(SpringLayout.WEST, addCarriage, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
 		driverLayout.putConstraint(SpringLayout.EAST, addCarriage, DEFAULT_PADDING_NEG, SpringLayout.EAST, driver);
 		driverLayout.putConstraint(SpringLayout.SOUTH, addCarriage, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
-		driver.add(addCarriage);
-		
-		addCarriageButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				addCarriage.setVisible(true);
-			}
-		});
-		
-		shuntTrainButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				shuntTrain.setVisible(true);
-			}
-		});
-		
+		driver.add(addCarriage);		
 		
 		/* - Conductor (Part of user) --------------------------------------------------------------------------------------------------------------------------------- */
 		
@@ -218,6 +208,12 @@ public class testGUI extends JFrame {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
