@@ -7,9 +7,12 @@ package asgn2GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.EventListener;
 
 import javax.swing.*;
+
+import asgn2Exceptions.TrainException;
+import asgn2RollingStock.*;
+import asgn2Train.DepartingTrain;
 
 public class testGUI extends JFrame implements ActionListener {
 	/**
@@ -19,14 +22,44 @@ public class testGUI extends JFrame implements ActionListener {
 	/* Declare Objects Here */
 	final int DEFAULT_PADDING_POS = 10;
 	final int DEFAULT_PADDING_NEG = -10;
-	GridLayout baseLayout = new GridLayout(2,0);
-	SpringLayout trainLayout = new SpringLayout();
-	GridLayout trainInfoLayout = new GridLayout(3,20);
-	SpringLayout driverLayout = new SpringLayout();
-	SpringLayout conductorLayout = new SpringLayout();
+	
 	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	SpringLayout shuntTrainLayout = new SpringLayout();
-	SpringLayout addCarriageLayout = new SpringLayout();
+	
+	private GridLayout baseLayout = new GridLayout(2,0);
+	private SpringLayout trainLayout = new SpringLayout();
+	private GridLayout trainInfoLayout = new GridLayout(1,20);
+	private SpringLayout driverLayout = new SpringLayout();
+	private SpringLayout conductorLayout = new SpringLayout();	
+	private SpringLayout shuntTrainLayout = new SpringLayout();
+	private SpringLayout addCarriageLayout = new SpringLayout();
+	private SpringLayout beginTrainLayout = new SpringLayout();
+	
+	private JPanel trainControl;
+	private JPanel train;
+	private JPanel trainInfo;
+	private JPanel users;
+	private JPanel driver;
+	private JPanel shuntTrain;
+	private JPanel addCarriage;
+	private JPanel conductor;
+	private JPanel beginTrain;
+	private DepartingTrain departingTrain;
+	private JButton newTrainButton;
+	private JButton resetTrainButton;
+	private JButton shuntTrainButton;
+	private JButton joinTrainButton;
+	private JButton addCarriageButton;
+	private JButton removeCarriageButton;
+	private JButton boardPassengersButton;
+	private JButton alightPassengersButton;
+	private JButton addLocomotiveButton;
+	private JTextField grossWeightInput;
+	private JComboBox<Integer> powerClassInput;
+	private JComboBox<String> engineTypeInput;
+	private JTextField grossWeightPassInput;
+	private JComboBox<String> goodsTypeInput;
+	private JButton addFreightButton;
+	private JTextField grossWeightFreightInput;
 	
 	public testGUI(String name) {
 		super(name);
@@ -47,14 +80,14 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		/* - Main Panel ----------------------------------------------------------------------------------------------------------------------------------------------- */
 		
-		final JPanel trainControl = new JPanel();
+		trainControl = new JPanel();
 		trainControl.setLayout(baseLayout);
 		trainControl.setSize(screenSize);
-		this.add(trainControl);
+		getContentPane().add(trainControl);
 		
 		/* - train (Part of trainControl) ----------------------------------------------------------------------------------------------------------------------------- */
 		
-		JPanel train = new JPanel();
+		train = new JPanel();
 		train.setBackground(Color.RED);
 		train.setLayout(trainLayout);
 		trainControl.add(train);
@@ -67,7 +100,7 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		/* - trainInfo (Part of train) -------------------------------------------------------------------------------------------------------------------------------- */
 		
-		final JPanel trainInfo = new JPanel();
+		trainInfo = new JPanel();
 		trainInfo.setBackground(Color.cyan);
 		trainInfo.setLayout(trainInfoLayout);
 		trainLayout.putConstraint(SpringLayout.NORTH, trainInfo, 20, SpringLayout.SOUTH, trainTitle);
@@ -78,13 +111,13 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		/* - Users (Part of trainControl) ----------------------------------------------------------------------------------------------------------------------------- */
 		
-		JPanel users = new JPanel();
+		users = new JPanel();
 		users.setLayout(new GridLayout(0,2));
 		trainControl.add(users);
 		
 		/* - Driver (Part of user) ------------------------------------------------------------------------------------------------------------------------------------ */
 		
-		JPanel driver = new JPanel();
+		driver = new JPanel();
 		driver.setBackground(Color.PINK);
 		driver.setLayout(driverLayout);
 		users.add(driver);
@@ -97,54 +130,130 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		Dimension driverButtonSize = new Dimension(200,30);
 		
-		JButton newTrainButton = new JButton("Begin Train");
+		newTrainButton = new JButton("Begin Train");
 		newTrainButton.setPreferredSize(driverButtonSize);
 		driverLayout.putConstraint(SpringLayout.NORTH, newTrainButton, 20, SpringLayout.SOUTH, driverTitle);
 		driverLayout.putConstraint(SpringLayout.WEST, newTrainButton, 10, SpringLayout.WEST, driver);
-		driver.add(newTrainButton);
 		newTrainButton.addActionListener(this);
-		
-		
-		JButton resetTrainButton = new JButton("Cancel Train");
+		newTrainButton.setEnabled(true);
+		driver.add(newTrainButton);
+				
+		resetTrainButton = new JButton("Cancel Train");
 		resetTrainButton.setPreferredSize(driverButtonSize);
 		driverLayout.putConstraint(SpringLayout.NORTH, resetTrainButton, 0, SpringLayout.SOUTH, newTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, resetTrainButton, 10, SpringLayout.WEST, driver);
-		driver.add(resetTrainButton);
 		resetTrainButton.addActionListener(this);
-
-		
-		JButton shuntTrainButton = new JButton("Shunt Train");
+		resetTrainButton.setEnabled(false);
+		driver.add(resetTrainButton);
+				
+		shuntTrainButton = new JButton("Shunt Train");
 		shuntTrainButton.setPreferredSize(driverButtonSize);
 		driverLayout.putConstraint(SpringLayout.NORTH, shuntTrainButton, 0, SpringLayout.SOUTH, resetTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, shuntTrainButton, 10, SpringLayout.WEST, driver);
-		driver.add(shuntTrainButton);
 		shuntTrainButton.addActionListener(this);
+		shuntTrainButton.setEnabled(false);
+		driver.add(shuntTrainButton);
+		
 
 		
-		JButton joinTrainButton = new JButton ("Connect Shunted Train");
+		joinTrainButton = new JButton ("Connect Shunted Train");
 		joinTrainButton.setPreferredSize(driverButtonSize);
 		driverLayout.putConstraint(SpringLayout.NORTH, joinTrainButton, 0, SpringLayout.SOUTH, shuntTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, joinTrainButton, 10, SpringLayout.WEST, driver);
-		driver.add(joinTrainButton);
 		joinTrainButton.addActionListener(this);
+		joinTrainButton.setEnabled(false);
+		driver.add(joinTrainButton);
+		
 
 		
-		JButton addCarriageButton = new JButton ("Add New Carriage");
+		addCarriageButton = new JButton ("Add New Carriage");
 		addCarriageButton.setPreferredSize(driverButtonSize);
 		driverLayout.putConstraint(SpringLayout.NORTH, addCarriageButton, 0, SpringLayout.SOUTH, joinTrainButton);
 		driverLayout.putConstraint(SpringLayout.WEST, addCarriageButton, 10, SpringLayout.WEST, driver);
-		driver.add(addCarriageButton);
 		addCarriageButton.addActionListener(this);
+		addCarriageButton.setEnabled(false);
+		driver.add(addCarriageButton);
 
 		
-		JButton removeCarriageButton = new JButton ("Remove Selected Carriage");
+		removeCarriageButton = new JButton ("Remove Selected Carriage");
 		removeCarriageButton.setPreferredSize(driverButtonSize);
 		driverLayout.putConstraint(SpringLayout.NORTH, removeCarriageButton, 0, SpringLayout.SOUTH, addCarriageButton);
 		driverLayout.putConstraint(SpringLayout.WEST, removeCarriageButton, 10, SpringLayout.WEST, driver);
-		driver.add(removeCarriageButton);
 		removeCarriageButton.addActionListener(this);
+		removeCarriageButton.setEnabled(false);
+		driver.add(removeCarriageButton);
 		
-		final JPanel shuntTrain = new JPanel();
+		beginTrain = new JPanel();
+		beginTrain.setLayout(beginTrainLayout);
+		beginTrain.setBackground(Color.gray);
+		beginTrain.setVisible(false);
+		driverLayout.putConstraint(SpringLayout.NORTH, beginTrain, 20, SpringLayout.SOUTH, driverTitle);
+		driverLayout.putConstraint(SpringLayout.WEST, beginTrain, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
+		driverLayout.putConstraint(SpringLayout.EAST, beginTrain, DEFAULT_PADDING_NEG, SpringLayout.EAST, driver);
+		driverLayout.putConstraint(SpringLayout.SOUTH, beginTrain, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
+		driver.add(beginTrain);
+		
+		JLabel beginTrainTitle = new JLabel("Create a Locomotve");
+		beginTrainTitle.setFont(new Font("Verdana", Font.BOLD, 14));
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, beginTrainTitle, 14, SpringLayout.NORTH, beginTrain);
+		beginTrainLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, beginTrainTitle, 0, SpringLayout.HORIZONTAL_CENTER, beginTrain);
+		beginTrain.add(beginTrainTitle);
+		
+		JLabel grossWeightLabel = new JLabel("Gross Weight (t)");
+		grossWeightLabel.setPreferredSize(driverButtonSize);
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, grossWeightLabel, 20, SpringLayout.SOUTH, beginTrainTitle);
+		beginTrainLayout.putConstraint(SpringLayout.WEST, grossWeightLabel, 10, SpringLayout.WEST, beginTrain);
+		beginTrain.add(grossWeightLabel);
+		
+		grossWeightInput = new JTextField(10);
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, grossWeightInput, 20, SpringLayout.SOUTH, beginTrainTitle);
+		beginTrainLayout.putConstraint(SpringLayout.WEST, grossWeightInput, 0, SpringLayout.EAST, grossWeightLabel);
+		beginTrainLayout.putConstraint(SpringLayout.EAST, grossWeightInput, -10, SpringLayout.EAST, beginTrain);
+		beginTrainLayout.putConstraint(SpringLayout.SOUTH, grossWeightInput, 0, SpringLayout.SOUTH, grossWeightLabel);
+		beginTrain.add(grossWeightInput);
+		
+		JLabel powerClassLabel = new JLabel("Power Class");
+		powerClassLabel.setPreferredSize(driverButtonSize);
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, powerClassLabel, 5, SpringLayout.SOUTH, grossWeightLabel);
+		beginTrainLayout.putConstraint(SpringLayout.WEST, powerClassLabel, 10, SpringLayout.WEST, beginTrain);
+		beginTrain.add(powerClassLabel);
+		
+		Integer[] powerClasses = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		
+		powerClassInput = new JComboBox<Integer>(powerClasses);
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, powerClassInput, 5, SpringLayout.SOUTH, grossWeightInput);
+		beginTrainLayout.putConstraint(SpringLayout.WEST, powerClassInput, 0, SpringLayout.EAST, powerClassLabel);
+		beginTrainLayout.putConstraint(SpringLayout.EAST, powerClassInput, -10, SpringLayout.EAST, beginTrain);
+		beginTrainLayout.putConstraint(SpringLayout.SOUTH, powerClassInput, 0, SpringLayout.SOUTH, powerClassLabel);
+		beginTrain.add(powerClassInput);
+		
+	
+		JLabel engineTypeLabel = new JLabel("Engine Type");
+		engineTypeLabel.setPreferredSize(driverButtonSize);
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, engineTypeLabel, 5, SpringLayout.SOUTH, powerClassLabel);
+		beginTrainLayout.putConstraint(SpringLayout.WEST, engineTypeLabel, 10, SpringLayout.WEST, beginTrain);
+		beginTrain.add(engineTypeLabel);
+		
+		String[] engineTypes = { "Steam", "Diesel", "Electric" };
+		
+		engineTypeInput = new JComboBox<String>(engineTypes);
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, engineTypeInput, 5, SpringLayout.SOUTH, powerClassInput);
+		beginTrainLayout.putConstraint(SpringLayout.WEST, engineTypeInput, 0, SpringLayout.EAST, engineTypeLabel);
+		beginTrainLayout.putConstraint(SpringLayout.EAST, engineTypeInput, -10, SpringLayout.EAST, beginTrain);
+		beginTrainLayout.putConstraint(SpringLayout.SOUTH, engineTypeInput, 0, SpringLayout.SOUTH, engineTypeLabel);
+		beginTrain.add(engineTypeInput);
+		
+		addLocomotiveButton = new JButton ("Add Locomotive");
+		addLocomotiveButton.setPreferredSize(driverButtonSize);
+		beginTrainLayout.putConstraint(SpringLayout.NORTH, addLocomotiveButton, 10, SpringLayout.SOUTH, engineTypeInput);
+		beginTrainLayout.putConstraint(SpringLayout.WEST, addLocomotiveButton, 5, SpringLayout.WEST, beginTrain);
+		addLocomotiveButton.addActionListener(this);
+		addLocomotiveButton.setEnabled(true);
+		beginTrain.add(addLocomotiveButton);
+		
+		/* - shuntTrain Panel (Part of Driver) ------------------------------------------------------------------------------------------------------------------------ */
+		
+		shuntTrain = new JPanel();
 		shuntTrain.setLayout(shuntTrainLayout);
 		shuntTrain.setBackground(Color.yellow);
 		shuntTrain.setVisible(false);
@@ -154,7 +263,9 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.SOUTH, shuntTrain, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
 		driver.add(shuntTrain);
 		
-		final JPanel addCarriage = new JPanel();
+		/* - addCarriage Panel (Part of Driver) ----------------------------------------------------------------------------------------------------------------------- */
+		
+		addCarriage = new JPanel();
 		addCarriage.setLayout(addCarriageLayout);
 		addCarriage.setBackground(Color.magenta);
 		addCarriage.setVisible(false);
@@ -162,11 +273,57 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.WEST, addCarriage, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
 		driverLayout.putConstraint(SpringLayout.EAST, addCarriage, DEFAULT_PADDING_NEG, SpringLayout.EAST, driver);
 		driverLayout.putConstraint(SpringLayout.SOUTH, addCarriage, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
-		driver.add(addCarriage);		
+		driver.add(addCarriage);
+		
+		/* FREIGHTCAR *******************************************/
+		
+		JLabel addCarriageTitle = new JLabel("Add a Carriage");
+		addCarriageTitle.setFont(new Font("Verdana", Font.BOLD, 14));
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, addCarriageTitle, 14, SpringLayout.NORTH, addCarriage);
+		addCarriageLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, addCarriageTitle, 0, SpringLayout.HORIZONTAL_CENTER, addCarriage);
+		addCarriage.add(addCarriageTitle);
+		
+		JLabel grossWeightFreightLabel = new JLabel("Gross Weight (t)");
+		grossWeightFreightLabel.setPreferredSize(driverButtonSize);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightFreightLabel, 20, SpringLayout.SOUTH, addCarriageTitle);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, grossWeightFreightLabel, 10, SpringLayout.WEST, addCarriage);
+		addCarriage.add(grossWeightFreightLabel);
+		
+		grossWeightFreightInput = new JTextField(10);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, grossWeightFreightInput, 20, SpringLayout.SOUTH, addCarriageTitle);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, grossWeightFreightInput, 0, SpringLayout.EAST, grossWeightFreightLabel);
+		addCarriageLayout.putConstraint(SpringLayout.EAST, grossWeightFreightInput, -10, SpringLayout.EAST, addCarriage);
+		addCarriageLayout.putConstraint(SpringLayout.SOUTH, grossWeightFreightInput, 0, SpringLayout.SOUTH, grossWeightFreightLabel);
+		addCarriage.add(grossWeightFreightInput);
+		
+		JLabel goodsTypeLabel = new JLabel("Goods Type");
+		goodsTypeLabel.setPreferredSize(driverButtonSize);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, goodsTypeLabel, 5, SpringLayout.SOUTH, grossWeightFreightLabel);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, goodsTypeLabel, 10, SpringLayout.WEST, addCarriage);
+		addCarriage.add(goodsTypeLabel);
+		
+		String[] goodsTypes = { "General Goods", "Refrigerated Goods", "Dangerous Materials" };
+		
+		goodsTypeInput = new JComboBox<String>(goodsTypes);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, goodsTypeInput, 5, SpringLayout.SOUTH, grossWeightFreightInput);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, goodsTypeInput, 0, SpringLayout.EAST, goodsTypeLabel);
+		addCarriageLayout.putConstraint(SpringLayout.EAST, goodsTypeInput, -10, SpringLayout.EAST, addCarriage);
+		addCarriageLayout.putConstraint(SpringLayout.SOUTH, goodsTypeInput, 0, SpringLayout.SOUTH, goodsTypeLabel);
+		addCarriage.add(goodsTypeInput);
+		
+		addFreightButton = new JButton ("Add Freight Car");
+		addFreightButton.setPreferredSize(driverButtonSize);
+		addCarriageLayout.putConstraint(SpringLayout.NORTH, addFreightButton, 10, SpringLayout.SOUTH, goodsTypeInput);
+		addCarriageLayout.putConstraint(SpringLayout.WEST, addFreightButton, 5, SpringLayout.WEST, addCarriage);
+		addFreightButton.addActionListener(this);
+		addFreightButton.setEnabled(true);
+		addCarriage.add(addFreightButton);
+		
+		
 		
 		/* - Conductor (Part of user) --------------------------------------------------------------------------------------------------------------------------------- */
 		
-		JPanel conductor = new JPanel();
+		conductor = new JPanel();
 		conductor.setBackground(Color.GREEN);
 		conductor.setLayout(conductorLayout);
 		users.add(conductor);
@@ -179,20 +336,24 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		Dimension conductorButtonSize = new Dimension(200,30);
 		
-		JButton boardPassengersButton = new JButton("Board Passengers");
+		boardPassengersButton = new JButton("Board Passengers");
 		boardPassengersButton.setPreferredSize(conductorButtonSize);
 		conductorLayout.putConstraint(SpringLayout.NORTH, boardPassengersButton, 20, SpringLayout.SOUTH, conductorTitle);
 		conductorLayout.putConstraint(SpringLayout.WEST, boardPassengersButton, 10, SpringLayout.WEST, conductor);
-		conductor.add(boardPassengersButton);
 		boardPassengersButton.addActionListener(this);
+		boardPassengersButton.setEnabled(false);
+		conductor.add(boardPassengersButton);
 		
 		
-		JButton alightPassengersButton = new JButton("Alight Passengers");
+		
+		alightPassengersButton = new JButton("Alight Passengers");
 		alightPassengersButton.setPreferredSize(conductorButtonSize);
 		conductorLayout.putConstraint(SpringLayout.NORTH, alightPassengersButton, 0, SpringLayout.SOUTH, boardPassengersButton);
 		conductorLayout.putConstraint(SpringLayout.WEST, alightPassengersButton, 10, SpringLayout.WEST, conductor);
-		conductor.add(alightPassengersButton);
 		alightPassengersButton.addActionListener(this);
+		alightPassengersButton.setEnabled(false);
+		conductor.add(alightPassengersButton);
+		
 		
 	}
 	
@@ -222,9 +383,103 @@ public class testGUI extends JFrame implements ActionListener {
 		String buttonString = e.getActionCommand();
 		
 		switch(buttonString) {
-
+		case "Begin Train":
+			departingTrain = new DepartingTrain();
+			
+			newTrainButton.setEnabled(false);
+			resetTrainButton.setEnabled(true);
+			shuntTrainButton.setEnabled(true);
+			joinTrainButton.setEnabled(true);
+			addCarriageButton.setEnabled(true);
+			removeCarriageButton.setEnabled(true);
+			boardPassengersButton.setEnabled(true);
+			alightPassengersButton.setEnabled(true);
+			
+			beginTrain.setVisible(true);
+			addCarriage.setVisible(false);
+			shuntTrain.setVisible(false);
+			
+			driver.repaint();
+			
+			break;
+		case "Cancel Train":
+			departingTrain = null;
+			
+			trainInfo.removeAll();
+			trainInfo.repaint();
+			
+			newTrainButton.setEnabled(true);
+			resetTrainButton.setEnabled(false);
+			shuntTrainButton.setEnabled(false);
+			joinTrainButton.setEnabled(false);
+			addCarriageButton.setEnabled(false);
+			removeCarriageButton.setEnabled(false);
+			boardPassengersButton.setEnabled(false);
+			alightPassengersButton.setEnabled(false);
+			
+			beginTrain.setVisible(false);
+			addCarriage.setVisible(false);
+			shuntTrain.setVisible(false);
+			
+			driver.repaint();
+			
+			break;
+		case "Shunt Train":
+			beginTrain.setVisible(false);
+			addCarriage.setVisible(false);
+			shuntTrain.setVisible(true);
+			break;
+		case "Connect Shunted Train":
+			beginTrain.setVisible(false);
+			addCarriage.setVisible(false);
+			shuntTrain.setVisible(false);
+			break;
+		case "Add New Carriage":
+/*			try {
+				Locomotive freight = new Locomotive(90, "4D");
+				departingTrain.addCarriage(freight);
+				JLabel carriage = new JLabel(freight.toString());
+				trainInfo.add(carriage);
+				PassengerCar hello = new PassengerCar(90, 20);
+				departingTrain.addCarriage(hello);
+				carriage = new JLabel(hello.toString());
+				trainInfo.add(carriage);
+			} catch (TrainException trainException) {				
+			}	*/		
+			//this.pack();
+			trainInfo.repaint();
+			beginTrain.setVisible(false);
+			addCarriage.setVisible(true);
+			shuntTrain.setVisible(false);
+			
+			break;
+		case "Remove Selected Carriage":
+			beginTrain.setVisible(false);
+			addCarriage.setVisible(false);
+			shuntTrain.setVisible(false);
+			trainInfo.repaint();
+			break;
+		case "Board Passengers":
+			break;
+		case "Alight Passengers":
+			break;
+		case "Add Locomotive":
+			Integer grossWeight = Integer.parseInt(grossWeightInput.getText());
+			Integer powerClass = powerClassInput.getSelectedIndex() + 1;
+			String engineType = engineTypeInput.getSelectedItem().toString().substring(0, 1);
+			String classification = powerClass + engineType;
+			try {
+				Locomotive loco = new Locomotive(grossWeight, classification);
+				departingTrain.addCarriage(new Locomotive(grossWeight, classification));
+				JLabel locomotiveLabel = new JLabel(loco.toString());
+				trainInfo.add(locomotiveLabel);
+				this.pack();
+				trainInfo.repaint();
+			} catch (TrainException e1) {
+				JOptionPane.showMessageDialog(null, e1);
+			}
+			break;
 		}
 		
 	}
-
 }
