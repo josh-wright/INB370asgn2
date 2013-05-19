@@ -9,23 +9,24 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class TestGUI {
+public class TestGUI extends JFrame {
 	/* Declare Objects Here */
+	final int DEFAULT_PADDING_POS = 10;
+	final int DEFAULT_PADDING_NEG = -10;
 	GridLayout baseLayout = new GridLayout(2,0);
 	SpringLayout trainLayout = new SpringLayout();
 	GridLayout trainInfoLayout = new GridLayout(3,20);
 	SpringLayout driverLayout = new SpringLayout();
 	SpringLayout conductorLayout = new SpringLayout();
-	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	SpringLayout shuntTrainLayout = new SpringLayout();
+	SpringLayout addCarriageLayout = new SpringLayout();
 	
-/*	public TestGUI(String name) {
+	public TestGUI(String name) {
 		super(name);
-		setResizable(false);
-	}*/
+		setResizable(true);
+	}
 	
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public void addComponentsToPanel(final Container pane){
 		/* Form Structure
 		 * -> trainControl (2 rows 1 column)
@@ -63,9 +64,9 @@ public class TestGUI {
 		trainInfo.setBackground(Color.cyan);
 		trainInfo.setLayout(trainInfoLayout);
 		trainLayout.putConstraint(SpringLayout.NORTH, trainInfo, 20, SpringLayout.SOUTH, trainTitle);
-		trainLayout.putConstraint(SpringLayout.EAST, trainInfo, -5, SpringLayout.EAST, train);
-		trainLayout.putConstraint(SpringLayout.SOUTH, trainInfo, -5, SpringLayout.SOUTH, train);
-		trainLayout.putConstraint(SpringLayout.WEST, trainInfo, 5, SpringLayout.WEST, train);
+		trainLayout.putConstraint(SpringLayout.EAST, trainInfo, DEFAULT_PADDING_NEG, SpringLayout.EAST, train);
+		trainLayout.putConstraint(SpringLayout.SOUTH, trainInfo, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, train);
+		trainLayout.putConstraint(SpringLayout.WEST, trainInfo, DEFAULT_PADDING_POS, SpringLayout.WEST, train);
 		train.add(trainInfo);
 		
 		/* - Users (Part of trainControl) ----------------------------------------------------------------------------------------------------------------------------- */
@@ -79,6 +80,7 @@ public class TestGUI {
 		JPanel driver = new JPanel();
 		driver.setBackground(Color.PINK);
 		driver.setLayout(driverLayout);
+		users.add(driver);
 		
 		JLabel driverTitle = new JLabel("Driver Controls");
 		driverTitle.setFont(new Font("Verdana", Font.BOLD, 20));
@@ -128,14 +130,46 @@ public class TestGUI {
 		driverLayout.putConstraint(SpringLayout.NORTH, removeCarriageButton, 0, SpringLayout.SOUTH, addCarriageButton);
 		driverLayout.putConstraint(SpringLayout.WEST, removeCarriageButton, 10, SpringLayout.WEST, driver);
 		driver.add(removeCarriageButton);
-
-		users.add(driver);
+		
+		final JPanel shuntTrain = new JPanel();
+		shuntTrain.setLayout(shuntTrainLayout);
+		shuntTrain.setBackground(Color.yellow);
+		shuntTrain.setVisible(false);
+		driverLayout.putConstraint(SpringLayout.NORTH, shuntTrain, 20, SpringLayout.SOUTH, driverTitle);
+		driverLayout.putConstraint(SpringLayout.WEST, shuntTrain, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
+		driverLayout.putConstraint(SpringLayout.EAST, shuntTrain, DEFAULT_PADDING_NEG, SpringLayout.EAST, driver);
+		driverLayout.putConstraint(SpringLayout.SOUTH, shuntTrain, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
+		driver.add(shuntTrain);
+		
+		final JPanel addCarriage = new JPanel();
+		addCarriage.setLayout(addCarriageLayout);
+		addCarriage.setBackground(Color.magenta);
+		shuntTrain.setVisible(false);
+		driverLayout.putConstraint(SpringLayout.NORTH, addCarriage, 20, SpringLayout.SOUTH, driverTitle);
+		driverLayout.putConstraint(SpringLayout.WEST, addCarriage, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
+		driverLayout.putConstraint(SpringLayout.EAST, addCarriage, DEFAULT_PADDING_NEG, SpringLayout.EAST, driver);
+		driverLayout.putConstraint(SpringLayout.SOUTH, addCarriage, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
+		driver.add(addCarriage);
+		
+		addCarriageButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				addCarriage.setVisible(true);
+			}
+		});
+		
+		shuntTrainButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				shuntTrain.setVisible(true);
+			}
+		});
+		
 		
 		/* - Conductor (Part of user) --------------------------------------------------------------------------------------------------------------------------------- */
 		
 		JPanel conductor = new JPanel();
 		conductor.setBackground(Color.GREEN);
 		conductor.setLayout(conductorLayout);
+		users.add(conductor);
 		
 		JLabel conductorTitle = new JLabel("Conductor Controls");
 		conductorTitle.setFont(new Font("Verdana", Font.BOLD, 20));
@@ -158,7 +192,27 @@ public class TestGUI {
 		conductorLayout.putConstraint(SpringLayout.WEST, alightPassengersButton, 10, SpringLayout.WEST, conductor);
 		conductor.add(alightPassengersButton);
 		
-		users.add(conductor);
 	}
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TestGUI frame = new TestGUI("Train Controller Test");
+					frame.addComponentsToPanel(frame.getContentPane());
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.setPreferredSize(screenSize);
+					frame.pack();
+					frame.setVisible(true);
+					frame.repaint();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 }
