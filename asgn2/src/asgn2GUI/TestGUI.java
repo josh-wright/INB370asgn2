@@ -86,6 +86,49 @@ public class TestGUI {
 		driverLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, driverTitle, 0, SpringLayout.HORIZONTAL_CENTER, driver);
 		driver.add(driverTitle);
 		
+		Dimension driverButtonSize = new Dimension(200,30);
+		
+		JButton newTrainButton = new JButton("Begin Train");
+		newTrainButton.setPreferredSize(driverButtonSize);
+		driverLayout.putConstraint(SpringLayout.NORTH, newTrainButton, 20, SpringLayout.SOUTH, driverTitle);
+		driverLayout.putConstraint(SpringLayout.WEST, newTrainButton, 10, SpringLayout.WEST, driver);
+		driver.add(newTrainButton);
+		
+		
+		JButton resetTrainButton = new JButton("Cancel Train");
+		resetTrainButton.setPreferredSize(driverButtonSize);
+		driverLayout.putConstraint(SpringLayout.NORTH, resetTrainButton, 0, SpringLayout.SOUTH, newTrainButton);
+		driverLayout.putConstraint(SpringLayout.WEST, resetTrainButton, 10, SpringLayout.WEST, driver);
+		driver.add(resetTrainButton);
+
+		
+		JButton shuntTrainButton = new JButton("Shunt Train");
+		shuntTrainButton.setPreferredSize(driverButtonSize);
+		driverLayout.putConstraint(SpringLayout.NORTH, shuntTrainButton, 0, SpringLayout.SOUTH, resetTrainButton);
+		driverLayout.putConstraint(SpringLayout.WEST, shuntTrainButton, 10, SpringLayout.WEST, driver);
+		driver.add(shuntTrainButton);
+
+		
+		JButton joinTrainButton = new JButton ("Connect Shunted Train");
+		joinTrainButton.setPreferredSize(driverButtonSize);
+		driverLayout.putConstraint(SpringLayout.NORTH, joinTrainButton, 0, SpringLayout.SOUTH, shuntTrainButton);
+		driverLayout.putConstraint(SpringLayout.WEST, joinTrainButton, 10, SpringLayout.WEST, driver);
+		driver.add(joinTrainButton);
+
+		
+		JButton addCarriageButton = new JButton ("Add New Carriage");
+		addCarriageButton.setPreferredSize(driverButtonSize);
+		driverLayout.putConstraint(SpringLayout.NORTH, addCarriageButton, 0, SpringLayout.SOUTH, joinTrainButton);
+		driverLayout.putConstraint(SpringLayout.WEST, addCarriageButton, 10, SpringLayout.WEST, driver);
+		driver.add(addCarriageButton);
+
+		
+		JButton removeCarriageButton = new JButton ("Remove Selected Carriage");
+		removeCarriageButton.setPreferredSize(driverButtonSize);
+		driverLayout.putConstraint(SpringLayout.NORTH, removeCarriageButton, 0, SpringLayout.SOUTH, addCarriageButton);
+		driverLayout.putConstraint(SpringLayout.WEST, removeCarriageButton, 10, SpringLayout.WEST, driver);
+		driver.add(removeCarriageButton);
+
 		users.add(driver);
 		
 		/* - Conductor (Part of user) --------------------------------------------------------------------------------------------------------------------------------- */
@@ -99,6 +142,21 @@ public class TestGUI {
 		conductorLayout.putConstraint(SpringLayout.NORTH, conductorTitle, 20, SpringLayout.NORTH, conductor);
 		conductorLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, conductorTitle, 0, SpringLayout.HORIZONTAL_CENTER, conductor);
 		conductor.add(conductorTitle);
+		
+		Dimension conductorButtonSize = new Dimension(200,30);
+		
+		JButton boardPassengersButton = new JButton("Board Passengers");
+		boardPassengersButton.setPreferredSize(conductorButtonSize);
+		conductorLayout.putConstraint(SpringLayout.NORTH, boardPassengersButton, 20, SpringLayout.SOUTH, conductorTitle);
+		conductorLayout.putConstraint(SpringLayout.WEST, boardPassengersButton, 10, SpringLayout.WEST, conductor);
+		conductor.add(boardPassengersButton);
+		
+		
+		JButton alightPassengersButton = new JButton("Alight Passengers");
+		alightPassengersButton.setPreferredSize(conductorButtonSize);
+		conductorLayout.putConstraint(SpringLayout.NORTH, alightPassengersButton, 0, SpringLayout.SOUTH, boardPassengersButton);
+		conductorLayout.putConstraint(SpringLayout.WEST, alightPassengersButton, 10, SpringLayout.WEST, conductor);
+		conductor.add(alightPassengersButton);
 		
 		users.add(conductor);
 	}
