@@ -27,7 +27,7 @@ public class FreightCar extends RollingStock {
 	 */
 	public FreightCar(Integer grossWeight, String goodsType) throws TrainException {
 		super(grossWeight);
-		if (goodsType != General && goodsType != Refrigerated && goodsType != Dangerous) {
+		if (!goodsType.equals(General) && !goodsType.equals(Refrigerated) && !goodsType.equals(Dangerous)) {
 			throw new TrainException ("Goods type must be one of the following: " +
 					General + ", " + Refrigerated + ",  or " + Dangerous);
 		}
