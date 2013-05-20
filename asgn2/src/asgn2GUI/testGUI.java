@@ -72,6 +72,9 @@ public class testGUI extends JFrame implements ActionListener {
 	private JButton addPassengerButton;
 	private JTextField numberOfSeatsInput;
 	private JLabel numberOfSeatsLabel;
+	private JLabel shuntIndexSelectLabel;
+	private JComboBox<Integer> shuntIndexInput;
+	private JButton shuntButton;
 	
 	public testGUI(String name) {
 		super(name);
@@ -113,7 +116,6 @@ public class testGUI extends JFrame implements ActionListener {
 		/* - trainInfo (Part of train) -------------------------------------------------------------------------------------------------------------------------------- */
 		
 		trainInfo = new JPanel();
-		trainInfo.setBackground(Color.cyan);
 		trainInfo.setLayout(trainInfoLayout);
 		trainLayout.putConstraint(SpringLayout.NORTH, trainInfo, 20, SpringLayout.SOUTH, trainTitle);
 		trainLayout.putConstraint(SpringLayout.EAST, trainInfo, DEFAULT_PADDING_NEG, SpringLayout.EAST, train);
@@ -187,7 +189,7 @@ public class testGUI extends JFrame implements ActionListener {
 		driver.add(addCarriageButton);
 
 		
-		removeCarriageButton = new JButton ("Remove Selected Carriage");
+		removeCarriageButton = new JButton ("Remove Last Carriage");
 		removeCarriageButton.setPreferredSize(driverButtonSize);
 		driverLayout.putConstraint(SpringLayout.NORTH, removeCarriageButton, 0, SpringLayout.SOUTH, addCarriageButton);
 		driverLayout.putConstraint(SpringLayout.WEST, removeCarriageButton, 10, SpringLayout.WEST, driver);
@@ -274,6 +276,33 @@ public class testGUI extends JFrame implements ActionListener {
 		driverLayout.putConstraint(SpringLayout.EAST, shuntTrain, DEFAULT_PADDING_NEG, SpringLayout.EAST, driver);
 		driverLayout.putConstraint(SpringLayout.SOUTH, shuntTrain, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, driver);
 		driver.add(shuntTrain);
+		
+		JLabel shuntTrainTitle = new JLabel("Shunt Train");
+		shuntTrainTitle.setFont(new Font("Verdana", Font.BOLD, 14));
+		shuntTrainLayout.putConstraint(SpringLayout.NORTH, shuntTrainTitle, 14, SpringLayout.NORTH, shuntTrain);
+		shuntTrainLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, shuntTrainTitle, 0, SpringLayout.HORIZONTAL_CENTER, shuntTrain);
+		shuntTrain.add(shuntTrainTitle);
+		
+		shuntIndexSelectLabel = new JLabel("Shunt after carriage: ");
+		shuntIndexSelectLabel.setPreferredSize(driverButtonSize);
+		shuntTrainLayout.putConstraint(SpringLayout.NORTH, shuntIndexSelectLabel, 20, SpringLayout.SOUTH, shuntTrainTitle);
+		shuntTrainLayout.putConstraint(SpringLayout.WEST, shuntIndexSelectLabel, 10, SpringLayout.WEST, shuntTrain);
+		shuntTrain.add(shuntIndexSelectLabel);		
+			
+		shuntIndexInput = new JComboBox<Integer>();
+		shuntTrainLayout.putConstraint(SpringLayout.NORTH, shuntIndexInput, 20, SpringLayout.SOUTH, shuntTrainTitle);
+		shuntTrainLayout.putConstraint(SpringLayout.WEST, shuntIndexInput, 0, SpringLayout.EAST, shuntIndexSelectLabel);
+		shuntTrainLayout.putConstraint(SpringLayout.EAST, shuntIndexInput, -10, SpringLayout.EAST, shuntTrain);
+		shuntTrainLayout.putConstraint(SpringLayout.SOUTH, shuntIndexInput, 0, SpringLayout.SOUTH, shuntIndexSelectLabel);
+		shuntTrain.add(shuntIndexInput);
+		
+		shuntButton = new JButton ("Shunt Train Now");
+		shuntButton.setPreferredSize(driverButtonSize);
+		shuntTrainLayout.putConstraint(SpringLayout.NORTH, shuntButton, 10, SpringLayout.SOUTH, shuntIndexInput);
+		shuntTrainLayout.putConstraint(SpringLayout.WEST, shuntButton, 5, SpringLayout.WEST, shuntTrain);
+		shuntButton.addActionListener(this);
+		shuntButton.setEnabled(true);
+		shuntTrain.add(shuntButton);
 		
 		/* - addCarriage Panel (Part of Driver) ----------------------------------------------------------------------------------------------------------------------- */
 		
@@ -444,6 +473,11 @@ public class testGUI extends JFrame implements ActionListener {
 		});
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * @author Robert Dempsey N5400872
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String buttonString = e.getActionCommand();
@@ -490,11 +524,30 @@ public class testGUI extends JFrame implements ActionListener {
 			shuntTrain.setVisible(false);
 			
 			break;
-		case "Remove Selected Carriage":
-			beginTrain.setVisible(false);
-			addCarriage.setVisible(false);
-			shuntTrain.setVisible(false);
+		case "Remove Last Carriage":
+			//beginTrain.setVisible(false);
+			//addCarriage.setVisible(false); Should be able to remove a carriage and stay on our current panel
+			//shuntTrain.setVisible(false);
+			Component[] components = trainInfo.getComponents();
+			try {
+				trainInfo.remove(components.length - 1);
+				departingTrain.removeCarriage();
+			} catch (TrainException trainException) {
+				JOptionPane.showMessageDialog(null, trainException);
+			} catch (IndexOutOfBoundsException trainException) {
+				JOptionPane.showMessageDialog(null, "There are no carriages to remove.");
+			}
 			trainInfo.repaint();
+			components = trainInfo.getComponents();
+			
+			/*If all carriages have been removed, set add locomotive pane visible, others to not visible 
+			 * and disable all buttons but cancel train */
+			if (components.length == 0) {
+				beginTrain.setVisible(true);
+				addCarriage.setVisible(false);
+				shuntTrain.setVisible(false);
+				ButtonDisableNoCarriages(false); 				
+			}
 			break;
 		case "Board Passengers":
 			break;
@@ -522,15 +575,22 @@ public class testGUI extends JFrame implements ActionListener {
 				Locomotive loco = new Locomotive(grossWeight, classification);
 				departingTrain.addCarriage(loco);
 				JPanel locomotive = new JPanel();
+				locomotive.setLayout(new BoxLayout(locomotive, BoxLayout.Y_AXIS));
+				locomotive.setPreferredSize(new Dimension(128, 140));
 				try {                
 			          locoImg = ImageIO.read(locoImgFile);
 			       } catch (IOException ex) {
-			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + locoImgFile);
+			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + locoImgFile); 
 			       }
 				JLabel locomotiveLabel = new JLabel(loco.toString());
+				locomotiveLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				JLabel locoImgLabel = new JLabel(new ImageIcon( locoImg ));
+				locoImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				locomotive.add(locoImgLabel);
-				locomotive.add(locomotiveLabel);
+				locomotive.add(locomotiveLabel); // any way we can add the label above the picture?
+				JLabel locomotiveIndexLabel = new JLabel("Carriage: " + String.valueOf(trainInfo.getComponentCount() + 1));
+				locomotiveIndexLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				locomotive.add(locomotiveIndexLabel);
 				trainInfo.add(locomotive);
 				this.pack();
 				DriverButtonEnable(true);
@@ -557,15 +617,26 @@ public class testGUI extends JFrame implements ActionListener {
 				departingTrain.addCarriage(passengerCar);
 				File passengerImgFile = new File("rsc/passenger.jpg");
 				BufferedImage passengerImg = null;
+				JPanel passengerCarriage = new JPanel();
+				passengerCarriage.setLayout(new BoxLayout(passengerCarriage, BoxLayout.Y_AXIS));
+				passengerCarriage.setPreferredSize(new Dimension(128, 140));
 				try {                
 			          passengerImg = ImageIO.read(passengerImgFile);
 			       } catch (IOException ex) {
 			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + passengerImgFile);
 			       }
 				JLabel passengerImgLabel = new JLabel(new ImageIcon( passengerImg ));
+				passengerImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				JLabel passengerCarLabel = new JLabel(passengerCar.toString());
-				trainInfo.add(passengerImgLabel);
-				trainInfo.add(passengerCarLabel);
+				passengerCarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				passengerCarriage.add(passengerImgLabel);
+				passengerCarriage.add(passengerCarLabel);
+				JLabel passengerIndexLabel = new JLabel("Carriage: " + String.valueOf(trainInfo.getComponentCount() + 1));
+				passengerIndexLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				passengerCarriage.add(passengerIndexLabel);
+				trainInfo.add(passengerCarriage);
+				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
+				ButtonDisableAddCarriage(true);
 				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
@@ -581,21 +652,38 @@ public class testGUI extends JFrame implements ActionListener {
 				departingTrain.addCarriage(freightCar);
 				File freightImgFile = new File("rsc/freight.jpg");
 				BufferedImage freightImg = null;
+				JPanel freightCarriage = new JPanel();
+				freightCarriage.setLayout(new BoxLayout(freightCarriage, BoxLayout.Y_AXIS));
+				freightCarriage.setPreferredSize(new Dimension(128, 140));
 				try {                
 			          freightImg = ImageIO.read(freightImgFile);
 			       } catch (IOException ex) {
 			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + freightImgFile);
 			       }
 				JLabel freightImgLabel = new JLabel(new ImageIcon( freightImg ));
+				freightImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				JLabel freightCarLabel = new JLabel(freightCar.toString());
-				trainInfo.add(freightImgLabel);
-				trainInfo.add(freightCarLabel);
+				freightCarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				freightCarriage.add(freightImgLabel);
+				freightCarriage.add(freightCarLabel);
+				JLabel freightIndexLabel = new JLabel("Carriage: " + String.valueOf(trainInfo.getComponentCount() + 1));
+				freightIndexLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				freightCarriage.add(freightIndexLabel);
+				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
+				ButtonDisableAddCarriage(true);
+				trainInfo.add(freightCarriage);
 				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
 				JOptionPane.showMessageDialog(null, e1);
 			}
 			break;
+		case "Shunt Train Now":	
+			//Integer amountToRemove = trainInfo.getComponentCount() - shuntIndexInput.getSelectedIndex();
+			for (int i = trainInfo.getComponentCount() - 1; i >= shuntIndexInput.getSelectedIndex() + 2; i--) {
+				trainInfo.remove(trainInfo.getComponent(i));
+				trainInfo.repaint();
+			}
 		}
 		
 	}
@@ -631,11 +719,34 @@ public class testGUI extends JFrame implements ActionListener {
 		else { newTrainButton.setEnabled(true); }
 		
 		resetTrainButton.setEnabled(enabled);
+		//shuntTrainButton.setEnabled(enabled); -- Can't shunt with just a locomotive - RD
+		//joinTrainButton.setEnabled(enabled);
+		addCarriageButton.setEnabled(enabled);
+		removeCarriageButton.setEnabled(enabled);
+		//boardPassengersButton.setEnabled(enabled); -- Can't board passengers yet
+		//alightPassengersButton.setEnabled(enabled);
+	}
+	
+	/**
+	 * @author Robert Dempsey (N5400872)
+	 * Sets visibility and enabled state of panes and buttons if all
+	 * carriages have been removed but train has not been cancelled
+	 * @param enabled - represents desired state of button
+	 */
+	private void ButtonDisableNoCarriages(boolean enabled) {
 		shuntTrainButton.setEnabled(enabled);
 		joinTrainButton.setEnabled(enabled);
 		addCarriageButton.setEnabled(enabled);
 		removeCarriageButton.setEnabled(enabled);
 		boardPassengersButton.setEnabled(enabled);
 		alightPassengersButton.setEnabled(enabled);
+	}
+	
+	private void ButtonDisableAddCarriage(boolean enabled) {
+		shuntTrainButton.setEnabled(enabled);
+		joinTrainButton.setEnabled(enabled);
+		addCarriageButton.setEnabled(enabled);
+		removeCarriageButton.setEnabled(enabled);
+		boardPassengersButton.setEnabled(enabled);
 	}
 }
