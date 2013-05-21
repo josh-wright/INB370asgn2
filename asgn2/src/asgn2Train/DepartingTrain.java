@@ -135,7 +135,6 @@ public class DepartingTrain {
 			RollingStock carriage = nextCarriage();
 			if (carriage.getClass() == PassengerCar.class) {
 				if (((PassengerCar)carriage).numberOnBoard() >= alightPassengers){
-					Integer alight = ((PassengerCar)carriage).numberOnBoard() - alightPassengers;
 					if (((PassengerCar)carriage).numberOnBoard() >= alightPassengers){
 						((PassengerCar)carriage).alight(alightPassengers);
 					} else {
