@@ -706,6 +706,8 @@ public class testGUI extends JFrame implements ActionListener {
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
+			
+			// update labels after passengers are added
 			for (int i = 0; i < carriagePanelCount; i++) {
 				currentCarriage = departingTrain.nextCarriage();
 				if (currentCarriage instanceof PassengerCar) {
@@ -717,6 +719,8 @@ public class testGUI extends JFrame implements ActionListener {
 				}
 			}
 			trainInfo.removeAll();
+			
+			// NEW PANELS (CARRIAGES WITH UPDATED TO STRINGS) NOT BEING ADDED **** (RD)
 			for (int i = 0; i < newPanels.size(); i++) {
 				trainInfo.add(newPanels.get(i));
 			}
