@@ -30,78 +30,78 @@ public class testGUI extends JFrame implements ActionListener {
 	
 	private SpringLayout trainLayout = new SpringLayout();
 	private SpringLayout driverLayout = new SpringLayout();
-	private SpringLayout conductorLayout = new SpringLayout();	
+	private SpringLayout conductorLayout = new SpringLayout();
 	private SpringLayout shuntTrainLayout = new SpringLayout();
-	private SpringLayout addCarriageLayout = new SpringLayout();
 	private SpringLayout beginTrainLayout = new SpringLayout();
+	private SpringLayout addCarriageLayout = new SpringLayout();
 	private SpringLayout boardPassengersLayout = new SpringLayout();
 	private SpringLayout alightPassengersLayout = new SpringLayout();
 	
-	private JPanel trainControl;
 	private JPanel train;
-	private JPanel trainInfo;
 	private JPanel users;
 	private JPanel driver;
-	private JPanel shuntTrain;
-	private JPanel addCarriage;
-	private JPanel conductor;
-	private JPanel beginTrain;
 	private JPanel shuntInfo;
+	private JPanel trainInfo;
+	private JPanel conductor;
+	private JPanel shuntTrain;
+	private JPanel beginTrain;
+	private JPanel addCarriage;
+	private JPanel trainControl;
 	private JPanel boardPassengers;
 	private JPanel alightPassengers;
 	
+	private JButton shuntButton;
 	private JButton newTrainButton;
+	private JButton boardNowButton;
+	private JButton alightNowButton;
+	private JButton joinTrainButton;
+	private JButton addFreightButton;
 	private JButton resetTrainButton;
 	private JButton shuntTrainButton;
-	private JButton joinTrainButton;
 	private JButton addCarriageButton;
+	private JButton addPassengerButton;
+	private JButton addLocomotiveButton;
 	private JButton removeCarriageButton;
 	private JButton boardPassengersButton;
 	private JButton alightPassengersButton;
-	private JButton addLocomotiveButton;
-	private JButton addFreightButton;
-	private JButton addPassengerButton;
-	private JButton shuntButton;
-	private JButton boardNowButton;
-	private JButton alightNowButton;
 	
 	private JTextField grossWeightInput;
-	private JTextField grossWeightFreightInput;
-	private JTextField grossWeightPassengerInput;
 	private JTextField numberOfSeatsInput;
 	private JTextField boardPassengersInput;
 	private JTextField alightPassengersInput;
+	private JTextField grossWeightFreightInput;
+	private JTextField grossWeightPassengerInput;
 	
-	private JComboBox<Integer> powerClassInput;
-	private JComboBox<String> engineTypeInput;
 	private JComboBox<String> goodsTypeInput;
+	private JComboBox<String> engineTypeInput;
+	private JComboBox<Integer> powerClassInput;
 	private JComboBox<Integer> shuntIndexInput;
 		
 	private JRadioButton freightCarSelect;
 	private JRadioButton passengerCarSelect;
 	
 	private JLabel goodsTypeLabel;
+	private JLabel trainMoveLabel;
+	private JLabel trainPowerLabel;
+	private JLabel trainWeightLabel;
+	private JLabel trainCapacityLabel;
+	private JLabel numberOfSeatsLabel;
+	private JLabel trainLeftBehindLabel;
+	private JLabel boardPassengersLabel;
+	private JLabel shuntIndexSelectLabel;
+	private JLabel alightPassengersLabel;
 	private JLabel grossWeightFreightLabel;
 	private JLabel grossWeightPassengerLabel;
-	private JLabel numberOfSeatsLabel;
-	private JLabel shuntIndexSelectLabel;
-	private JLabel boardPassengersLabel;
-	private JLabel alightPassengersLabel;
-	private JLabel trainWeightLabel;
-	private JLabel trainPowerLabel;
-	private JLabel trainMoveLabel;
-	private JLabel trainCapacityLabel;
-	private JLabel trainLeftBehindLabel;
 	
 	private ArrayList<RollingStock> spurCarriages;
 	
-	private ArrayList<Component> spurCarriagePanels;
 	private ArrayList<Component> newPanels;
+	private ArrayList<Component> spurCarriagePanels;
 	
 	private Integer shuntNumber;
-	private Integer trainWeight = 0;
 	private Integer trainPower = 0;
 	private Integer leftBehind = 0;
+	private Integer trainWeight = 0;
 	private Integer carriagePanelCount;
 	
 	private String currentCarriageString;
@@ -685,9 +685,6 @@ public class testGUI extends JFrame implements ActionListener {
 			
 			break;
 		case "Remove Last Carriage":
-			//beginTrain.setVisible(false);
-			//addCarriage.setVisible(false); Should be able to remove a carriage and stay on our current panel
-			//shuntTrain.setVisible(false);
 			Component[] components = trainInfo.getComponents();
 			try {
 				trainInfo.remove(components.length - 1);
