@@ -10,9 +10,11 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import asgn2Exceptions.TrainException;
 import asgn2RollingStock.*;
@@ -75,6 +77,11 @@ public class testGUI extends JFrame implements ActionListener {
 	private JLabel shuntIndexSelectLabel;
 	private JComboBox<Integer> shuntIndexInput;
 	private JButton shuntButton;
+	private JPanel shuntInfo;
+	
+	private ArrayList<RollingStock> spurCarriages;
+	private ArrayList<Component> spurCarriagePanels;
+	private int shuntNumber;	
 	
 	public testGUI(String name) {
 		super(name);
@@ -103,7 +110,6 @@ public class testGUI extends JFrame implements ActionListener {
 		/* - train (Part of trainControl) ----------------------------------------------------------------------------------------------------------------------------- */
 		
 		train = new JPanel();
-		train.setBackground(Color.RED);
 		train.setLayout(trainLayout);
 		trainControl.add(train);
 				
@@ -116,12 +122,30 @@ public class testGUI extends JFrame implements ActionListener {
 		/* - trainInfo (Part of train) -------------------------------------------------------------------------------------------------------------------------------- */
 		
 		trainInfo = new JPanel();
+		trainInfo.setBackground(Color.WHITE);
 		trainInfo.setLayout(trainInfoLayout);
+		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+		trainInfo.setBorder(loweredbevel);
 		trainLayout.putConstraint(SpringLayout.NORTH, trainInfo, 20, SpringLayout.SOUTH, trainTitle);
 		trainLayout.putConstraint(SpringLayout.EAST, trainInfo, DEFAULT_PADDING_NEG, SpringLayout.EAST, train);
-		trainLayout.putConstraint(SpringLayout.SOUTH, trainInfo, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, train);
+		trainLayout.putConstraint(SpringLayout.SOUTH, trainInfo, -250, SpringLayout.SOUTH, train);
 		trainLayout.putConstraint(SpringLayout.WEST, trainInfo, DEFAULT_PADDING_POS, SpringLayout.WEST, train);
 		train.add(trainInfo);
+		
+		
+		/* - shuntInfo (Part of train) ----------------------------------------------------------------------------------------------------------------------------- */
+		
+		shuntInfo = new JPanel();
+		shuntInfo.setLayout(trainInfoLayout);
+		shuntInfo.setBackground(Color.YELLOW);
+		shuntInfo.setBorder(loweredbevel);
+		trainLayout.putConstraint(SpringLayout.NORTH, shuntInfo, 10, SpringLayout.SOUTH, trainInfo);
+		trainLayout.putConstraint(SpringLayout.EAST, shuntInfo, DEFAULT_PADDING_NEG, SpringLayout.EAST, train);
+		trainLayout.putConstraint(SpringLayout.SOUTH, shuntInfo, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, train);
+		trainLayout.putConstraint(SpringLayout.WEST, shuntInfo, DEFAULT_PADDING_POS, SpringLayout.WEST, train);	
+		shuntInfo.setVisible(false);
+		train.add(shuntInfo);
+
 		
 		/* - Users (Part of trainControl) ----------------------------------------------------------------------------------------------------------------------------- */
 		
@@ -500,6 +524,9 @@ public class testGUI extends JFrame implements ActionListener {
 			trainInfo.repaint();
 			DriverButtonEnable(false);
 			
+			shuntInfo.removeAll();
+			spurCarriages = null;
+			
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(false);
 			shuntTrain.setVisible(false);
@@ -516,6 +543,22 @@ public class testGUI extends JFrame implements ActionListener {
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(false);
 			shuntTrain.setVisible(false);
+			try {
+				for (int i = 0; i < spurCarriages.size(); i++)  {
+					departingTrain.addCarriage(spurCarriages.get(i));
+					for (int j = spurCarriagePanels.size() - 1; j >= 0; j--) {
+						TrainGraphics currentPanel = (TrainGraphics) spurCarriagePanels.get(j);
+						trainInfo.add(currentPanel);
+						currentPanel.setIndexLabel(trainInfo.getComponentCount());
+						shuntInfo.removeAll();
+					}
+				} 
+					
+			} catch (TrainException trainException) {
+				JOptionPane.showMessageDialog(null, trainException);
+			}
+			shuntInfo.setVisible(false);
+			trainInfo.repaint();
 			break;
 		case "Add New Carriage":
 			trainInfo.repaint();
@@ -557,8 +600,8 @@ public class testGUI extends JFrame implements ActionListener {
 			Integer grossWeight = Integer.parseInt(grossWeightInput.getText());
 			Integer powerClass = powerClassInput.getSelectedIndex() + 1;
 			String engineType = engineTypeInput.getSelectedItem().toString().substring(0, 1);
+			// construct and add locomotive panel
 			File locoImgFile = null;
-			BufferedImage locoImg = null;
 			switch(engineType){
 			case "D":
 				locoImgFile = new File("rsc/diesel.jpg");
@@ -574,24 +617,10 @@ public class testGUI extends JFrame implements ActionListener {
 			try {
 				Locomotive loco = new Locomotive(grossWeight, classification);
 				departingTrain.addCarriage(loco);
-				JPanel locomotive = new JPanel();
-				locomotive.setLayout(new BoxLayout(locomotive, BoxLayout.Y_AXIS));
-				locomotive.setPreferredSize(new Dimension(128, 140));
-				try {                
-			          locoImg = ImageIO.read(locoImgFile);
-			       } catch (IOException ex) {
-			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + locoImgFile); 
-			       }
-				JLabel locomotiveLabel = new JLabel(loco.toString());
-				locomotiveLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				JLabel locoImgLabel = new JLabel(new ImageIcon( locoImg ));
-				locoImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				locomotive.add(locoImgLabel);
-				locomotive.add(locomotiveLabel); // any way we can add the label above the picture?
-				JLabel locomotiveIndexLabel = new JLabel("Carriage: " + String.valueOf(trainInfo.getComponentCount() + 1));
-				locomotiveIndexLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				locomotive.add(locomotiveIndexLabel);
+				TrainGraphics locomotive = new TrainGraphics(locoImgFile, 
+												trainInfo.getComponentCount() + 1, loco.toString());
 				trainInfo.add(locomotive);
+				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
 				this.pack();
 				DriverButtonEnable(true);
 				trainInfo.repaint();
@@ -613,27 +642,12 @@ public class testGUI extends JFrame implements ActionListener {
 			Integer grossWeightPassenger = Integer.parseInt(grossWeightPassengerInput.getText());
 			Integer numberOfSeats = Integer.parseInt(numberOfSeatsInput.getText());
 			try {
+				// construct and add carriage panel
 				PassengerCar passengerCar = new PassengerCar(grossWeightPassenger, numberOfSeats);
 				departingTrain.addCarriage(passengerCar);
 				File passengerImgFile = new File("rsc/passenger.jpg");
-				BufferedImage passengerImg = null;
-				JPanel passengerCarriage = new JPanel();
-				passengerCarriage.setLayout(new BoxLayout(passengerCarriage, BoxLayout.Y_AXIS));
-				passengerCarriage.setPreferredSize(new Dimension(128, 140));
-				try {                
-			          passengerImg = ImageIO.read(passengerImgFile);
-			       } catch (IOException ex) {
-			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + passengerImgFile);
-			       }
-				JLabel passengerImgLabel = new JLabel(new ImageIcon( passengerImg ));
-				passengerImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				JLabel passengerCarLabel = new JLabel(passengerCar.toString());
-				passengerCarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				passengerCarriage.add(passengerImgLabel);
-				passengerCarriage.add(passengerCarLabel);
-				JLabel passengerIndexLabel = new JLabel("Carriage: " + String.valueOf(trainInfo.getComponentCount() + 1));
-				passengerIndexLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				passengerCarriage.add(passengerIndexLabel);
+				TrainGraphics passengerCarriage = new TrainGraphics(passengerImgFile, 
+												trainInfo.getComponentCount() + 1, passengerCar.toString());
 				trainInfo.add(passengerCarriage);
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
 				ButtonDisableAddCarriage(true);
@@ -651,27 +665,11 @@ public class testGUI extends JFrame implements ActionListener {
 				FreightCar freightCar = new FreightCar(grossWeightFreight, goodsType);
 				departingTrain.addCarriage(freightCar);
 				File freightImgFile = new File("rsc/freight.jpg");
-				BufferedImage freightImg = null;
-				JPanel freightCarriage = new JPanel();
-				freightCarriage.setLayout(new BoxLayout(freightCarriage, BoxLayout.Y_AXIS));
-				freightCarriage.setPreferredSize(new Dimension(128, 140));
-				try {                
-			          freightImg = ImageIO.read(freightImgFile);
-			       } catch (IOException ex) {
-			          JOptionPane.showMessageDialog(null,"Image File Not Found: " + freightImgFile);
-			       }
-				JLabel freightImgLabel = new JLabel(new ImageIcon( freightImg ));
-				freightImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				JLabel freightCarLabel = new JLabel(freightCar.toString());
-				freightCarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				freightCarriage.add(freightImgLabel);
-				freightCarriage.add(freightCarLabel);
-				JLabel freightIndexLabel = new JLabel("Carriage: " + String.valueOf(trainInfo.getComponentCount() + 1));
-				freightIndexLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				freightCarriage.add(freightIndexLabel);
-				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
+				TrainGraphics freightCarriage = new TrainGraphics(freightImgFile, 
+						trainInfo.getComponentCount() + 1, freightCar.toString());
 				ButtonDisableAddCarriage(true);
 				trainInfo.add(freightCarriage);
+				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
 				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
@@ -679,11 +677,45 @@ public class testGUI extends JFrame implements ActionListener {
 			}
 			break;
 		case "Shunt Train Now":	
-			//Integer amountToRemove = trainInfo.getComponentCount() - shuntIndexInput.getSelectedIndex();
-			for (int i = trainInfo.getComponentCount() - 1; i >= shuntIndexInput.getSelectedIndex() + 2; i--) {
-				trainInfo.remove(trainInfo.getComponent(i));
-				trainInfo.repaint();
+			shuntInfo.setVisible(true);
+			spurCarriages = new ArrayList<RollingStock>();
+			spurCarriagePanels = new ArrayList<Component>();
+			// Get number of RollingStock carriages to iterate through
+			shuntNumber = shuntIndexInput.getSelectedIndex();
+			int carriagesToRemove = 0;
+			
+			// ACTUAL TRAIN: Remove carriages from train and add to spur track
+			for (int i = 0; i <= shuntNumber; i++) {
+				departingTrain.nextCarriage();
 			}
+			
+			for (int i = shuntNumber + 1; i < trainInfo.getComponentCount(); i++) {
+				spurCarriages.add(departingTrain.nextCarriage());
+				carriagesToRemove++;
+			}
+			
+			for (int i = 0; i < carriagesToRemove; i++) {
+				try {
+					departingTrain.removeCarriage();
+				} catch (TrainException trainException) {
+					JOptionPane.showMessageDialog(null, trainException);
+				}
+			}
+			
+			JOptionPane.showMessageDialog(null, spurCarriages);
+			
+			// VISUAL REPRESENTATION OF TRAIN: Remove from train and add to spur track
+			for (int i = trainInfo.getComponentCount() - 1; i > shuntNumber; i-- ) {
+				spurCarriagePanels.add(trainInfo.getComponent(i));
+				trainInfo.remove(i);
+			}
+			
+			for (int i = spurCarriagePanels.size() - 1; i >= 0; i--) {
+				shuntInfo.add(spurCarriagePanels.get(i));
+			}
+			
+			shuntInfo.repaint();
+			trainInfo.repaint();
 		}
 		
 	}
