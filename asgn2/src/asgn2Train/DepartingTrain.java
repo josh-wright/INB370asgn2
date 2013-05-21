@@ -117,6 +117,7 @@ public class DepartingTrain {
 				}
 			}
 		}
+		currentCarriage = -1;
 		return remainingPassengers;
 	}
 	

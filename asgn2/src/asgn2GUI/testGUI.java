@@ -696,7 +696,7 @@ public class testGUI extends JFrame implements ActionListener {
 		case "Board Now":
 			String currentCarriageString;
 			TrainGraphics currentCarriagePanel;
-			RollingStock currentCarriage;
+			RollingStock currentCarriage = departingTrain.firstCarriage();
 			ArrayList<Component> newPanels = new ArrayList<Component>();			
 			int carriagePanelCount = trainInfo.getComponentCount();
 			
@@ -706,20 +706,20 @@ public class testGUI extends JFrame implements ActionListener {
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
-			
+				
 			// update labels after passengers are added
 			for (int i = 0; i < carriagePanelCount; i++) {
 				currentCarriage = departingTrain.nextCarriage();
-				if (currentCarriage instanceof PassengerCar) {
+				currentCarriagePanel = (TrainGraphics) trainInfo.getComponent(i);
+				if (currentCarriage.getClass() == PassengerCar.class) {						
 					currentCarriage = ( PassengerCar ) currentCarriage;
 					currentCarriageString = currentCarriage.toString();
-					currentCarriagePanel = (TrainGraphics) trainInfo.getComponent(i);
 					currentCarriagePanel.setStringLabel(currentCarriageString);
-					newPanels.add(currentCarriagePanel);
 				}
+				newPanels.add(currentCarriagePanel);
 			}
 			trainInfo.removeAll();
-			
+		
 			// NEW PANELS (CARRIAGES WITH UPDATED TO STRINGS) NOT BEING ADDED **** (RD)
 			for (int i = 0; i < newPanels.size(); i++) {
 				trainInfo.add(newPanels.get(i));
