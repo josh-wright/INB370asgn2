@@ -39,6 +39,8 @@ public class testGUI extends JFrame implements ActionListener {
 	private SpringLayout shuntTrainLayout = new SpringLayout();
 	private SpringLayout addCarriageLayout = new SpringLayout();
 	private SpringLayout beginTrainLayout = new SpringLayout();
+	private SpringLayout boardPassengersLayout = new SpringLayout();
+	private SpringLayout alightPassengersLayout = new SpringLayout();
 	
 	private JPanel trainControl;
 	private JPanel train;
@@ -81,7 +83,15 @@ public class testGUI extends JFrame implements ActionListener {
 	
 	private ArrayList<RollingStock> spurCarriages;
 	private ArrayList<Component> spurCarriagePanels;
-	private int shuntNumber;	
+	private int shuntNumber;
+	private JLabel boardPassengersLabel;
+	private JPanel boardPassengers;
+	private JTextField boardPassengersInput;
+	private JPanel alightPassengers;
+	private JLabel alightPassengersLabel;
+	private JTextField alightPassengersInput;
+	private JButton boardNowButton;
+	private JButton alightNowButton;	
 	
 	public testGUI(String name) {
 		super(name);
@@ -464,16 +474,102 @@ public class testGUI extends JFrame implements ActionListener {
 		boardPassengersButton.setEnabled(false);
 		conductor.add(boardPassengersButton);
 		
+		/* - BoardPassengers (Part of Conductor) --------------------------------------------------------------------------------------------------------------------------------- */
 		
+		boardPassengers = new JPanel();
+		boardPassengers.setLayout(boardPassengersLayout);
+		boardPassengers.setBackground(Color.yellow);
+		boardPassengers.setVisible(false);
+		conductorLayout.putConstraint(SpringLayout.NORTH, boardPassengers, 20, SpringLayout.SOUTH, conductorTitle);
+		conductorLayout.putConstraint(SpringLayout.WEST, boardPassengers, DEFAULT_PADDING_POS, SpringLayout.EAST, boardPassengersButton);
+		conductorLayout.putConstraint(SpringLayout.EAST, boardPassengers, DEFAULT_PADDING_NEG, SpringLayout.EAST, conductor);
+		conductorLayout.putConstraint(SpringLayout.SOUTH, boardPassengers, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, conductor);
+		conductor.add(boardPassengers);
+		
+		// BoardPassengers title
+		JLabel boardPassengersTitle = new JLabel("Board Passengers");
+		boardPassengersTitle.setFont(new Font("Verdana", Font.BOLD, 14));
+		boardPassengersLayout.putConstraint(SpringLayout.NORTH, boardPassengersTitle, 14, SpringLayout.NORTH, boardPassengers);
+		boardPassengersLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, boardPassengersTitle, 0, SpringLayout.HORIZONTAL_CENTER, boardPassengers);
+		boardPassengers.add(boardPassengersTitle);
+		
+		// BoardPassengers text input label
+		boardPassengersLabel = new JLabel("Amount boarding:");
+		boardPassengersLabel.setPreferredSize(driverButtonSize);
+		boardPassengersLayout.putConstraint(SpringLayout.NORTH, boardPassengersLabel, 20, SpringLayout.NORTH, boardPassengersTitle);
+		boardPassengersLayout.putConstraint(SpringLayout.WEST, boardPassengersLabel, 10, SpringLayout.WEST, boardPassengers);
+		boardPassengers.add(boardPassengersLabel);
+		
+		// BoardPassengers text input
+		boardPassengersInput = new JTextField(10);
+		boardPassengersLayout.putConstraint(SpringLayout.NORTH, boardPassengersInput, 0, SpringLayout.NORTH, boardPassengersLabel);
+		boardPassengersLayout.putConstraint(SpringLayout.WEST, boardPassengersInput, 0, SpringLayout.EAST, boardPassengersLabel);
+		boardPassengersLayout.putConstraint(SpringLayout.EAST, boardPassengersInput, -10, SpringLayout.EAST, boardPassengers);
+		boardPassengersLayout.putConstraint(SpringLayout.SOUTH, boardPassengersInput, 0, SpringLayout.SOUTH, boardPassengersLabel);
+		boardPassengers.add(boardPassengersInput);	
+		
+		// BoardPassengers button
+		boardNowButton = new JButton ("Board Now");
+		boardNowButton.setPreferredSize(driverButtonSize);
+		boardPassengersLayout.putConstraint(SpringLayout.NORTH, boardNowButton, 10, SpringLayout.SOUTH, boardPassengersInput);
+		boardPassengersLayout.putConstraint(SpringLayout.WEST, boardNowButton, 5, SpringLayout.WEST, boardPassengers);
+		boardNowButton.addActionListener(this);
+		boardNowButton.setEnabled(true);
+		boardPassengers.add(boardNowButton);
+		
+		/* - AlightPassengers (Part of Conductor) --------------------------------------------------------------------------------------------------------------------------------- */
 		
 		alightPassengersButton = new JButton("Alight Passengers");
 		alightPassengersButton.setPreferredSize(conductorButtonSize);
 		conductorLayout.putConstraint(SpringLayout.NORTH, alightPassengersButton, 0, SpringLayout.SOUTH, boardPassengersButton);
 		conductorLayout.putConstraint(SpringLayout.WEST, alightPassengersButton, 10, SpringLayout.WEST, conductor);
 		alightPassengersButton.addActionListener(this);
-		alightPassengersButton.setEnabled(false);
+		alightPassengersButton.setEnabled(true);
 		conductor.add(alightPassengersButton);
 		
+		// AlightPassengers Panel
+		
+		alightPassengers = new JPanel();
+		alightPassengers.setLayout(alightPassengersLayout);
+		alightPassengers.setBackground(Color.pink);
+		alightPassengers.setVisible(false);
+		conductorLayout.putConstraint(SpringLayout.NORTH, alightPassengers, 20, SpringLayout.SOUTH, conductorTitle);
+		conductorLayout.putConstraint(SpringLayout.WEST, alightPassengers, DEFAULT_PADDING_POS, SpringLayout.EAST, boardPassengersButton);
+		conductorLayout.putConstraint(SpringLayout.EAST, alightPassengers, DEFAULT_PADDING_NEG, SpringLayout.EAST, conductor);
+		conductorLayout.putConstraint(SpringLayout.SOUTH, alightPassengers, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, conductor);
+		conductor.add(alightPassengers);
+		
+		// AlightPassengers Label
+		
+		JLabel alightPassengersTitle = new JLabel("Alight Passengers");
+		alightPassengersTitle.setFont(new Font("Verdana", Font.BOLD, 14));
+		alightPassengersLayout.putConstraint(SpringLayout.NORTH, alightPassengersTitle, 14, SpringLayout.NORTH, alightPassengers);
+		alightPassengersLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, alightPassengersTitle, 0, SpringLayout.HORIZONTAL_CENTER, alightPassengers);
+		alightPassengers.add(alightPassengersTitle);
+		
+		// AlightPassengers text input label
+		alightPassengersLabel = new JLabel("Amount alighting:");
+		alightPassengersLabel.setPreferredSize(driverButtonSize);
+		alightPassengersLayout.putConstraint(SpringLayout.NORTH, alightPassengersLabel, 20, SpringLayout.NORTH, alightPassengersTitle);
+		alightPassengersLayout.putConstraint(SpringLayout.WEST, alightPassengersLabel, 10, SpringLayout.WEST, alightPassengers);
+		alightPassengers.add(alightPassengersLabel);
+		
+		// AlightPassengers text input
+		alightPassengersInput = new JTextField(10);
+		alightPassengersLayout.putConstraint(SpringLayout.NORTH, alightPassengersInput, 0, SpringLayout.NORTH, alightPassengersLabel);
+		alightPassengersLayout.putConstraint(SpringLayout.WEST, alightPassengersInput, 0, SpringLayout.EAST, alightPassengersLabel);
+		alightPassengersLayout.putConstraint(SpringLayout.EAST, alightPassengersInput, -10, SpringLayout.EAST, alightPassengers);
+		alightPassengersLayout.putConstraint(SpringLayout.SOUTH, alightPassengersInput, 0, SpringLayout.SOUTH, alightPassengersLabel);
+		alightPassengers.add(alightPassengersInput);
+		
+		// AlightPassengers button
+		alightNowButton = new JButton ("Alight Now");
+		alightNowButton.setPreferredSize(driverButtonSize);
+		alightPassengersLayout.putConstraint(SpringLayout.NORTH, alightNowButton, 10, SpringLayout.SOUTH, alightPassengersInput);
+		alightPassengersLayout.putConstraint(SpringLayout.WEST, alightNowButton, 5, SpringLayout.WEST, alightPassengers);
+		alightNowButton.addActionListener(this);
+		alightNowButton.setEnabled(true);
+		alightPassengers.add(alightNowButton);
 	}
 	
 	/**
@@ -557,6 +653,8 @@ public class testGUI extends JFrame implements ActionListener {
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
+			joinTrainButton.setEnabled(false);
+			shuntTrainButton.setEnabled(true);
 			shuntInfo.setVisible(false);
 			trainInfo.repaint();
 			break;
@@ -593,8 +691,41 @@ public class testGUI extends JFrame implements ActionListener {
 			}
 			break;
 		case "Board Passengers":
+			boardPassengers.setVisible(true);			
+			break;
+		case "Board Now":
+			String currentCarriageString;
+			TrainGraphics currentCarriagePanel;
+			RollingStock currentCarriage;
+			ArrayList<Component> newPanels = new ArrayList<Component>();			
+			int carriagePanelCount = trainInfo.getComponentCount();
+			
+			try {
+				Integer passengersBoarding = Integer.parseInt(boardPassengersInput.getText());
+				departingTrain.board(passengersBoarding);
+			} catch (TrainException trainException) {
+				JOptionPane.showMessageDialog(null, trainException);
+			}
+			for (int i = 0; i < carriagePanelCount; i++) {
+				currentCarriage = departingTrain.nextCarriage();
+				if (currentCarriage instanceof PassengerCar) {
+					currentCarriage = ( PassengerCar ) currentCarriage;
+					currentCarriageString = currentCarriage.toString();
+					currentCarriagePanel = (TrainGraphics) trainInfo.getComponent(i);
+					currentCarriagePanel.setStringLabel(currentCarriageString);
+					newPanels.add(currentCarriagePanel);
+				}
+			}
+			trainInfo.removeAll();
+			for (int i = 0; i < newPanels.size(); i++) {
+				trainInfo.add(newPanels.get(i));
+			}
+			trainInfo.repaint();
 			break;
 		case "Alight Passengers":
+			alightPassengers.setVisible(true);
+			break;
+		case "Alight Now":
 			break;
 		case "Add Locomotive":
 			Integer grossWeight = Integer.parseInt(grossWeightInput.getText());
@@ -701,8 +832,8 @@ public class testGUI extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(null, trainException);
 				}
 			}
-			
-			JOptionPane.showMessageDialog(null, spurCarriages);
+			shuntTrainButton.setEnabled(false);
+			joinTrainButton.setEnabled(true);
 			
 			// VISUAL REPRESENTATION OF TRAIN: Remove from train and add to spur track
 			for (int i = trainInfo.getComponentCount() - 1; i > shuntNumber; i-- ) {
@@ -776,7 +907,6 @@ public class testGUI extends JFrame implements ActionListener {
 	
 	private void ButtonDisableAddCarriage(boolean enabled) {
 		shuntTrainButton.setEnabled(enabled);
-		joinTrainButton.setEnabled(enabled);
 		addCarriageButton.setEnabled(enabled);
 		removeCarriageButton.setEnabled(enabled);
 		boardPassengersButton.setEnabled(enabled);
