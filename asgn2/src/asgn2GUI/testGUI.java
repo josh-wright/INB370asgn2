@@ -16,19 +16,19 @@ import asgn2RollingStock.*;
 import asgn2Train.*;
 
 public class testGUI extends JFrame implements ActionListener {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -5400452591692641009L;
-	/* Declare Objects Here */
-	final int DEFAULT_PADDING_POS = 10;
-	final int DEFAULT_PADDING_NEG = -10;
+	private final int DEFAULT_PADDING_POS = 10;
+	private final int DEFAULT_PADDING_NEG = -10;
 	
-	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private DepartingTrain departingTrain;
+	
+	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private GridLayout baseLayout = new GridLayout(2,0);
-	private SpringLayout trainLayout = new SpringLayout();
 	private GridLayout trainInfoLayout = new GridLayout(1,20);
+	
+	private SpringLayout trainLayout = new SpringLayout();
 	private SpringLayout driverLayout = new SpringLayout();
 	private SpringLayout conductorLayout = new SpringLayout();	
 	private SpringLayout shuntTrainLayout = new SpringLayout();
@@ -46,7 +46,10 @@ public class testGUI extends JFrame implements ActionListener {
 	private JPanel addCarriage;
 	private JPanel conductor;
 	private JPanel beginTrain;
-	private DepartingTrain departingTrain;
+	private JPanel shuntInfo;
+	private JPanel boardPassengers;
+	private JPanel alightPassengers;
+	
 	private JButton newTrainButton;
 	private JButton resetTrainButton;
 	private JButton shuntTrainButton;
@@ -56,50 +59,56 @@ public class testGUI extends JFrame implements ActionListener {
 	private JButton boardPassengersButton;
 	private JButton alightPassengersButton;
 	private JButton addLocomotiveButton;
+	private JButton addFreightButton;
+	private JButton addPassengerButton;
+	private JButton shuntButton;
+	private JButton boardNowButton;
+	private JButton alightNowButton;
+	
 	private JTextField grossWeightInput;
+	private JTextField grossWeightFreightInput;
+	private JTextField grossWeightPassengerInput;
+	private JTextField numberOfSeatsInput;
+	private JTextField boardPassengersInput;
+	private JTextField alightPassengersInput;
+	
 	private JComboBox<Integer> powerClassInput;
 	private JComboBox<String> engineTypeInput;
 	private JComboBox<String> goodsTypeInput;
-	private JButton addFreightButton;
-	private JTextField grossWeightFreightInput;
+	private JComboBox<Integer> shuntIndexInput;
+		
 	private JRadioButton freightCarSelect;
 	private JRadioButton passengerCarSelect;
+	
 	private JLabel goodsTypeLabel;
 	private JLabel grossWeightFreightLabel;
 	private JLabel grossWeightPassengerLabel;
-	private JTextField grossWeightPassengerInput;
-	private JButton addPassengerButton;
-	private JTextField numberOfSeatsInput;
 	private JLabel numberOfSeatsLabel;
 	private JLabel shuntIndexSelectLabel;
-	private JComboBox<Integer> shuntIndexInput;
-	private JButton shuntButton;
-	private JPanel shuntInfo;
-	
-	private ArrayList<RollingStock> spurCarriages;
-	private ArrayList<Component> spurCarriagePanels;
-	private int shuntNumber;
 	private JLabel boardPassengersLabel;
-	private JPanel boardPassengers;
-	private JTextField boardPassengersInput;
-	private JPanel alightPassengers;
 	private JLabel alightPassengersLabel;
-	private JTextField alightPassengersInput;
-	private JButton boardNowButton;
-	private JButton alightNowButton;
-	private Integer trainWeight = 0;
-	private Integer trainPower = 0;
 	private JLabel trainWeightLabel;
 	private JLabel trainPowerLabel;
 	private JLabel trainMoveLabel;
 	private JLabel trainCapacityLabel;
 	private JLabel trainLeftBehindLabel;
-	private Integer leftBehind = 0;
-	private String currentCarriageString;
-	private TrainGraphics currentCarriagePanel;
-	private int carriagePanelCount;
-	private RollingStock currentCarriage;
+	
+	private ArrayList<RollingStock> spurCarriages;
+	
+	private ArrayList<Component> spurCarriagePanels;
 	private ArrayList<Component> newPanels;
+	
+	private Integer shuntNumber;
+	private Integer trainWeight = 0;
+	private Integer trainPower = 0;
+	private Integer leftBehind = 0;
+	private Integer carriagePanelCount;
+	
+	private String currentCarriageString;
+	
+	private TrainGraphics currentCarriagePanel;
+		
+	private RollingStock currentCarriage;
 	
 	
 	public testGUI(String name) {
