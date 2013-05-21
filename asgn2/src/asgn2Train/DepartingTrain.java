@@ -122,6 +122,32 @@ public class DepartingTrain {
 	}
 	
 	/**
+	 * Remove passengers to train
+	 * @param Integer newPassengers - the number of passengers wanting to board the train
+	 * @return Integer - number of passengers that could not fit on the train
+	 * @throws TrainException if passengers boarding is negative
+	 */
+	public void alight(Integer alightPassengers)
+            throws TrainException {		
+		firstCarriage(); //Skip Loco
+		
+		for (int i = 0; i < departingTrain.size()-1; i++){
+			RollingStock carriage = nextCarriage();
+			if (carriage.getClass() == PassengerCar.class) {
+				if (((PassengerCar)carriage).numberOnBoard() >= alightPassengers){
+					Integer alight = ((PassengerCar)carriage).numberOnBoard() - alightPassengers;
+					if (((PassengerCar)carriage).numberOnBoard() >= alightPassengers){
+						((PassengerCar)carriage).alight(alightPassengers);
+					} else {
+						((PassengerCar)carriage).alight(alightPassengers - (alightPassengers - ((PassengerCar)carriage).numberOnBoard()));
+					}
+				}
+			}
+		}
+		currentCarriage = -1;
+	}
+	
+	/**
 	 * @return
 	 */
 	public boolean trainCanMove() {

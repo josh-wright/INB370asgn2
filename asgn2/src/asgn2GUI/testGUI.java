@@ -7,12 +7,12 @@ package asgn2GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
+//import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
+//import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -100,6 +100,12 @@ public class testGUI extends JFrame implements ActionListener {
 	private JLabel trainCapacityLabel;
 	private JLabel trainLeftBehindLabel;
 	private Integer leftBehind = 0;
+	private String currentCarriageString;
+	private TrainGraphics currentCarriagePanel;
+	private int carriagePanelCount;
+	private RollingStock currentCarriage;
+	private ArrayList<Component> newPanels;
+	
 	
 	public testGUI(String name) {
 		super(name);
@@ -700,20 +706,20 @@ public class testGUI extends JFrame implements ActionListener {
 			}
 			break;
 		case "Board Passengers":
-			boardPassengers.setVisible(true);			
+			boardPassengers.setVisible(true);
+			alightPassengers.setVisible(false);
 			break;
 		case "Board Now":
-			String currentCarriageString;
-			TrainGraphics currentCarriagePanel;
-			RollingStock currentCarriage = departingTrain.firstCarriage();
-			ArrayList<Component> newPanels = new ArrayList<Component>();			
-			int carriagePanelCount = trainInfo.getComponentCount();
+			currentCarriage = departingTrain.firstCarriage();
+			newPanels = new ArrayList<Component>();			
+			carriagePanelCount = trainInfo.getComponentCount();
 			
 			try {
 				Integer passengersBoarding = Integer.parseInt(boardPassengersInput.getText());
 				leftBehind = departingTrain.board(passengersBoarding);
 				trainCapacityLabel.setText("Train Capacity: " + departingTrain.numberOnBoard() + "/" + departingTrain.numberOfSeats());
 				trainLeftBehindLabel.setText("Passengers Left Behind: " + leftBehind);
+				train.repaint();
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
@@ -739,8 +745,41 @@ public class testGUI extends JFrame implements ActionListener {
 			break;
 		case "Alight Passengers":
 			alightPassengers.setVisible(true);
+			boardPassengers.setVisible(false);
 			break;
 		case "Alight Now":
+			currentCarriage = departingTrain.firstCarriage();
+			newPanels = new ArrayList<Component>();			
+			carriagePanelCount = trainInfo.getComponentCount();
+			
+			try {
+				Integer passengersAlighting = Integer.parseInt(alightPassengersInput.getText());
+				departingTrain.alight(passengersAlighting);
+				trainCapacityLabel.setText("Train Capacity: " + departingTrain.numberOnBoard() + "/" + departingTrain.numberOfSeats());
+				trainLeftBehindLabel.setText("Passengers Left Behind: " + leftBehind);
+				train.repaint();
+			} catch (TrainException trainException) {
+				JOptionPane.showMessageDialog(null, trainException);
+			}
+				
+			// update labels after passengers are added
+			for (int i = 0; i < carriagePanelCount; i++) {
+				currentCarriage = departingTrain.nextCarriage();
+				currentCarriagePanel = (TrainGraphics) trainInfo.getComponent(i);
+				if (currentCarriage.getClass() == PassengerCar.class) {						
+					currentCarriage = ( PassengerCar ) currentCarriage;
+					currentCarriageString = currentCarriage.toString();
+					currentCarriagePanel.setStringLabel(currentCarriageString);
+				}
+				newPanels.add(currentCarriagePanel);
+			}
+			trainInfo.removeAll();
+		
+			// NEW PANELS (CARRIAGES WITH UPDATED TO STRINGS) NOT BEING ADDED **** (RD)
+			for (int i = 0; i < newPanels.size(); i++) {
+				trainInfo.add(newPanels.get(i));
+			}
+			trainInfo.repaint();
 			break;
 		case "Add Locomotive":
 			Integer grossWeight = Integer.parseInt(grossWeightInput.getText());
@@ -941,12 +980,12 @@ public class testGUI extends JFrame implements ActionListener {
 		else { newTrainButton.setEnabled(true); }
 		
 		resetTrainButton.setEnabled(enabled);
-		//shuntTrainButton.setEnabled(enabled); -- Can't shunt with just a locomotive - RD
-		//joinTrainButton.setEnabled(enabled);
+		shuntTrainButton.setEnabled(false);
+		joinTrainButton.setEnabled(false);
 		addCarriageButton.setEnabled(enabled);
 		removeCarriageButton.setEnabled(enabled);
-		//boardPassengersButton.setEnabled(enabled); -- Can't board passengers yet
-		//alightPassengersButton.setEnabled(enabled);
+		boardPassengersButton.setEnabled(false);
+		alightPassengersButton.setEnabled(false);
 	}
 	
 	/**
