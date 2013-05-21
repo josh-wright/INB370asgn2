@@ -843,7 +843,8 @@ public class testGUI extends JFrame implements ActionListener {
 			trainLayout.putConstraint(SpringLayout.NORTH, trainLeftBehindLabel, 5, SpringLayout.SOUTH, trainCapacityLabel);
 			trainLayout.putConstraint(SpringLayout.EAST, trainLeftBehindLabel, -10, SpringLayout.EAST, train);
 			train.add(trainLeftBehindLabel);
-
+			beginTrain.setVisible(false);
+			addCarriage.setVisible(true);
 			break;
 		case "Freight Car":
 			passengerCarSelect.setSelected(false);
