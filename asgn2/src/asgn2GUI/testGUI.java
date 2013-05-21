@@ -91,7 +91,15 @@ public class testGUI extends JFrame implements ActionListener {
 	private JLabel alightPassengersLabel;
 	private JTextField alightPassengersInput;
 	private JButton boardNowButton;
-	private JButton alightNowButton;	
+	private JButton alightNowButton;
+	private Integer trainWeight = 0;
+	private Integer trainPower = 0;
+	private JLabel trainWeightLabel;
+	private JLabel trainPowerLabel;
+	private JLabel trainMoveLabel;
+	private JLabel trainCapacityLabel;
+	private JLabel trainLeftBehindLabel;
+	private Integer leftBehind = 0;
 	
 	public testGUI(String name) {
 		super(name);
@@ -128,6 +136,7 @@ public class testGUI extends JFrame implements ActionListener {
 		trainLayout.putConstraint(SpringLayout.NORTH, trainTitle, 20, SpringLayout.NORTH, train);
 		trainLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, trainTitle, 0, SpringLayout.HORIZONTAL_CENTER, train);
 		train.add(trainTitle);
+		
 		
 		/* - trainInfo (Part of train) -------------------------------------------------------------------------------------------------------------------------------- */
 		
@@ -702,7 +711,9 @@ public class testGUI extends JFrame implements ActionListener {
 			
 			try {
 				Integer passengersBoarding = Integer.parseInt(boardPassengersInput.getText());
-				departingTrain.board(passengersBoarding);
+				leftBehind = departingTrain.board(passengersBoarding);
+				trainCapacityLabel.setText("Train Capacity: " + departingTrain.numberOnBoard() + "/" + departingTrain.numberOfSeats());
+				trainLeftBehindLabel.setText("Passengers Left Behind: " + leftBehind);
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
@@ -735,6 +746,7 @@ public class testGUI extends JFrame implements ActionListener {
 			Integer grossWeight = Integer.parseInt(grossWeightInput.getText());
 			Integer powerClass = powerClassInput.getSelectedIndex() + 1;
 			String engineType = engineTypeInput.getSelectedItem().toString().substring(0, 1);
+			trainWeight += grossWeight;
 			// construct and add locomotive panel
 			File locoImgFile = null;
 			switch(engineType){
@@ -756,12 +768,43 @@ public class testGUI extends JFrame implements ActionListener {
 												trainInfo.getComponentCount() + 1, loco.toString());
 				trainInfo.add(locomotive);
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
+				trainPower = loco.power();
 				this.pack();
 				DriverButtonEnable(true);
 				trainInfo.repaint();
 			} catch (TrainException e1) {
 				JOptionPane.showMessageDialog(null, e1);
 			}
+			trainWeightLabel = new JLabel("Train Weight: " + trainWeight + "(t)");
+			trainWeightLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+			trainLayout.putConstraint(SpringLayout.NORTH, trainWeightLabel, 10, SpringLayout.NORTH, train);
+			trainLayout.putConstraint(SpringLayout.WEST, trainWeightLabel, 10, SpringLayout.WEST, train);
+			train.add(trainWeightLabel);
+			
+			trainPowerLabel = new JLabel("Pulling Power: " + trainPower +"(t)");
+			trainPowerLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+			trainLayout.putConstraint(SpringLayout.NORTH, trainPowerLabel, 5, SpringLayout.SOUTH, trainWeightLabel);
+			trainLayout.putConstraint(SpringLayout.WEST, trainPowerLabel, 10, SpringLayout.WEST, train);
+			train.add(trainPowerLabel);
+			
+			trainMoveLabel = new JLabel("Enough Power?: " + departingTrain.trainCanMove());
+			trainMoveLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+			trainLayout.putConstraint(SpringLayout.NORTH, trainMoveLabel, 5, SpringLayout.SOUTH, trainPowerLabel);
+			trainLayout.putConstraint(SpringLayout.WEST, trainMoveLabel, 10, SpringLayout.WEST, train);
+			train.add(trainMoveLabel);
+			
+			trainCapacityLabel = new JLabel("Train Capacity: " + departingTrain.numberOnBoard() + "/" + departingTrain.numberOfSeats());
+			trainCapacityLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+			trainLayout.putConstraint(SpringLayout.NORTH, trainCapacityLabel, 10, SpringLayout.NORTH, train);
+			trainLayout.putConstraint(SpringLayout.EAST, trainCapacityLabel, -10, SpringLayout.EAST, train);
+			train.add(trainCapacityLabel);
+			
+			trainLeftBehindLabel = new JLabel("Passengers Left Behind: 0");
+			trainLeftBehindLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+			trainLayout.putConstraint(SpringLayout.NORTH, trainLeftBehindLabel, 5, SpringLayout.SOUTH, trainCapacityLabel);
+			trainLayout.putConstraint(SpringLayout.EAST, trainLeftBehindLabel, -10, SpringLayout.EAST, train);
+			train.add(trainLeftBehindLabel);
+
 			break;
 		case "Freight Car":
 			passengerCarSelect.setSelected(false);
@@ -787,6 +830,12 @@ public class testGUI extends JFrame implements ActionListener {
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
 				ButtonDisableAddCarriage(true);
 				this.pack();
+				trainWeight += passengerCar.getGrossWeight();
+				trainWeightLabel.setText("Train Weight: " + trainWeight + "(t)");
+				trainPowerLabel.setText("Pulling Power: " + trainPower +"(t)");
+				trainMoveLabel.setText("Enough Power?: " + departingTrain.trainCanMove());
+				trainCapacityLabel.setText("Train Capacity: " + departingTrain.numberOnBoard() + "/" + departingTrain.numberOfSeats());
+				trainLeftBehindLabel.setText("Passengers Left Behind: 0");
 				trainInfo.repaint();
 			} catch (TrainException e1) {
 				JOptionPane.showMessageDialog(null, e1);
@@ -805,6 +854,12 @@ public class testGUI extends JFrame implements ActionListener {
 				ButtonDisableAddCarriage(true);
 				trainInfo.add(freightCarriage);
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
+				trainWeight += freightCar.getGrossWeight();
+				trainWeightLabel.setText("Train Weight: " + trainWeight + "(t)");
+				trainPowerLabel.setText("Pulling Power: " + trainPower +"(t)");
+				trainMoveLabel.setText("Enough Power?: " + departingTrain.trainCanMove());
+				trainCapacityLabel.setText("Train Capacity: " + departingTrain.numberOnBoard() + "/" + departingTrain.numberOfSeats());
+				trainLeftBehindLabel.setText("Passengers Left Behind: 0");
 				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
