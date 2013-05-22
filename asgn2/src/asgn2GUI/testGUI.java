@@ -24,6 +24,7 @@ public class testGUI extends JFrame implements ActionListener {
 	
 	private DepartingTrain departingTrain;
 	
+	
 	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private GridLayout baseLayout = new GridLayout(2,0);
@@ -204,7 +205,7 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		shuntInfo = new JPanel();
 		shuntInfo.setLayout(trainInfoLayout);
-		shuntInfo.setBackground(Color.YELLOW);
+		shuntInfo.setBackground(Color.WHITE);
 		shuntInfo.setBorder(loweredbevel);
 		trainLayout.putConstraint(SpringLayout.NORTH, shuntInfo, 10, SpringLayout.SOUTH, trainInfo);
 		trainLayout.putConstraint(SpringLayout.EAST, shuntInfo, DEFAULT_PADDING_NEG, SpringLayout.EAST, train);
@@ -223,7 +224,6 @@ public class testGUI extends JFrame implements ActionListener {
 		/* - Driver (Part of user) ------------------------------------------------------------------------------------------------------------------------------------ */
 		
 		driver = new JPanel();
-		driver.setBackground(Color.PINK);
 		driver.setLayout(driverLayout);
 		users.add(driver);
 		
@@ -290,7 +290,6 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		beginTrain = new JPanel();
 		beginTrain.setLayout(beginTrainLayout);
-		beginTrain.setBackground(Color.gray);
 		beginTrain.setVisible(false);
 		driverLayout.putConstraint(SpringLayout.NORTH, beginTrain, 20, SpringLayout.SOUTH, driverTitle);
 		driverLayout.putConstraint(SpringLayout.WEST, beginTrain, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
@@ -360,7 +359,6 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		shuntTrain = new JPanel();
 		shuntTrain.setLayout(shuntTrainLayout);
-		shuntTrain.setBackground(Color.yellow);
 		shuntTrain.setVisible(false);
 		driverLayout.putConstraint(SpringLayout.NORTH, shuntTrain, 20, SpringLayout.SOUTH, driverTitle);
 		driverLayout.putConstraint(SpringLayout.WEST, shuntTrain, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
@@ -399,7 +397,6 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		addCarriage = new JPanel();
 		addCarriage.setLayout(addCarriageLayout);
-		addCarriage.setBackground(Color.magenta);
 		addCarriage.setVisible(false);
 		driverLayout.putConstraint(SpringLayout.NORTH, addCarriage, 20, SpringLayout.SOUTH, driverTitle);
 		driverLayout.putConstraint(SpringLayout.WEST, addCarriage, DEFAULT_PADDING_POS, SpringLayout.EAST, newTrainButton);
@@ -511,7 +508,6 @@ public class testGUI extends JFrame implements ActionListener {
 		/* - Conductor (Part of user) --------------------------------------------------------------------------------------------------------------------------------- */
 		
 		conductor = new JPanel();
-		conductor.setBackground(Color.GREEN);
 		conductor.setLayout(conductorLayout);
 		users.add(conductor);
 		
@@ -535,7 +531,6 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		boardPassengers = new JPanel();
 		boardPassengers.setLayout(boardPassengersLayout);
-		boardPassengers.setBackground(Color.yellow);
 		boardPassengers.setVisible(false);
 		conductorLayout.putConstraint(SpringLayout.NORTH, boardPassengers, 20, SpringLayout.SOUTH, conductorTitle);
 		conductorLayout.putConstraint(SpringLayout.WEST, boardPassengers, DEFAULT_PADDING_POS, SpringLayout.EAST, boardPassengersButton);
@@ -588,7 +583,6 @@ public class testGUI extends JFrame implements ActionListener {
 		
 		alightPassengers = new JPanel();
 		alightPassengers.setLayout(alightPassengersLayout);
-		alightPassengers.setBackground(Color.pink);
 		alightPassengers.setVisible(false);
 		conductorLayout.putConstraint(SpringLayout.NORTH, alightPassengers, 20, SpringLayout.SOUTH, conductorTitle);
 		conductorLayout.putConstraint(SpringLayout.WEST, alightPassengers, DEFAULT_PADDING_POS, SpringLayout.EAST, boardPassengersButton);
