@@ -18,8 +18,6 @@ public class DepartingTrain {
 	// initialise private variables
 	private ArrayList<RollingStock> departingTrain;
 	private Integer currentCarriage = -1;
-	//private Integer numberOnBoard = 0;
-	private Integer numberOfSeats = 0;
 	
 	/**
 	 * Constructs train with no rolling stock attached

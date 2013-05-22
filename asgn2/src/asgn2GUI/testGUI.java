@@ -102,28 +102,12 @@ public class testGUI extends JFrame implements ActionListener {
 	
 	private ArrayList<RollingStock> spurCarriages;
 	
-	private ArrayList<Component> newPanels;
 	private ArrayList<Component> spurCarriagePanels;
 	
 	private Integer shuntNumber;
 	private Integer trainPower = 0;
 	private Integer leftBehind = 0;
 	private Integer trainWeight = 0;
-	private Integer carriagePanelCount;
-	/* departingTrain.numberOnBoard and numberOfSeats
-	 * causing issues and require to be assigned to a
-	 * variable first before posting to the label
-	 */
-	private Integer onBoard = 0;
-	private Integer seats = 0;
-	
-	
-	private String currentCarriageString;
-	
-	private TrainGraphics currentCarriagePanel;
-		
-	private RollingStock currentCarriage;
-	
 	
 	public testGUI(String name) {
 		super(name);
@@ -685,8 +669,6 @@ public class testGUI extends JFrame implements ActionListener {
 			trainWeight = 0;
 			trainPower = 0;
 			leftBehind = 0;
-			onBoard = 0;
-			seats = 0;
 			UpdateTrainStatistics();
 			
 			driver.repaint();
@@ -732,7 +714,6 @@ public class testGUI extends JFrame implements ActionListener {
 			try {
 				trainInfo.remove(components.length - 1);
 				departingTrain.removeCarriage();
-				seats = departingTrain.numberOfSeats();
 				UpdateTrainStatistics();
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
@@ -761,7 +742,6 @@ public class testGUI extends JFrame implements ActionListener {
 				leftBehind = departingTrain.board(passengersBoarding);
 				train.repaint();
 				alightPassengersButton.setEnabled(true);
-				onBoard = departingTrain.numberOnBoard();
 				UpdateTrainStatistics();
 				RedrawTrainImage(departingTrain, trainInfo);
 			} catch (TrainException trainException) {
@@ -777,7 +757,6 @@ public class testGUI extends JFrame implements ActionListener {
 			try {
 				Integer passengersAlighting = Integer.parseInt(alightPassengersInput.getText());
 				departingTrain.alight(passengersAlighting);
-				onBoard = departingTrain.numberOnBoard();
 				UpdateTrainStatistics();
 				RedrawTrainImage(departingTrain, trainInfo);
 			} catch (TrainException trainException) {
@@ -826,7 +805,6 @@ public class testGUI extends JFrame implements ActionListener {
 				PassengerCar passengerCar = new PassengerCar(grossWeightPassenger, numberOfSeats);
 				departingTrain.addCarriage(passengerCar);
 				trainWeight += passengerCar.getGrossWeight();
-				seats = departingTrain.numberOfSeats();
 				UpdateTrainStatistics();
 				RedrawTrainImage(departingTrain, trainInfo);
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
@@ -992,7 +970,7 @@ public class testGUI extends JFrame implements ActionListener {
 			trainWeightLabel.setForeground(Color.red);
 			trainPowerLabel.setForeground(Color.red);
 		}
-		trainCapacityLabel.setText("Train Capacity: " + onBoard + "/" + seats);
+		trainCapacityLabel.setText("Train Capacity: " + departingTrain.numberOnBoard() + "/" + departingTrain.numberOfSeats());
 		trainLeftBehindLabel.setText("Passengers Left Behind: " + leftBehind);
 		if (leftBehind > 0) {
 			trainLeftBehindLabel.setForeground(Color.red);
