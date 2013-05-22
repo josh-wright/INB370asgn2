@@ -80,15 +80,15 @@ public class DepartingTrain {
 	 * @return Integer - Number of seats on the train
 	 */
 	public Integer numberOfSeats() {
-		
+		int noOfSeats = 0;
 		// add number of seats on each passenger car to total number of seats
 		for (int i = 0; i < departingTrain.size(); i++) {
 			if (departingTrain.get(i).getClass() == PassengerCar.class) {
 				PassengerCar passengerCar = (PassengerCar) departingTrain.get(i);
-				numberOfSeats += passengerCar.numberOfSeats();
+				noOfSeats += passengerCar.numberOfSeats();
 			}
 		}
-		return numberOfSeats;
+		return noOfSeats;
 	}
 	
 	/**
