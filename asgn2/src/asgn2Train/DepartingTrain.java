@@ -18,7 +18,7 @@ public class DepartingTrain {
 	// initialise private variables
 	private ArrayList<RollingStock> departingTrain;
 	private Integer currentCarriage = -1;
-	private Integer numberOnBoard = 0;
+	//private Integer numberOnBoard = 0;
 	private Integer numberOfSeats = 0;
 	
 	/**
@@ -64,15 +64,15 @@ public class DepartingTrain {
 	 * @return Integer of number of passengers currently on board
 	 */
 	public Integer numberOnBoard() {
-		
+		int noOnBoard = 0;
 		// add number of passengers on each passenger car to total number on board
 		for (int i = 0; i < departingTrain.size(); i++) {
 			if (departingTrain.get(i).getClass() == PassengerCar.class) {
 				PassengerCar passengerCar = (PassengerCar) departingTrain.get(i);
-				numberOnBoard += passengerCar.numberOnBoard();
+				noOnBoard += passengerCar.numberOnBoard();
 			}
 		}
-		return numberOnBoard;
+		return noOnBoard;
 	}
 	
 	/**
