@@ -100,7 +100,7 @@ public class DepartingTrain {
 	public Integer board(Integer newPassengers)
             throws TrainException {
 		Integer remainingPassengers = newPassengers;
-		
+		Integer tempCurrentCarriage = currentCarriage;
 		firstCarriage(); //Skip Loco
 		
 		for (int i = 0; i < departingTrain.size()-1; i++){
@@ -117,7 +117,7 @@ public class DepartingTrain {
 				}
 			}
 		}
-		currentCarriage = -1;
+		currentCarriage = tempCurrentCarriage;
 		return remainingPassengers;
 	}
 	
@@ -127,7 +127,8 @@ public class DepartingTrain {
 	 * @throws TrainException if passengers boarding is negative
 	 */
 	public void alight(Integer alightPassengers)
-            throws TrainException {		
+            throws TrainException {	
+		Integer tempCurrentCarriage = currentCarriage;
 		firstCarriage(); //Skip Loco
 		if (alightPassengers <= numberOnBoard()){
 			for (int i = 0; i < departingTrain.size() - 1; i++){
@@ -146,7 +147,7 @@ public class DepartingTrain {
 		} else {
 			throw new TrainException("Trying to alight too many passengers!");
 		}
-		currentCarriage = -1; // return to start of array
+		currentCarriage = tempCurrentCarriage;
 	}
 	
 	/**
