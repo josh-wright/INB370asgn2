@@ -27,6 +27,7 @@ public class testGUI extends JFrame implements ActionListener {
 	private final int DEFAULT_PADDING_NEG = -10;
 	
 	private DepartingTrain departingTrain;
+	private DepartingTrain spurLine;
 	
 	
 	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -668,23 +669,26 @@ public class testGUI extends JFrame implements ActionListener {
 			break;
 		case "Cancel Train":
 			departingTrain = null;
+			spurLine = null;
 			
 			trainInfo.removeAll();
-			trainInfo.repaint();
-			DriverButtonEnable(false);
-			
 			shuntInfo.removeAll();
-			spurCarriages = null;
+			trainInfo.repaint();
+			shuntInfo.repaint();
 			
+			DriverButtonEnable(false);
+					
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(false);
 			shuntTrain.setVisible(false);
+			
 			trainWeight = 0;
 			trainPower = 0;
 			leftBehind = 0;
 			onBoard = 0;
 			seats = 0;
 			UpdateTrainStatistics();
+			
 			driver.repaint();
 			
 			break;
@@ -774,7 +778,6 @@ public class testGUI extends JFrame implements ActionListener {
 				Integer passengersAlighting = Integer.parseInt(alightPassengersInput.getText());
 				departingTrain.alight(passengersAlighting);
 				onBoard = departingTrain.numberOnBoard();
-				onBoard = departingTrain.numberOnBoard();
 				UpdateTrainStatistics();
 				RedrawTrainImage(departingTrain, trainInfo);
 			} catch (TrainException trainException) {
@@ -787,29 +790,14 @@ public class testGUI extends JFrame implements ActionListener {
 			Integer powerClass = powerClassInput.getSelectedIndex() + 1;
 			String engineType = engineTypeInput.getSelectedItem().toString().substring(0, 1);
 			trainWeight += grossWeight;
-			// construct and add locomotive panel
-			File locoImgFile = null;
-			switch(engineType){
-			case "D":
-				locoImgFile = new File("rsc/diesel.jpg");
-				break;
-			case "E":
-				locoImgFile = new File("rsc/electric.jpg");
-				break;
-			case "S":
-				locoImgFile = new File("rsc/steam.jpg");
-				break;
-			}
 			String classification = powerClass + engineType;
 			try {
 				Locomotive loco = new Locomotive(grossWeight, classification);
 				departingTrain.addCarriage(loco);
-				TrainGraphics locomotive = new TrainGraphics(locoImgFile, 
-												trainInfo.getComponentCount() + 1, loco.toString());
-				trainInfo.add(locomotive);
-				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
 				trainPower = loco.power();
 				UpdateTrainStatistics();
+				RedrawTrainImage(departingTrain, trainInfo);
+				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
 				this.pack();
 				DriverButtonEnable(true);
 				trainInfo.repaint();
@@ -837,16 +825,13 @@ public class testGUI extends JFrame implements ActionListener {
 				// construct and add carriage panel
 				PassengerCar passengerCar = new PassengerCar(grossWeightPassenger, numberOfSeats);
 				departingTrain.addCarriage(passengerCar);
-				File passengerImgFile = new File("rsc/passenger.jpg");
-				TrainGraphics passengerCarriage = new TrainGraphics(passengerImgFile, 
-												trainInfo.getComponentCount() + 1, passengerCar.toString());
-				trainInfo.add(passengerCarriage);
-				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
-				ButtonDisableAddCarriage(true);
-				this.pack();
 				trainWeight += passengerCar.getGrossWeight();
 				seats = departingTrain.numberOfSeats();
 				UpdateTrainStatistics();
+				RedrawTrainImage(departingTrain, trainInfo);
+				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
+				ButtonDisableAddCarriage(true);
+				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
 				JOptionPane.showMessageDialog(null, e1);
@@ -859,17 +844,12 @@ public class testGUI extends JFrame implements ActionListener {
 			try {
 				FreightCar freightCar = new FreightCar(grossWeightFreight, goodsType);
 				departingTrain.addCarriage(freightCar);
-				File freightImgFile = new File("rsc/freight.jpg");
-				TrainGraphics freightCarriage = new TrainGraphics(freightImgFile, 
-						trainInfo.getComponentCount() + 1, freightCar.toString());
-				ButtonDisableAddCarriage(true);
-				trainInfo.add(freightCarriage);
-				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
-				
 				trainWeight += freightCar.getGrossWeight();
-				
 				UpdateTrainStatistics();
-				
+				RedrawTrainImage(departingTrain, trainInfo);
+				ButtonDisableAddCarriage(true);
+				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
+				UpdateTrainStatistics();
 				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
@@ -878,11 +858,17 @@ public class testGUI extends JFrame implements ActionListener {
 			break;
 		case "Shunt Train Now":	
 			shuntInfo.setVisible(true);
-			spurCarriages = new ArrayList<RollingStock>();
-			spurCarriagePanels = new ArrayList<Component>();
+			spurLine = new DepartingTrain();
 			// Get number of RollingStock carriages to iterate through
 			shuntNumber = shuntIndexInput.getSelectedIndex();
 			int carriagesToRemove = 0;
+			
+			// Locomotive to Move the Trains ;)
+			try {
+				spurLine.addCarriage(new Locomotive(1,"9D"));
+			} catch (TrainException trainException) {
+				JOptionPane.showMessageDialog(null, trainException);
+			}
 			
 			// ACTUAL TRAIN: Remove carriages from train and add to spur track
 			for (int i = 0; i <= shuntNumber; i++) {
@@ -890,7 +876,11 @@ public class testGUI extends JFrame implements ActionListener {
 			}
 			
 			for (int i = shuntNumber + 1; i < trainInfo.getComponentCount(); i++) {
-				spurCarriages.add(departingTrain.nextCarriage());
+				try {
+					spurLine.addCarriage(departingTrain.nextCarriage());
+				} catch (TrainException trainException) {
+					JOptionPane.showMessageDialog(null, trainException);
+				}
 				carriagesToRemove++;
 			}
 			
@@ -904,17 +894,10 @@ public class testGUI extends JFrame implements ActionListener {
 			shuntTrainButton.setEnabled(false);
 			joinTrainButton.setEnabled(true);
 			
-			// VISUAL REPRESENTATION OF TRAIN: Remove from train and add to spur track
-			for (int i = trainInfo.getComponentCount() - 1; i > shuntNumber; i-- ) {
-				spurCarriagePanels.add(trainInfo.getComponent(i));
-				trainInfo.remove(i);
-			}
-			
-			for (int i = spurCarriagePanels.size() - 1; i >= 0; i--) {
-				shuntInfo.add(spurCarriagePanels.get(i));
-			}
-			
 			UpdateTrainStatistics();
+			RedrawTrainImage(departingTrain, trainInfo);
+			RedrawTrainImage(spurLine, shuntInfo);
+			
 			shuntInfo.repaint();
 			trainInfo.repaint();
 		}
