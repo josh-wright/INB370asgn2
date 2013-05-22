@@ -2,14 +2,14 @@ package asgn2GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.util.ArrayList;
+//import java.io.File;
+//import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import asgn2Exceptions.*;
-import asgn2RollingStock.*;
-import asgn2Train.*;
+//import asgn2Exceptions.*;
+//import asgn2RollingStock.FreightCar;
+//import asgn2Train.*;
 
 /**
  * 
@@ -21,7 +21,7 @@ public class DepartingTrainGUImkII extends JFrame implements ActionListener {
 	/* CONSTANTS ************************************************ */
 	private static final long serialVersionUID = 4687087442125954015L;
 	private static final Font TITLE_MAIN_FONT = new Font("Verdana", Font.BOLD, 20);
-	private static final Font TITLE_SUB_FONT = new Font("Verdana", Font.BOLD, 14);
+	//private static final Font TITLE_SUB_FONT = new Font("Verdana", Font.BOLD, 14);
 	private static final Font INFO_FONT = new Font("Verdana", Font.BOLD, 12);
 	private static final Dimension BUTTON_SIZE = new Dimension(200,30);
 	/* ********************************************************** */

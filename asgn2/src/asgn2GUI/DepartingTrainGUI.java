@@ -767,7 +767,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 				currentCarriage = departingTrain.nextCarriage();
 				currentCarriagePanel = (TrainGraphics) trainInfo.getComponent(i);
 				if (currentCarriage.getClass() == PassengerCar.class) {						
-					currentCarriage = currentCarriage;
+					currentCarriage = (PassengerCar)currentCarriage;
 					currentCarriageString = currentCarriage.toString();
 					currentCarriagePanel.setStringLabel(currentCarriageString);
 				}
