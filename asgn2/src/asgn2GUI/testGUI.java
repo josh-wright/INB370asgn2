@@ -7,8 +7,12 @@ package asgn2GUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import asgn2Exceptions.*;
@@ -748,78 +752,35 @@ public class testGUI extends JFrame implements ActionListener {
 			alightPassengers.setVisible(false);
 			break;
 		case "Board Now":
-			currentCarriage = departingTrain.firstCarriage();
-			newPanels = new ArrayList<Component>();			
-			carriagePanelCount = trainInfo.getComponentCount();
-			
 			try {
 				Integer passengersBoarding = Integer.parseInt(boardPassengersInput.getText());
 				leftBehind = departingTrain.board(passengersBoarding);
-				onBoard = departingTrain.numberOnBoard();
-				UpdateTrainStatistics();
 				train.repaint();
 				alightPassengersButton.setEnabled(true);
+				onBoard = departingTrain.numberOnBoard();
+				UpdateTrainStatistics();
+				RedrawTrainImage(departingTrain, trainInfo);
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
-				
-			// update labels after passengers are added
-			for (int i = 0; i < carriagePanelCount; i++) {
-				currentCarriage = departingTrain.nextCarriage();
-				currentCarriagePanel = (TrainGraphics) trainInfo.getComponent(i);
-				if (currentCarriage.getClass() == PassengerCar.class) {						
-					currentCarriage = (PassengerCar)currentCarriage;
-					currentCarriageString = currentCarriage.toString();
-					currentCarriagePanel.setStringLabel(currentCarriageString);
-				}
-				newPanels.add(currentCarriagePanel);
-			}
-			trainInfo.removeAll();
-		
-			// NEW PANELS (CARRIAGES WITH UPDATED TO STRINGS) NOT BEING ADDED **** (RD)
-			for (int i = 0; i < newPanels.size(); i++) {
-				trainInfo.add(newPanels.get(i));
-			}
 			
-			trainInfo.repaint();
 			break;
 		case "Alight Passengers":
 			alightPassengers.setVisible(true);
 			boardPassengers.setVisible(false);
 			break;
 		case "Alight Now":
-			currentCarriage = departingTrain.firstCarriage();
-			newPanels = new ArrayList<Component>();			
-			carriagePanelCount = trainInfo.getComponentCount();
-			
 			try {
 				Integer passengersAlighting = Integer.parseInt(alightPassengersInput.getText());
 				departingTrain.alight(passengersAlighting);
 				onBoard = departingTrain.numberOnBoard();
+				onBoard = departingTrain.numberOnBoard();
 				UpdateTrainStatistics();
-				train.repaint();
+				RedrawTrainImage(departingTrain, trainInfo);
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
-				
-			// update labels after passengers are added
-			for (int i = 0; i < carriagePanelCount; i++) {
-				currentCarriage = departingTrain.nextCarriage();
-				currentCarriagePanel = (TrainGraphics) trainInfo.getComponent(i);
-				if (currentCarriage.getClass() == PassengerCar.class) {						
-					currentCarriage = (PassengerCar)currentCarriage;
-					currentCarriageString = currentCarriage.toString();
-					currentCarriagePanel.setStringLabel(currentCarriageString);
-				}
-				newPanels.add(currentCarriagePanel);
-			}
-			trainInfo.removeAll();
-		
-			// NEW PANELS (CARRIAGES WITH UPDATED TO STRINGS) NOT BEING ADDED **** (RD)
-			for (int i = 0; i < newPanels.size(); i++) {
-				trainInfo.add(newPanels.get(i));
-			}
-			trainInfo.repaint();
+	
 			break;
 		case "Add Locomotive":
 			Integer grossWeight = Integer.parseInt(grossWeightInput.getText());
@@ -1055,5 +1016,79 @@ public class testGUI extends JFrame implements ActionListener {
 		} else {
 			trainLeftBehindLabel.setForeground(Color.black);
 		}
+	}
+	
+	/**
+	 * Drops and Redraws Train Info
+	 * @author Joshua Wright (n6366066)
+	 * @param carriage
+	 * @param carriageNo
+	 * @return
+	 */
+	private void RedrawTrainImage(DepartingTrain train, JPanel panel){
+		RollingStock carriage = train.firstCarriage();
+		File imgFile = null;
+		String carriageLabel = null;
+		BufferedImage image = null;
+		Integer carriageNo = 1;
+		
+		panel.removeAll();
+		
+		while (carriage != null){		
+			if (carriage.getClass() == PassengerCar.class){
+				imgFile = new File("rsc/passenger.jpg");
+				carriageLabel = ((PassengerCar)carriage).toString();
+			} else if (carriage.getClass() == FreightCar.class){
+				imgFile = new File("rsc/freight.jpg");
+				carriageLabel = ((FreightCar)carriage).toString();
+			} else if (carriage.getClass() == Locomotive.class){
+				Locomotive loco = (Locomotive) carriage;
+				carriageLabel = loco.toString();
+				char[] type = loco.classification.toCharArray();
+				switch(type[type.length-1]){
+				case 'D':
+					imgFile = new File("rsc/diesel.jpg");
+					break;
+				case 'E':
+					imgFile = new File("rsc/electric.jpg");
+					break;
+				case 'S':
+					imgFile = new File("rsc/steam.jpg");
+					break;
+				}
+			} else {
+				new TrainException("Not a Valid Carriage Type!");
+			}
+			
+			try {                
+				image = ImageIO.read(imgFile);
+		    } catch (IOException ex) {
+		        JOptionPane.showMessageDialog(null,"Image File Not Found: " + imgFile); 
+		    }
+			//JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(90, 90, 0)));
+			JLabel imageLabel = new JLabel(new ImageIcon(image));
+			JLabel infoLabelBottom = new JLabel(carriageLabel);
+			JLabel infoLabelTop = new JLabel("Carriage No: " + carriageNo);
+			SpringLayout layout = new SpringLayout();
+			
+			JPanel carriagePanel = new JPanel();
+			carriagePanel.setLayout(layout);
+			carriagePanel.add(infoLabelTop);
+			carriagePanel.add(imageLabel);
+			carriagePanel.add(infoLabelBottom);
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, imageLabel, 0, SpringLayout.HORIZONTAL_CENTER, carriagePanel);
+			layout.putConstraint(SpringLayout.VERTICAL_CENTER, imageLabel, 0, SpringLayout.VERTICAL_CENTER, carriagePanel);
+			//imageLabel.setPreferredSize(new Dimension(90,90));
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, infoLabelTop, 0, SpringLayout.HORIZONTAL_CENTER, carriagePanel);
+			layout.putConstraint(SpringLayout.SOUTH, infoLabelTop, 0, SpringLayout.NORTH, imageLabel);
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, infoLabelBottom, 0, SpringLayout.HORIZONTAL_CENTER, carriagePanel);
+			layout.putConstraint(SpringLayout.NORTH, infoLabelBottom, 0, SpringLayout.SOUTH, imageLabel);
+			carriagePanel.setBackground(Color.WHITE);
+			panel.add(carriagePanel);
+			
+			carriageNo++;
+			carriage = departingTrain.nextCarriage();
+		}
+		
 	}
 }
