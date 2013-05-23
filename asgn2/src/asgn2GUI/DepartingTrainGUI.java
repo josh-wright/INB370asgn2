@@ -855,9 +855,9 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			while (carriage != null) {
 				try {
 					spurLine.addCarriage(carriage);
+					trainWeight -= carriage.getGrossWeight();
 					carriage = departingTrain.nextCarriage();
 					removeIterator++;
-					trainWeight -= carriage.getGrossWeight();
 				} catch (TrainException e1) {
 					JOptionPane.showMessageDialog(null, e1);
 				}
