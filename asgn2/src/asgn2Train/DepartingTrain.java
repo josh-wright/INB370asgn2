@@ -119,34 +119,7 @@ public class DepartingTrain {
 		return remainingPassengers;
 	}
 	
-	/**
-	 * Remove passengers from train
-	 * @param (Integer) alightPassengers - the number of passengers wanting to board the train
-	 * @throws TrainException if passengers boarding is negative
-	 */
-	public void alight(Integer alightPassengers)
-            throws TrainException {	
-		Integer tempCurrentCarriage = currentCarriage;
-		firstCarriage(); //Skip Loco
-		if (alightPassengers <= numberOnBoard()){
-			for (int i = 0; i < departingTrain.size() - 1; i++){
-				RollingStock carriage = nextCarriage();
-				if (carriage.getClass() == PassengerCar.class){
-					PassengerCar passengerCarriage = (PassengerCar) carriage;
-					if (alightPassengers > passengerCarriage.numberOnBoard()) {
-						Integer alight = alightPassengers - passengerCarriage.numberOnBoard();
-						alightPassengers -= alight;
-						passengerCarriage.alight(alight);
-					} else {
-						
-					}
-				}
-			}
-		} else {
-			throw new TrainException("Trying to alight too many passengers!");
-		}
-		currentCarriage = tempCurrentCarriage;
-	}
+	
 	
 	/**
 	 * @return
