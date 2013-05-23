@@ -15,7 +15,7 @@ import asgn2RollingStock.RollingStock;
  */
 public class DepartingTrain {
 	
-	// initialise private variables
+	// initialize private variables
 	private ArrayList<RollingStock> departingTrain;
 	private Integer currentCarriage = -1;
 	
@@ -159,7 +159,7 @@ public class DepartingTrain {
 			weight += nextCarriage().getGrossWeight();
 		}
 		
-		if (power > weight) { return true; } else { return false; }
+		if (power >= weight) { return true; } else { return false; }
 	}
 	
 	/**
