@@ -709,6 +709,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		case "Remove Last Carriage":
 			try {
 				departingTrain.removeCarriage();
+				// << cycle through and get weight of last carriage
 				trainInfo = RedrawTrainImage(departingTrain, trainInfo);
 				UpdateTrainStatistics();
 			} catch (TrainException trainException) {
