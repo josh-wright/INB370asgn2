@@ -11,9 +11,9 @@ import asgn2Exceptions.TrainException;
  */
 public class PassengerCar extends RollingStock {
 	
-	private final static Integer MinimumBoard = 0;
-	private final static Integer MinimumDeparture = 0;
-	private static final Integer MinimumSeats = 0;
+	private final static Integer BOARD_MIN = 1;
+	private final static Integer ALIGHT_MIN = 1;
+	private static final Integer SEATS_MIN = 0; //Spec says ok????
 	
 	private Integer numberOfSeats = 0;
 	private Integer numberOnBoard = 0;
@@ -22,12 +22,15 @@ public class PassengerCar extends RollingStock {
 	 * Construct passenger car
 	 * @param Integer grossWeight - the gross weight of the passenger car
 	 * @param numberOfSeats - the number of passenger seats in the car
-	 * @throws TrainException if grossWeight zero or less or number of seats is negative
+	 * @throws TrainException if grossWeight zero or less or number of seats 
+	 * is negative
 	 */
-	public PassengerCar(Integer grossWeight, Integer numberOfSeats) throws TrainException {
+	public PassengerCar(Integer grossWeight, Integer numberOfSeats) 
+			throws TrainException {
 		super(grossWeight);
-		if (numberOfSeats < MinimumSeats) {
-			throw new TrainException("Seats may not be less than " +  MinimumSeats + ".");
+		if (numberOfSeats < SEATS_MIN) {
+			throw new TrainException("Seats may not be less than " +  
+					SEATS_MIN + ".");
 		} 
 		this.numberOfSeats = numberOfSeats;
 	}
@@ -40,26 +43,29 @@ public class PassengerCar extends RollingStock {
 	 */
 	public void alight(Integer departingPassengers) throws TrainException {
 		if (departingPassengers > numberOnBoard()) {
-			throw new TrainException("Number of passengers alighting cannot exceed number on board");
-		} else if (departingPassengers < MinimumDeparture) {
-			throw new TrainException("Number of passengers alighting cannot be less than " +
-									  MinimumDeparture + ".");
+			throw new TrainException("Number of passengers alighting cannot " +
+					"exceed number on board");
+		} else if (departingPassengers < ALIGHT_MIN) {
+			throw new TrainException("Number of passengers alighting cannot " +
+					"be less than " + ALIGHT_MIN + ".");
 		}
 		numberOnBoard -= departingPassengers;
 	}
 	
 	/**
 	 * Allow passengers to board the train
-	 * @param Integer newPassengers - number of passengers wanting to board the train
-	 * @return Integer - number of passengers that were unable to board due lack of seats
+	 * @param (Integer) newPassengers - number of passengers wanting to board the
+	 * 		  train
+	 * @return (Integer) number of passengers that were unable to board due lack
+	 * 		   of seats
 	 * @throws TrainException if negative passengers try to board the train
 	 */
 	public Integer board(Integer newPassengers) throws TrainException {
-		final int zeroExcess = 0;
+		final int ZERO_EXCESS = 0;
 		
-		if (newPassengers < MinimumBoard) {
+		if (newPassengers < BOARD_MIN) {
 			throw new TrainException("Number of passengers boarding must be greater than " + 
-									  MinimumBoard + ".");
+									  BOARD_MIN + ".");
 		}
 		
 		if (numberOnBoard() + newPassengers > numberOfSeats) {
@@ -68,7 +74,7 @@ public class PassengerCar extends RollingStock {
 			return excessPassengers;
 		} else {
 			numberOnBoard += newPassengers;
-			return zeroExcess;
+			return ZERO_EXCESS;
 		}	
 	}
 	
@@ -93,7 +99,8 @@ public class PassengerCar extends RollingStock {
 	 */
 	@Override
 	public String toString() {
-		return "Passenger(" + this.numberOnBoard() + "/" + this.numberOfSeats() + ")";
+		return "Passenger(" + this.numberOnBoard() + "/" + this.numberOfSeats()
+				+ ")";
 	}
 	
 }
