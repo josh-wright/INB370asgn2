@@ -9,9 +9,11 @@ import asgn2RollingStock.PassengerCar;
 import asgn2RollingStock.RollingStock;
 
 /**
- *
+ * DepartingTrain.java
+ * Provides functionality to a departing train
+ * contains rolling strock
  * @author Robert Dempsey (Student Number: N5400872)
- * @author JoshuaWright(n6366066)
+ * @author Joshua Wright(n6366066)
  */
 public class DepartingTrain {
 	
@@ -31,12 +33,12 @@ public class DepartingTrain {
 	 * @return RollingStock - first carriage of train
 	 */
 	public RollingStock firstCarriage() {
-		final Integer firstCarriage = 0;
-		currentCarriage = firstCarriage;
+		final Integer FIRST_CARRIAGE = 0;
+		currentCarriage = FIRST_CARRIAGE;
 
 		// return first carriage or null if none exists
 		try {
-			return departingTrain.get(firstCarriage);
+			return departingTrain.get(FIRST_CARRIAGE);
 		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
