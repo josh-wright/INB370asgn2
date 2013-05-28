@@ -9,9 +9,7 @@ import static org.junit.Assert.*;
 /**
  * RollingStock Test Class
  * Test interactions of the RollingStock class for expected outcomes
- * 
- * @author JoshuaWright(n6366066@student.qut.edu.au)
- *
+ * @author Joshua Wright (n6366066)
  */
 public class RollingStockTests {
 
@@ -600,15 +598,15 @@ public class RollingStockTests {
 	 */
 	@Test
 	public void testExcessPassengersNotAllowedToBoard() throws TrainException {
-		final Integer grossWeight = 90;
-		final Integer numberOfSeats = 20;
-		final Integer boarding = 40;
+		final Integer GROSS_WEIGHT= 90;
+		final Integer NUMBER_OF_SEATS = 20;
+		final Integer BOARDING = 40;
 
-		PassengerCar passengerCar = new PassengerCar(grossWeight, numberOfSeats);
+		PassengerCar passengerCar = new PassengerCar(GROSS_WEIGHT, NUMBER_OF_SEATS);
 				
-		passengerCar.board(boarding);
+		passengerCar.board(BOARDING);
 		
-		assertEquals(numberOfSeats, passengerCar.numberOnBoard());
+		assertEquals(NUMBER_OF_SEATS, passengerCar.numberOnBoard());
 	}
 	
 	/**
@@ -619,14 +617,14 @@ public class RollingStockTests {
 	 */
 	@Test
 	public void testBoardReturnsZeroIfCarriageNotFull() throws TrainException {
-		final Integer grossWeight = 90;
-		final Integer numberOfSeats = 20;
-		final Integer boarding = 15;
-		final Integer remainder = 0;
+		final Integer GROSS_WEIGHT= 90;
+		final Integer NUMBER_OF_SEATS = 20;
+		final Integer BOARDING = 15;
+		final Integer REMAINDER = 0;
 		
-		PassengerCar passengerCar = new PassengerCar(grossWeight, numberOfSeats);
+		PassengerCar passengerCar = new PassengerCar(GROSS_WEIGHT, NUMBER_OF_SEATS);
 			
-		assertEquals(remainder, passengerCar.board(boarding));
+		assertEquals(REMAINDER, passengerCar.board(BOARDING));
 	}
 	
 }
