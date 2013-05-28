@@ -6,11 +6,13 @@ package asgn2RollingStock;
 import asgn2Exceptions.TrainException;
 
 /**
- * @author Robert Dempsey (Student Number: N5400872)
- *
+ * RollingStock.java 
+ * Implements global functions for RollingStock class 
+ * @author Joshua Wright (n6366066)
+ * @author Robert Dempsey (n5400872)
  */
 public abstract class RollingStock extends Object {
-	private static final Integer FreightLowerLimit = 1;
+	private static final Integer GROSSWEIGHT_MIN = 1;
 	
 	private Integer grossWeight;	
 	
@@ -20,10 +22,11 @@ public abstract class RollingStock extends Object {
 	 * @throws TrainException if gross weight is 0 or less
 	 */
 	public RollingStock(Integer grossWeight) throws TrainException {
-		if (grossWeight < FreightLowerLimit) {
-			throw new TrainException("Freight must be greater than zero (0)");
+		if (grossWeight < GROSSWEIGHT_MIN) {
+			throw new TrainException("Gross Weight must be greater than zero (0)");
+		} else {
+			this.grossWeight = grossWeight;
 		}
-		this.grossWeight = grossWeight;
 	}
 	
 	
