@@ -1,28 +1,36 @@
-/**
- * 
- */
 package asgn2RollingStock;
 
 import asgn2Exceptions.TrainException;
 
 /**
+ * A passenger car is designed to carry people and has a fixed
+ * seating capacity.  We assume that the train is a long-distance
+ * one in which all passengers are assigned a seat (unlike your 
+ * peak-hour, metropolitan commuting experience!).
+ * 
  * @author Robert Dempsey (Student Number: N5400872)
+ * @version 1.0
+ *
  */
 public class PassengerCar extends RollingStock {
 	
-	private final static Integer BOARD_MIN = 1;
-	private final static Integer ALIGHT_MIN = 1;
-	private static final Integer SEATS_MIN = 0; //Spec says ok????
+	private final static Integer BOARD_MIN = 0;
+	private final static Integer ALIGHT_MIN = 0;
+	private static final Integer SEATS_MIN = 0; 
 	
 	private Integer numberOfSeats = 0;
 	private Integer numberOnBoard = 0;
 
 	/**
-	 * Construct passenger car
-	 * @param Integer grossWeight - the gross weight of the passenger car
-	 * @param numberOfSeats - the number of passenger seats in the car
-	 * @throws TrainException if grossWeight zero or less or number of seats 
-	 * is negative
+	 * Constructs a passenger car with a known weight and a
+	 * fixed number of seats.  (We allow a passenger car to have
+	 * zero seats, although it would not be very useful.)
+	 * 
+	 * @param grossWeight the carriage's gross weight in tonnes (ignoring the
+	 * weight of passengers, which we treat as negligible)
+	 * @param numberOfSeats how many seats are available in the carriage
+	 * @throws TrainException if the gross weight is not positive or if the
+	 * number of seats is negative
 	 */
 	public PassengerCar(Integer grossWeight, Integer numberOfSeats) 
 			throws TrainException {
@@ -35,10 +43,14 @@ public class PassengerCar extends RollingStock {
 	}
 	
 	/**
-	 * Allows passengers to leave the train
-	 * @param Integer departingPassengers - the number of passengers leaving the train
-	 * @throws TrainException if more passengers than are on board try to leave, 
-	 * or if negative passengers try to leave
+	 * Removes the given number of passengers from this carriage.  Attempting
+	 * to remove more passengers than are on board is not allowed.
+	 * 
+	 * @param departingPassengers the number of passengers alighting
+	 * from the carriage
+	 * @throws TrainException if the number of departing passengers is
+	 * negative or if the number of departing passengers exceeds the
+	 * number on board
 	 */
 	public void alight(Integer departingPassengers) throws TrainException {
 		if (departingPassengers > numberOnBoard()) {
@@ -52,12 +64,15 @@ public class PassengerCar extends RollingStock {
 	}
 	
 	/**
-	 * Allow passengers to board the train
-	 * @param (Integer) newPassengers - number of passengers wanting to board the
-	 * 		  train
-	 * @return (Integer) number of passengers that were unable to board due lack
-	 * 		   of seats
-	 * @throws TrainException if negative passengers try to board the train
+	 * Adds the given number of new passengers to the number on board the
+	 * carriage.  If there are too many new passengers for the number of
+	 * spare seats the left over people are not boarded.
+	 * 
+	 * @param newPassengers the number of people who wish to board
+	 * the carriage
+	 * @return the number of people who were unable to board the
+	 * carriage because they couldn't get a seat
+	 * @throws TrainException if the number of new passengers is negative
 	 */
 	public Integer board(Integer newPassengers) throws TrainException {
 		final int ZERO_EXCESS = 0;
@@ -79,23 +94,32 @@ public class PassengerCar extends RollingStock {
 	}
 	
 	/**
-	 * Get number of passenger seats on carriage
-	 * @return Integer - number of seats
+	 * Returns the number of seats installed on this carriage.
+	 * 
+	 * @return the number of seats on this carriage
 	 */
 	public Integer numberOfSeats() {
 		return numberOfSeats;
 	}
 	
 	/**
-	 * Get number of passengers currently on board
-	 * @return Integer - number of passengers on board
+	 * Returns the number of passengers currently on board
+	 * this carriage.
+	 * 
+	 * @return the number of passengers on board
 	 */
 	public Integer numberOnBoard() {
 		return numberOnBoard;
 	}
 
-	/* (non-Javadoc)
-	 * @see asgn2RollingStock.RollingStock#toString()
+	/**
+	 * Returns a human-readable description of the passenger car.  This has the form
+	 * "<code>Passenger(</code><em>x</em><code>/</code><em>y</em><code>)</code>" where
+	 * <em>x</em> is the number of passengers currently on
+	 * board and <em>y</em> is the number of seats in the carriage.
+	 * 
+	 * 
+	 * @return a human-readable description of the passenger car
 	 */
 	@Override
 	public String toString() {

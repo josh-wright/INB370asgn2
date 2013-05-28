@@ -9,11 +9,40 @@ import asgn2RollingStock.PassengerCar;
 import asgn2RollingStock.RollingStock;
 
 /**
- * DepartingTrain.java
- * Provides functionality to a departing train
- * contains rolling strock
- * @author Robert Dempsey (Student Number: N5400872)
+ * <p>
+ * A train is a sequence of carriages.  This class
+ * defines various operations that can be performed to prepare a
+ * long-distance train for departure.
+ * </p><p>
+ * We assume that a train can be assembled from any available
+ * rolling stock, including locomotives, passenger cars and
+ * freight cars.  However, they may be configured in only a certain
+ * sequence:</p>
+ * <ol>
+ * <li>The first carriage must be a locomotive (and there can be only
+ * one locomotive per train).</li>
+ * <li>This may be followed by zero or more passenger cars.</li>
+ * <li>These may be followed by zero or more freight cars.</li>
+ * </ol>
+ * <p>
+ * Any other configurations of rolling stock are disallowed.
+ * </p><p>
+ * The process of preparing the train for departure occurs in
+ * two stages:
+ * </p>
+ * <ol>
+ * <li>The train is assembled from individual carriages.  New
+ * carriages may be added to the rear of the train only.
+ * (Similarly, carriages may be removed from the rear of the train
+ * only.)</li>
+ * <li>Passengers board the train.  For safety reasons, no
+ * carriage shunting operations may be performed when any passengers
+ * are on board the train.</li>
+ * </ol>
+ * 
+ * @author Robert Dempsey (N5400872)
  * @author Joshua Wright(n6366066)
+ * @version 1.0
  */
 public class DepartingTrain {
 	
@@ -22,15 +51,29 @@ public class DepartingTrain {
 	private Integer currentCarriage = -1;
 	
 	/**
-	 * Constructs train with no rolling stock attached
+	 * Constructs a (potential) train object containing no carriages
+	 * (yet).
+	 *
+	 * @author Robert Dempsey (N5400872)
 	 */
 	public DepartingTrain() {
 		departingTrain = new ArrayList<RollingStock>();
 	}
 	
 	/**
-	 * Get first carriage of train
-	 * @return RollingStock - first carriage of train
+	 * <p>Returns the first carriage on the train (which must be a
+	 * locomotive).  Special value <code>null</code> is returned
+	 * if there are no carriages on the train at all.
+	 * </p><p>
+	 * NB: When combined with method <code>nextCarriage</code>, this
+	 * method gives us a simple ability to iteratively examine each of the
+	 * train's carriages.
+	 * </p>
+	 * 
+	 * @return the first carriage in the train, or <code>null</code> if
+	 * there are no carriages
+	 *
+	 * @author Robert Dempsey (N5400872)
 	 */
 	public RollingStock firstCarriage() {
 		final Integer FIRST_CARRIAGE = 0;
@@ -45,8 +88,26 @@ public class DepartingTrain {
 	}
 	
 	/**
-	 * Get carriage after previously determined carriage
-	 * @return RollingStock - next carriage
+	 * Returns the next carriage in the train after the one returned
+	 * by the immediately preceding call to either this method or
+	 * method <code>firstCarriage</code>.  Special value <code>null</code>
+	 * is returned if there is no such carriage.  If there has been no
+	 * preceding call to either <code>firstCarriage</code> or
+	 * <code>nextCarriage</code>, this method behaves like
+	 * <code>firstCarriage</code>, i.e., it
+	 * returns the first carriage in the train, if any.
+	 * </p><p>
+	 * NB: When combined with method <code>firstCarriage</code>, this
+	 * method gives us a simple ability to iteratively examine each of the
+	 * train's carriages.
+	 * </p>
+	 *  
+	 * @return the train's next carriage after the one returned by the
+	 * immediately preceding call to either <code>firstCarriage</code> or
+	 * <code>nextCarriage</code>, or <code>null</code> if there is no
+	 * such carriage
+	 * 
+	 * @author Robert Dempsey (N5400872)
 	 */
 	public RollingStock nextCarriage() {
 		currentCarriage++;
@@ -60,8 +121,12 @@ public class DepartingTrain {
 	}
 	
 	/**
-	 * Get number of passengers on board whole train
-	 * @return Integer of number of passengers currently on board
+	 * Returns the total number of passengers currently on the train,
+	 * counting all passenger cars.
+	 * 
+	 * @return the number of passengers on the train
+	 * 
+	 * @author Robert Dempsey (N5400872)
 	 */
 	public Integer numberOnBoard() {
 		int noOnBoard = 0;
@@ -76,8 +141,12 @@ public class DepartingTrain {
 	}
 	
 	/**
-	 * Get total number of passenger seats on the train
-	 * @return Integer - Number of seats on the train
+	 * Returns the total number of seats on the train (whether occupied
+	 * or not), counting all passenger cars.
+	 * 
+	 * @return the number of seats on the train
+	 * 
+	 * @author Robert Dempsey (N5400872)
 	 */
 	public Integer numberOfSeats() {
 		int noOfSeats = 0;
@@ -91,11 +160,18 @@ public class DepartingTrain {
 		return noOfSeats;
 	}
 	
+	 
 	/**
-	 * Add passengers to train
-	 * @param Integer newPassengers - the number of passengers wanting to board the train
-	 * @return Integer - number of passengers that could not fit on the train
-	 * @throws TrainException if passengers boarding is negative
+	 * Adds the given number of people to passenger carriages on
+	 * the train.  We do not specify where the passengers must sit, so
+	 * they can be allocated to any vacant seat in any passenger car.
+	 * 
+	 * @param newPassengers the number of people wish to board the train
+	 * @return the number of people who were unable to board the train because
+	 * they couldn't get a seat
+	 * @throws TrainException if the number of new passengers is negative
+	 * 
+	 * @author Joshua Wright(n6366066)
 	 */
 	public Integer board(Integer newPassengers)
             throws TrainException {
@@ -124,7 +200,18 @@ public class DepartingTrain {
 	
 	
 	/**
-	 * @return
+	 * <p>
+	 * Returns whether or not the train is capable of moving.  A train
+	 * can move if its locomotive's pulling power equals or exceeds the
+	 * train's total weight (including the locomotive itself).
+	 * </p><p>
+	 * In the degenerate case of a "train" which doesn't have any rolling
+	 * stock at all yet, the method returns true.
+	 * </p>
+	 * 
+	 * @return true if the train can move (or contains no carriages), false otherwise
+	 *
+	 * @author Joshua Wright(n6366066)
 	 */
 	public boolean trainCanMove() {
 		Integer power = ((Locomotive) firstCarriage()).power();
@@ -138,10 +225,21 @@ public class DepartingTrain {
 	}
 	
 	/**
-	 * Add a carriage to the train
-	 * @param RollingStock newCarriage - carriage to be added to the train
-	 * @throws TrainException if passengers are currently on board or addition would result
-	 * in invalid train configuration
+	 * <p>Adds a new carriage to the end of the train.  However, a new
+	 * carriage may be added only if the resulting train configuration is
+	 * valid, as per the rules listed above.
+	 * Furthermore, shunting operations may
+	 * not be performed if there are passengers on the train.
+	 * </p><p>
+	 * <strong>Hint:</strong> You may find Java's in-built
+	 * <code>instanceof</code> operator useful when implementing this method
+	 * (and others in this class).</p>
+	 * 
+	 * @param newCarriage the new carriage to be added
+	 * @throws TrainException if adding the new carriage would produce an
+	 * invalid train configuration, or if there are passengers on the train
+	 *
+	 * @author Robert Dempsey (N5400872)
 	 */
 	public void addCarriage(RollingStock newCarriage)
             throws TrainException {
@@ -168,7 +266,15 @@ public class DepartingTrain {
 		departingTrain.add(newCarriage);
 	}
 	
-	 /**
+	/**
+	 * Removes the last carriage from the train.  (This may be the locomotive if
+	 * it is the only item of rolling stock on the train.)  However, shunting
+	 * operations may not be performed if there are passengers on the train.
+	 * 
+	 * @throws TrainException if there is no rolling stock on the "train", or
+	 * if there are passengers on the train.
+	 *
+	 * @author Joshua Wright(n6366066)
 	 * @throws TrainException
 	 */
 	public void removeCarriage()
@@ -182,8 +288,26 @@ public class DepartingTrain {
 		}
 	 }
 	 
-	 /* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * <p>
+	 * Returns a human-readable description of the entire train.  This has the
+	 * form of a hyphen-separated list of carriages, starting with the
+	 * locomotive on the left.  The description is thus a string
+	 * "<em>a</em><code>-</code><em>b</em><code>-</code>...<code>-</code><em>z</em>",
+	 * where <em>a</em> is the human-readable description of the first carriage
+	 * (the locomotive), <em>b</em> is the description of the second carriage,
+	 * etc, until the description of the last carriage <em>z</em>.  (Note that
+	 * there should be no hyphen after the last carriage.)  For example,
+	 * a possible train description may be
+	 * "<code>Loco(6D)-Passenger(13/24)-Passenger(16/16)-Freight(G)</code>".
+	 * </p><p>
+	 * In the degenerate case of a "train" with no carriages, the empty string is
+	 * returned.
+	 * </p>
+	 * 
+	 * @return a human-readable description of the entire train
+	 * 
+	 * @author Joshua Wright(n6366066)
 	 */
 	public String toString() {
 		String trainString = null;

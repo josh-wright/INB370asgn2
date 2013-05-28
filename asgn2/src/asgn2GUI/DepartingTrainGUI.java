@@ -3,7 +3,10 @@ package asgn2GUI;
 /**
  * DepartingTrainGUI.java 
  * Implementation of a Graphical User Interface for the DepartingTrain.java 
- * class
+ * class. Includes functionality for beginning an empty train, adding carriages
+ * removing the last carriage, shunting the train at any desired carriage link 
+ * and inserting a different valid carriage, boarding passengers and alighting
+ * passengers.
  * @author Joshua Wright (n6366066)
  * @author Robert Dempsey (n5400872)
  */
@@ -28,12 +31,17 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	private final int DEFAULT_PADDING_POS = 10;
 	private final int DEFAULT_PADDING_NEG = -10;
 	
+	// Declare Standard train
 	private DepartingTrain departingTrain;
+	// Declare Train on spur track
 	private DepartingTrain spurLine;
 	
+
 	
 	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
+	
+	// Declare layouts
 	private GridLayout baseLayout = new GridLayout(2,0);
 	private GridLayout trainInfoLayout = new GridLayout(1,20);
 	
@@ -46,6 +54,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	private SpringLayout boardPassengersLayout = new SpringLayout();
 	private SpringLayout alightPassengersLayout = new SpringLayout();
 	
+	// Declare global fields
 	private JPanel train;
 	private JPanel users;
 	private JPanel driver;
@@ -106,7 +115,14 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	private Integer trainPower = 0;
 	private Integer leftBehind = 0;
 	private Integer trainWeight = 0;
+	private boolean isShunted = false;
+	private Integer lastCarriageGrossWeight = 0;
 	
+	
+	/**
+	 * Constructs a DepartingTrainGUI
+	 * @param name - Name of the JFrame
+	 */
 	public DepartingTrainGUI(String name) {
 		super(name);
 		setResizable(true);
@@ -449,7 +465,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		addFreightButton.setEnabled(true);
 		addCarriage.add(addFreightButton);
 		
-		SetFreightVisible(false);
+		setFreightVisible(false);
 		
 		/****************************************************************************************************************************************************************/
 		/* PASSENGERCAR *******************************************/
@@ -488,7 +504,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		addPassengerButton.setEnabled(true);
 		addCarriage.add(addPassengerButton);
 		
-		SetPassengerVisible(false);
+		setPassengerVisible(false);
 		
 		/****************************************************************************************************************************************************************/
 		
@@ -566,8 +582,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		alightPassengersButton.setEnabled(true);
 		conductor.add(alightPassengersButton);
 		
-		// AlightPassengers Panel
-		
+		// AlightPassengers Panel		
 		alightPassengers = new JPanel();
 		alightPassengers.setLayout(alightPassengersLayout);
 		alightPassengers.setVisible(false);
@@ -577,8 +592,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		conductorLayout.putConstraint(SpringLayout.SOUTH, alightPassengers, DEFAULT_PADDING_NEG, SpringLayout.SOUTH, conductor);
 		conductor.add(alightPassengers);
 		
-		// AlightPassengers Label
-		
+		// AlightPassengers Title Label		
 		JLabel alightPassengersTitle = new JLabel("Alight Passengers");
 		alightPassengersTitle.setFont(new Font("Verdana", Font.BOLD, 14));
 		alightPassengersLayout.putConstraint(SpringLayout.NORTH, alightPassengersTitle, 14, SpringLayout.NORTH, alightPassengers);
@@ -640,6 +654,9 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		
 		switch(buttonString) {
 		case "Begin Train":
+			
+			// Construct new train and enable/disable appropriate
+			// buttons and panels
 			departingTrain = new DepartingTrain();
 			
 			beginTrain.setVisible(true);
@@ -650,41 +667,56 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			
 			break;
 		case "Cancel Train":
+			
+			// Nullify actual trains
 			departingTrain = null;
 			spurLine = null;
 			
+			// Remove all carraiges from screen
 			trainInfo.removeAll();
 			shuntInfo.removeAll();
 			trainInfo.repaint();
 			shuntInfo.repaint();
 			
-			DriverButtonEnable(false);
+			driverButtonEnable(false);
 					
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(false);
 			shuntTrain.setVisible(false);
+			boardPassengers.setVisible(false);
+			alightPassengers.setVisible(false);
 			
+			// Reset global variables
 			trainWeight = 0;
 			trainPower = 0;
 			leftBehind = 0;
-			UpdateTrainStatistics();
+			shuntIndexInput.removeAllItems();
+			updateTrainStatistics();
 			
 			driver.repaint();
 			
 			break;
 		case "Shunt Train":
+			
+			// enable/disable appropriate buttons and panels
+			boardPassengers.setVisible(false);
+			boardPassengersButton.setEnabled(false);
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(false);
 			shuntTrain.setVisible(true);
 			break;
 		case "Connect Shunted Train":
+			
+			isShunted = false;
+			
+			// enable/disable appropriate buttons and panels
 			beginTrain.setVisible(false);
 			addCarriage.setVisible(false);
 			shuntTrain.setVisible(false);
 			try {
 				RollingStock carriage = spurLine.firstCarriage();
 				carriage = spurLine.nextCarriage();
-				while (carriage!=null){
+				while (carriage != null){
 					departingTrain.addCarriage(carriage);
 					trainWeight += carriage.getGrossWeight();
 					carriage = spurLine.nextCarriage();
@@ -692,13 +724,14 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 				spurLine = null;
 				shuntInfo.removeAll();
 				shuntInfo.setVisible(false);
-				trainInfo = RedrawTrainImage(departingTrain, trainInfo);
-				UpdateTrainStatistics();	
+				trainInfo = redrawTrainImage(departingTrain, trainInfo);
+				updateTrainStatistics();	
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
 			joinTrainButton.setEnabled(false);
 			shuntTrainButton.setEnabled(true);
+			boardPassengersButton.setEnabled(true);
 			shuntInfo.setVisible(false);
 			trainInfo.repaint();
 			break;
@@ -710,24 +743,41 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			
 			break;
 		case "Remove Last Carriage":
+			final int oneCarriage = 1;
 			try {
+				departingTrain.firstCarriage();
+				
+				// Get last carriage's weight to update trainWeight
+				for (int i = 0; i < trainInfo.getComponentCount() - 1; i++) {
+					RollingStock carriage;
+					if (trainInfo.getComponentCount() == oneCarriage) {
+						carriage = departingTrain.firstCarriage();
+					} else {
+					carriage = departingTrain.nextCarriage(); 
+					}
+					lastCarriageGrossWeight = carriage.getGrossWeight();
+				}
+				
+				trainWeight -= lastCarriageGrossWeight;
 				departingTrain.removeCarriage();
-				// << cycle through and get weight of last carriage
-				trainInfo = RedrawTrainImage(departingTrain, trainInfo);
-				UpdateTrainStatistics();
+				// reset variables if all carriages removed
+				if (departingTrain.firstCarriage() == null) {
+					trainInfo.removeAll();
+					trainInfo.repaint();
+					beginTrain.setVisible(true);
+					addCarriage.setVisible(false);
+					driverButtonEnable(false);
+					newTrainButton.setEnabled(false);
+					resetTrainButton.setEnabled(true);
+					shuntIndexInput.removeAllItems();
+				} else {
+					trainInfo = redrawTrainImage(departingTrain, trainInfo);
+				}
+				updateTrainStatistics();
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			} catch (IndexOutOfBoundsException trainException) {
 				JOptionPane.showMessageDialog(null, "There are no carriages to remove.");
-			}
-			
-			/*If all carriages have been removed, set add locomotive pane visible, others to not visible 
-			 * and disable all buttons but cancel train */
-			if (trainInfo.getComponentCount()==0) {
-				beginTrain.setVisible(true);
-				addCarriage.setVisible(false);
-				shuntTrain.setVisible(false);
-				ButtonDisableNoCarriages(false); 				
 			}
 			break;
 		case "Board Passengers":
@@ -735,13 +785,15 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			alightPassengers.setVisible(false);
 			break;
 		case "Board Now":
+			
+			// add passengers and determine number left behind, update display and stats
 			try {
 				Integer passengersBoarding = Integer.parseInt(boardPassengersInput.getText());
-				leftBehind = departingTrain.board(passengersBoarding);
+				leftBehind += departingTrain.board(passengersBoarding);
 				train.repaint();
 				alightPassengersButton.setEnabled(true);
-				UpdateTrainStatistics();
-				trainInfo = RedrawTrainImage(departingTrain, trainInfo);
+				updateTrainStatistics();
+				trainInfo = redrawTrainImage(departingTrain, trainInfo);
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
 			}
@@ -752,13 +804,21 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			boardPassengers.setVisible(false);
 			break;
 		case "Alight Now":
+			final Integer zeroPassengers = 0;
+			
+			// remove passengers, update display and stats
 			try {
 				Integer passengersAlighting = Integer.parseInt(alightPassengersInput.getText());
 				alight(departingTrain, passengersAlighting);
-				UpdateTrainStatistics();
-				trainInfo= RedrawTrainImage(departingTrain, trainInfo);
+				updateTrainStatistics();
+				trainInfo= redrawTrainImage(departingTrain, trainInfo);
 			} catch (TrainException trainException) {
 				JOptionPane.showMessageDialog(null, trainException);
+			}
+			
+			if (departingTrain.numberOnBoard() == zeroPassengers) {
+				alightPassengersButton.setEnabled(false);
+				alightPassengers.setVisible(false);
 			}
 	
 			break;
@@ -768,15 +828,17 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			String engineType = engineTypeInput.getSelectedItem().toString().substring(0, 1);
 			trainWeight += grossWeight;
 			String classification = powerClass + engineType;
+			
+			// add locomotive, update display and stats
 			try {
 				Locomotive loco = new Locomotive(grossWeight, classification);
 				departingTrain.addCarriage(loco);
 				trainPower = loco.power();
-				UpdateTrainStatistics();
-				trainInfo = RedrawTrainImage(departingTrain, trainInfo);
+				updateTrainStatistics();
+				trainInfo = redrawTrainImage(departingTrain, trainInfo);
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
 				this.pack();
-				DriverButtonEnable(true);
+				driverButtonEnable(true);
 				trainInfo.repaint();
 			} catch (TrainException e1) {
 				JOptionPane.showMessageDialog(null, e1);
@@ -787,26 +849,27 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			break;
 		case "Freight Car":
 			passengerCarSelect.setSelected(false);
-			SetFreightVisible(true);
-			SetPassengerVisible(false);
+			setFreightVisible(true);
+			setPassengerVisible(false);
 			break;
 		case "Passenger Car":
 			freightCarSelect.setSelected(false);
-			SetFreightVisible(false);
-			SetPassengerVisible(true);
+			setFreightVisible(false);
+			setPassengerVisible(true);
 			break;
 		case "Add Passenger Car":
 			Integer grossWeightPassenger = Integer.parseInt(grossWeightPassengerInput.getText());
 			Integer numberOfSeats = Integer.parseInt(numberOfSeatsInput.getText());
 			try {
-				// construct and add carriage panel
+				
+				// add passenger car, update display and stats
 				PassengerCar passengerCar = new PassengerCar(grossWeightPassenger, numberOfSeats);
 				departingTrain.addCarriage(passengerCar);
 				trainWeight += passengerCar.getGrossWeight();
-				UpdateTrainStatistics();
-				trainInfo = RedrawTrainImage(departingTrain, trainInfo);
+				updateTrainStatistics();
+				trainInfo = redrawTrainImage(departingTrain, trainInfo);
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
-				ButtonDisableAddCarriage(true);
+				buttonDisableAddCarriage(true);
 				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
@@ -818,21 +881,24 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			String goodsType = goodsTypeInput.getSelectedItem().toString().substring(0,1);
 			
 			try {
+				
+				// add freight car, update display and stats
 				FreightCar freightCar = new FreightCar(grossWeightFreight, goodsType);
 				departingTrain.addCarriage(freightCar);
 				trainWeight += freightCar.getGrossWeight();
-				UpdateTrainStatistics();
-				trainInfo = RedrawTrainImage(departingTrain, trainInfo);
-				ButtonDisableAddCarriage(true);
+				updateTrainStatistics();
+				buttonDisableAddCarriage(true);
+				trainInfo = redrawTrainImage(departingTrain, trainInfo);
 				shuntIndexInput.addItem(trainInfo.getComponentCount()); // update shuntIndex options
-				UpdateTrainStatistics();
+				updateTrainStatistics();
 				this.pack();
 				trainInfo.repaint();
 			} catch (TrainException e1) {
 				JOptionPane.showMessageDialog(null, e1);
 			}
 			break;
-		case "Shunt Train Now":	
+		case "Shunt Train Now":
+			isShunted = true;
 			shuntInfo.setVisible(true);
 			spurLine = new DepartingTrain();
 			// Get number of RollingStock carriages to iterate through
@@ -880,9 +946,9 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			shuntTrain.setVisible(false);
 			joinTrainButton.setEnabled(true);
 			
-			UpdateTrainStatistics();
-			trainInfo = RedrawTrainImage(departingTrain, trainInfo);
-			shuntInfo = RedrawTrainImage(spurLine, shuntInfo);
+			updateTrainStatistics();
+			trainInfo = redrawTrainImage(departingTrain, trainInfo);
+			shuntInfo = redrawTrainImage(spurLine, shuntInfo);
 			
 			trainInfo.repaint();
 			shuntInfo.repaint();
@@ -894,9 +960,9 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	/**
 	 * Sets visibility for the fields required to add a FreightCar 
 	 * @author JoshuaWright(n6366066)
-	 * @param visible (boolean) are these items visible?
+	 * @param visible (boolean) 
 	 */
-	private void SetFreightVisible(boolean visible){
+	private void setFreightVisible(boolean visible){
 		addFreightButton.setVisible(visible);
 		goodsTypeInput.setVisible(visible);
 		goodsTypeLabel.setVisible(visible);
@@ -907,9 +973,9 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	/**
 	 * Sets visibility for the fields required to add a PassengerCar 
 	 * @author JoshuaWright(n6366066)
-	 * @param visible (boolean) are these items visible?
+	 * @param visible (boolean) 
 	 */
-	private void SetPassengerVisible(boolean visible){
+	private void setPassengerVisible(boolean visible){
 		addPassengerButton.setVisible(visible);
 		numberOfSeatsInput.setVisible(visible);
 		numberOfSeatsLabel.setVisible(visible);
@@ -917,7 +983,12 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		grossWeightPassengerLabel.setVisible(visible);
 	}
 	
-	private void DriverButtonEnable(boolean enabled){
+	/**
+	 * Sets visibility for the fields required when train is cancelled
+	 * @author JoshuaWright(n6366066)
+	 * @param visible (boolean) 
+	 */
+	private void driverButtonEnable(boolean enabled) {
 		if (enabled) { newTrainButton.setEnabled(false); }
 		else { newTrainButton.setEnabled(true); }
 		
@@ -932,24 +1003,17 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	
 	/**
 	 * @author Robert Dempsey (N5400872)
-	 * Sets visibility and enabled state of panes and buttons if all
-	 * carriages have been removed but train has not been cancelled
+	 * Sets visibility and enabled state of panes and buttons if a
+	 * carriage is added
 	 * @param enabled - represents desired state of button
 	 */
-	private void ButtonDisableNoCarriages(boolean enabled) {
-		shuntTrainButton.setEnabled(enabled);
-		joinTrainButton.setEnabled(enabled);
-		addCarriageButton.setEnabled(enabled);
-		removeCarriageButton.setEnabled(enabled);
-		boardPassengersButton.setEnabled(enabled);
-		alightPassengersButton.setEnabled(enabled);
-	}
-	
-	private void ButtonDisableAddCarriage(boolean enabled) {
-		shuntTrainButton.setEnabled(enabled);
-		addCarriageButton.setEnabled(enabled);
-		removeCarriageButton.setEnabled(enabled);
-		boardPassengersButton.setEnabled(enabled);
+	private void buttonDisableAddCarriage(boolean enabled) {
+		if (!isShunted) {
+			shuntTrainButton.setEnabled(enabled);
+			addCarriageButton.setEnabled(enabled);
+			boardPassengersButton.setEnabled(enabled);
+		}
+			removeCarriageButton.setEnabled(enabled);
 	}
 	
 	/**
@@ -958,14 +1022,8 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	 * respectively about the train weight, power, passengers on board,
 	 * seats and number of people left behind
 	 * @author Josh Wright (n6366066)
-	 * @param weight (Integer) This is the Train's total Gross Weight
-	 * @param power (Integer) This is the Train's total Power (Loco Class)
-	 * @param canMove (boolean) This is if the Train can Move
-	 * @param onBoard (Integer) the total number of passengers on board
-	 * @param seats (Integer) the total number of seats on the train
-	 * @param leftBehind (Integer) number of passengers left behind after boarding
 	 */
-	private void UpdateTrainStatistics() {
+	private void updateTrainStatistics() {
 		trainWeightLabel.setText("Train Weight: " + trainWeight + "(t)");
 		trainPowerLabel.setText("Pulling Power: " + trainPower +"(t)");
 		if (departingTrain.trainCanMove()) {
@@ -995,8 +1053,9 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	 * @param carriageNo
 	 * @return (JPanel) refreshed panel
 	 */
-	private JPanel RedrawTrainImage(DepartingTrain train, JPanel panel){
+	private JPanel redrawTrainImage(DepartingTrain train, JPanel panel) {
 		RollingStock carriageAdd = train.firstCarriage();
+		boolean passengersOnBoard = (train.numberOnBoard() > 0);
 		File imgFile = null;
 		String carriageLabel = null;
 		BufferedImage image = null;
@@ -1004,7 +1063,23 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		
 		panel.removeAll();
 		
-		while (carriageAdd != null){		
+		// disable any shunting operations while passengers are on board
+		if (passengersOnBoard) {			
+			shuntTrainButton.setEnabled(false);
+			addCarriageButton.setEnabled(false);
+		} else {
+			addCarriageButton.setEnabled(true);
+		}
+		
+		if (isShunted) {
+			boardPassengers.setVisible(false);
+			boardPassengersButton.setEnabled(false);
+			shuntTrainButton.setEnabled(false);
+		} else {
+			boardPassengersButton.setEnabled(true);
+		}
+		
+		while (carriageAdd != null) {		
 			if (carriageAdd.getClass() == PassengerCar.class){
 				imgFile = new File("rsc/passenger.jpg");
 				carriageLabel = ((PassengerCar)carriageAdd).toString();
@@ -1015,7 +1090,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 				Locomotive loco = (Locomotive) carriageAdd;
 				carriageLabel = loco.toString();
 				char[] type = loco.classification.toCharArray();
-				switch(type[type.length-1]){
+				switch(type[type.length - 1]) {
 				case 'D':
 					imgFile = new File("rsc/diesel.jpg");
 					break;
@@ -1026,8 +1101,6 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 					imgFile = new File("rsc/steam.jpg");
 					break;
 				}
-			} else {
-				new TrainException("Not a Valid Carriage Type!");
 			}
 			
 			try {                
@@ -1035,7 +1108,7 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 		    } catch (IOException ex) {
 		        JOptionPane.showMessageDialog(null,"Image File Not Found: " + imgFile); 
 		    }
-			//JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(90, 90, 0)));
+			
 			JLabel imageLabel = new JLabel(new ImageIcon(image));
 			JLabel infoLabelBottom = new JLabel(carriageLabel);
 			JLabel infoLabelTop = new JLabel("Carriage No: " + carriageNo);
@@ -1048,7 +1121,6 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			carriagePanel.add(infoLabelBottom);
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, imageLabel, 0, SpringLayout.HORIZONTAL_CENTER, carriagePanel);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, imageLabel, 0, SpringLayout.VERTICAL_CENTER, carriagePanel);
-			//imageLabel.setPreferredSize(new Dimension(90,90));
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, infoLabelTop, 0, SpringLayout.HORIZONTAL_CENTER, carriagePanel);
 			layout.putConstraint(SpringLayout.SOUTH, infoLabelTop, 0, SpringLayout.NORTH, imageLabel);
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, infoLabelBottom, 0, SpringLayout.HORIZONTAL_CENTER, carriagePanel);
@@ -1069,24 +1141,33 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 	 */
 	public void alight(DepartingTrain train, Integer alightPassengers)
             throws TrainException {	
-		train.firstCarriage(); //Skip Loco
-		if (alightPassengers <= train.numberOnBoard()){
+		
+		final Integer noPassengers = 0;
+		
+		// Skip locomotive
+		train.firstCarriage(); 
+		
+		try {
 			RollingStock carriage = train.nextCarriage();
-			while (carriage != null){
-				if (carriage.getClass() == PassengerCar.class){
+			while (alightPassengers > noPassengers) {
+				if (carriage.getClass() == PassengerCar.class) {
 					PassengerCar passengerCarriage = (PassengerCar) carriage;
-					if (alightPassengers > passengerCarriage.numberOnBoard()) {
-						Integer alight = alightPassengers - passengerCarriage.numberOnBoard();
+					if (alightPassengers > passengerCarriage.numberOnBoard() && 
+						alightPassengers < train.numberOnBoard()) {
+						Integer alight = passengerCarriage.numberOnBoard();
 						alightPassengers -= alight;
 						passengerCarriage.alight(alight);
 					} else {
-						
+						passengerCarriage.alight(alightPassengers);
+						alightPassengers = noPassengers;
 					}
 				}
 				carriage = train.nextCarriage();
 			}
-		} else {
-			throw new TrainException("Trying to alight too many passengers!");
+		} catch (TrainException trainException) {
+			JOptionPane.showMessageDialog(null, trainException.getMessage());
 		}
+		
+		redrawTrainImage(train, trainInfo);
 	}
 }
