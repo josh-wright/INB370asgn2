@@ -560,31 +560,31 @@ public class TrainTests {
 	 */
 	@Test
 	public void testIndividualPassengerCarsAreBeingAddedTo() throws TrainException {
-		final Integer seats = 20;
-		final Integer passengers = 79;
-		final Integer grossWeight = 90;
-		final Integer zeroPassengers = 0;
-		final String classification = "4S";
+		final Integer SEATS = 20;
+		final Integer PASSENGERS = 79;
+		final Integer GROSS_WEIGHT = 90;
+		final Integer ZERO_PASSENGERS = 0;
+		final String CLASSIFICATION = "4S";
 		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGER_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGER_02 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGER_03 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGER_04 = new PassengerCar(GROSS_WEIGHT, SEATS);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
-		departingTrain.addCarriage(passengerCarTwo);
-		departingTrain.addCarriage(passengerCarThree);
-		departingTrain.addCarriage(passengerCarFour);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGER_01);
+		departingTrain.addCarriage(PASSENGER_02);
+		departingTrain.addCarriage(PASSENGER_03);
+		departingTrain.addCarriage(PASSENGER_04);
 		
-		departingTrain.board(passengers);
+		departingTrain.board(PASSENGERS);
 		
-		assertTrue(passengerCarOne.numberOnBoard() > zeroPassengers);
-		assertTrue(passengerCarTwo.numberOnBoard() > zeroPassengers);
-		assertTrue(passengerCarThree.numberOnBoard() > zeroPassengers);
-		assertTrue(passengerCarFour.numberOnBoard() > zeroPassengers);
+		assertTrue(PASSENGER_01.numberOnBoard() > ZERO_PASSENGERS);
+		assertTrue(PASSENGER_02.numberOnBoard() > ZERO_PASSENGERS);
+		assertTrue(PASSENGER_03.numberOnBoard() > ZERO_PASSENGERS);
+		assertTrue(PASSENGER_04.numberOnBoard() > ZERO_PASSENGERS);
 	}
 	
 	/**
@@ -594,16 +594,16 @@ public class TrainTests {
 	 */
 	@Test (expected = TrainException.class)
 	public void testTwoLocomotivesCannotBeAdded() throws TrainException {
-		final Integer grossWeight = 90;
-		final String classification = "4S";
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";
 		
-		final Locomotive locomotiveOne = new Locomotive(grossWeight, classification);
-		final Locomotive locomotiveTwo = new Locomotive(grossWeight, classification);
+		final Locomotive LOCOMOTIVE_01 = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final Locomotive LOCOMOTIVE_02 = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotiveOne);
-		departingTrain.addCarriage(locomotiveTwo);
+		departingTrain.addCarriage(LOCOMOTIVE_01);
+		departingTrain.addCarriage(LOCOMOTIVE_02);
 	}
 
 	/**
@@ -613,28 +613,28 @@ public class TrainTests {
 	 */
 	@Test
 	public void testNextCarriageFullTraversalOfTrain() throws TrainException {
-		final Integer seats = 20;
-		final Integer grossWeight = 90;
-		final String classification = "4S";
+		final Integer SEATS = 20;
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";
 		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_02 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_03 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_04 = new PassengerCar(GROSS_WEIGHT, SEATS);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
-		departingTrain.addCarriage(passengerCarTwo);
-		departingTrain.addCarriage(passengerCarThree);
-		departingTrain.addCarriage(passengerCarFour);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGERCAR_01);
+		departingTrain.addCarriage(PASSENGERCAR_02);
+		departingTrain.addCarriage(PASSENGERCAR_03);
+		departingTrain.addCarriage(PASSENGERCAR_04);
 		
-		assertEquals(locomotive, departingTrain.nextCarriage());
-		assertEquals(passengerCarOne, departingTrain.nextCarriage());
-		assertEquals(passengerCarTwo, departingTrain.nextCarriage());
-		assertEquals(passengerCarThree, departingTrain.nextCarriage());
-		assertEquals(passengerCarFour, departingTrain.nextCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.nextCarriage());
+		assertEquals(PASSENGERCAR_01, departingTrain.nextCarriage());
+		assertEquals(PASSENGERCAR_02, departingTrain.nextCarriage());
+		assertEquals(PASSENGERCAR_03, departingTrain.nextCarriage());
+		assertEquals(PASSENGERCAR_04, departingTrain.nextCarriage());
 	}
 	
 	/**
@@ -644,28 +644,28 @@ public class TrainTests {
 	 */
 	@Test
 	public void testFirstThenNextCarriageFullTraversalOfTrain() throws TrainException {
-		final Integer seats = 20;
-		final Integer grossWeight = 90;
-		final String classification = "4S";
+		final Integer SEATS = 20;
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";
 		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_02 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_03 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_04 = new PassengerCar(GROSS_WEIGHT, SEATS);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
-		departingTrain.addCarriage(passengerCarTwo);
-		departingTrain.addCarriage(passengerCarThree);
-		departingTrain.addCarriage(passengerCarFour);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGERCAR_01);
+		departingTrain.addCarriage(PASSENGERCAR_02);
+		departingTrain.addCarriage(PASSENGERCAR_03);
+		departingTrain.addCarriage(PASSENGERCAR_04);
 		
-		assertEquals(locomotive, departingTrain.firstCarriage());
-		assertEquals(passengerCarOne, departingTrain.nextCarriage());
-		assertEquals(passengerCarTwo, departingTrain.nextCarriage());
-		assertEquals(passengerCarThree, departingTrain.nextCarriage());
-		assertEquals(passengerCarFour, departingTrain.nextCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
+		assertEquals(PASSENGERCAR_01, departingTrain.nextCarriage());
+		assertEquals(PASSENGERCAR_02, departingTrain.nextCarriage());
+		assertEquals(PASSENGERCAR_03, departingTrain.nextCarriage());
+		assertEquals(PASSENGERCAR_04, departingTrain.nextCarriage());
 	}
 	
 	/**
@@ -675,28 +675,28 @@ public class TrainTests {
 	 */
 	@Test
 	public void testFirstCarriageAlwaysReturnsFirstCarriage() throws TrainException {
-		final Integer seats = 20;
-		final Integer grossWeight = 90;
-		final String classification = "4S";
+		final Integer SEATS = 20;
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";
 		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarTwo = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarThree = new PassengerCar(grossWeight, seats);
-		final PassengerCar passengerCarFour = new PassengerCar(grossWeight, seats);
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_02 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_03 = new PassengerCar(GROSS_WEIGHT, SEATS);
+		final PassengerCar PASSENGERCAR_04 = new PassengerCar(GROSS_WEIGHT, SEATS);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
-		departingTrain.addCarriage(passengerCarTwo);
-		departingTrain.addCarriage(passengerCarThree);
-		departingTrain.addCarriage(passengerCarFour);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGERCAR_01);
+		departingTrain.addCarriage(PASSENGERCAR_02);
+		departingTrain.addCarriage(PASSENGERCAR_03);
+		departingTrain.addCarriage(PASSENGERCAR_04);
 		
-		assertEquals(locomotive, departingTrain.firstCarriage());
-		assertEquals(locomotive, departingTrain.firstCarriage());
-		assertEquals(locomotive, departingTrain.firstCarriage());
-		assertEquals(locomotive, departingTrain.firstCarriage());
-		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
 	}
 
 	/**
@@ -706,13 +706,13 @@ public class TrainTests {
 	 */
 	@Test (expected = TrainException.class)
 	public void testAddFreightCarToEmptyTrain() throws TrainException {
-		final Integer grossWeight = 90;
-		final String goodsType = "G";
-		final FreightCar freightCar = new FreightCar(grossWeight, goodsType);		
+		final Integer GROSS_WEIGHT = 90;
+		final String GOODS_TYPE = "G";
+		final FreightCar FREIGHT_CAR = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);		
 		
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(freightCar);
+		departingTrain.addCarriage(FREIGHT_CAR);
 	}
 	
 	/**
@@ -722,12 +722,12 @@ public class TrainTests {
 	 */
 	@Test (expected = TrainException.class)
 	public void testAddPassengerCarToEmptyTrain() throws TrainException {
-		final Integer seats = 20;
-		final Integer grossWeight = 90;
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final Integer SEATS = 20;
+		final Integer GROSS_WEIGHT = 90;
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
-		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(PASSENGERCAR_01);
 	}
 	
 	
@@ -740,13 +740,13 @@ public class TrainTests {
 	 */
 	@Test
 	public void testTrainCanMoveTrueOneCarriage() throws TrainException {
-		final Integer grossWeight = 90;
-		final String classification = "4S";		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";		
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
 
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(LOCOMOTIVE);
 		assertTrue(departingTrain.trainCanMove());
 	}
 	
@@ -757,13 +757,13 @@ public class TrainTests {
 	 */
 	@Test
 	public void testTrainCanMoveFalseOneCarriage() throws TrainException {
-		final Integer grossWeight = 590;
-		final String classification = "4S";		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final Integer GROSS_WEIGHT = 590;
+		final String CLASSIFICATION = "4S";		
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(LOCOMOTIVE);
 		assertFalse(departingTrain.trainCanMove());
 	}
 	
@@ -774,16 +774,16 @@ public class TrainTests {
 	 */
 	@Test
 	public void testTrainCanMoveTrueMultipleCarriages() throws TrainException {
-		final Integer seats = 20;
-		final Integer grossWeight = 90;
-		final String classification = "4S";		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final Integer SEATS = 20;
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";		
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
 
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGERCAR_01);
 	
 		assertTrue(departingTrain.trainCanMove());
 	}
@@ -795,16 +795,16 @@ public class TrainTests {
 	 */
 	@Test
 	public void testTrainCanMoveFalseMultipleCarriages() throws TrainException {
-		final Integer seats = 20;
-		final Integer grossWeight = 290;
-		final String classification = "4S";		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final Integer SEATS = 20;
+		final Integer GROSS_WEIGHT = 290;
+		final String CLASSIFICATION = "4S";		
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
 
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGERCAR_01);
 		
 		assertFalse(departingTrain.trainCanMove());
 	}
@@ -833,18 +833,18 @@ public class TrainTests {
 	 */
 	@Test (expected = TrainException.class)
 	public void testRemoveCarriagePassengersOnTrain() throws TrainException {
-		final Integer seats = 20;
-		final Integer passengers = 19;
-		final Integer grossWeight = 90;
-		final String classification = "4S";		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final Integer SEATS = 20;
+		final Integer PASSENGERS = 19;
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";		
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
 
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
-		departingTrain.board(passengers);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGERCAR_01);
+		departingTrain.board(PASSENGERS);
 		departingTrain.removeCarriage();		
 	}
 	
@@ -855,20 +855,18 @@ public class TrainTests {
 	 */
 	@Test
 	public void testRemoveCarriageLastCarriagePassenger() throws TrainException {
-		final Integer seats = 20;
-		@SuppressWarnings("unused")
-		final Integer passengers = 19;
-		final Integer grossWeight = 90;
-		final String classification = "4S";		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final PassengerCar passengerCarOne = new PassengerCar(grossWeight, seats);
+		final Integer SEATS = 20;
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";		
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final PassengerCar PASSENGERCAR_01 = new PassengerCar(GROSS_WEIGHT, SEATS);
 
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(passengerCarOne);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(PASSENGERCAR_01);
 		departingTrain.removeCarriage();
-		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
 		assertNull(departingTrain.nextCarriage());
 	}
 	
@@ -879,18 +877,18 @@ public class TrainTests {
 	 */
 	@Test
 	public void testRemoveCarriageLastCarriageFreight() throws TrainException {
-		final Integer grossWeight = 90;
-		final String classification = "4S";	
-		final String goodsType = "G";
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
-		final FreightCar freightCar = new FreightCar(grossWeight, goodsType);
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";	
+		final String GOODS_TYPE = "G";
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		final FreightCar FREIGHTCAR = new FreightCar(GROSS_WEIGHT, GOODS_TYPE);
 
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
-		departingTrain.addCarriage(freightCar);
+		departingTrain.addCarriage(LOCOMOTIVE);
+		departingTrain.addCarriage(FREIGHTCAR);
 		departingTrain.removeCarriage();
-		assertEquals(locomotive, departingTrain.firstCarriage());
+		assertEquals(LOCOMOTIVE, departingTrain.firstCarriage());
 		assertNull(departingTrain.nextCarriage());
 	}
 	
@@ -901,13 +899,13 @@ public class TrainTests {
 	 */
 	@Test
 	public void testRemoveCarriageLastCarriageLoco() throws TrainException {		
-		final Integer grossWeight = 90;
-		final String classification = "4S";		
-		final Locomotive locomotive = new Locomotive(grossWeight, classification);
+		final Integer GROSS_WEIGHT = 90;
+		final String CLASSIFICATION = "4S";		
+		final Locomotive LOCOMOTIVE = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
 		
 		DepartingTrain departingTrain = new DepartingTrain();
 		
-		departingTrain.addCarriage(locomotive);
+		departingTrain.addCarriage(LOCOMOTIVE);
 		departingTrain.removeCarriage();
 		assertNull(departingTrain.firstCarriage());
 	}
