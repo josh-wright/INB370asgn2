@@ -19,6 +19,7 @@ public class FreightCar extends RollingStock {
 	private String goodsType;		
 	
 	/**
+	 * 
 	 * Construct FreightCar 
 	 * @param Integer grossWeight - the gross weight of the freight car 
 	 * @param String goodsType - the type of goods the freight car will carry
