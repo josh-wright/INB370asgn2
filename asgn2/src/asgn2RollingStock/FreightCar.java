@@ -9,7 +9,7 @@ import asgn2Exceptions.TrainException;
 
 /**
  * FreightCar.java
- * Extends RollingStock Class. Provides functions 
+ * Extends RollingStock Class. Provides functions relating to Freight Cars
  * @author Robert Dempsey (n5400872)
  * @author Joshua Wright (n6366066)
  */
@@ -19,7 +19,6 @@ public class FreightCar extends RollingStock {
 	private String goodsType;		
 	
 	/**
-	 * 
 	 * Construct FreightCar 
 	 * @param Integer grossWeight - the gross weight of the freight car 
 	 * @param String goodsType - the type of goods the freight car will carry
@@ -29,6 +28,7 @@ public class FreightCar extends RollingStock {
 	public FreightCar(Integer grossWeight, String goodsType) 
 			throws TrainException {
 		super(grossWeight);
+		
 		if (goodsType.length() > 1){
 			throw new TrainException (goodsType + 
 					" is not a valid Goods Type, Please select G, R, or D.");

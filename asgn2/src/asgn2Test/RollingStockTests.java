@@ -5,7 +5,6 @@ import asgn2Exceptions.*;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.hamcrest.CoreMatchers.*;
 
 /**
  * RollingStock Test Class
@@ -327,6 +326,38 @@ public class RollingStockTests {
 		Locomotive locomotive = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
 		assertEquals(TO_STRING, locomotive.toString());
 	}
+	
+	/**
+	 * Tests that an exception is thrown when the Classification is more than
+	 * two character long in size
+	 * @throws TrainException
+	 */
+	@SuppressWarnings("unused")
+	@Test (expected = TrainException.class)
+	public void testLocomotiveWithClassificationMoreThanTwoCharacter() 
+			throws TrainException {
+		final String CLASSIFICATION = "9SD";
+		final Integer GROSS_WEIGHT = 9;
+		Locomotive locomotive = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+	}
+	
+	/**
+	 * Tests that Locomotive constructor converts all inputs to uppercase prior
+	 * to successful construction
+	 * @throws TrainException
+	 */
+	public void testLocomotiveWithLowerCaseEngineType() 
+			throws TrainException {
+		final String CLASSIFICATION = "9s";
+		final Integer GROSS_WEIGHT = 9;
+		final String TO_STRING = "Loco(4S)";
+		
+		Locomotive locomotive = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
+		
+		assertFalse(CLASSIFICATION.equals(locomotive.classification));
+		assertEquals(TO_STRING, locomotive.toString());
+	}
+
 
 	/* - Passenger Car Tests ---------------------- */
 	
