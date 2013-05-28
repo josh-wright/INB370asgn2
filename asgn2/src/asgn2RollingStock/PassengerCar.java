@@ -7,7 +7,6 @@ import asgn2Exceptions.TrainException;
 
 /**
  * @author Robert Dempsey (Student Number: N5400872)
- *
  */
 public class PassengerCar extends RollingStock {
 	

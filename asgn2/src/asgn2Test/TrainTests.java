@@ -11,7 +11,7 @@ import asgn2RollingStock.*;
 import asgn2Train.DepartingTrain;
 
 /**
- * @author Joshua
+ * @author Joshua Wright (n6366066)
  *
  */
 public class TrainTests {
@@ -915,12 +915,20 @@ public class TrainTests {
 	
 	// -------------------------------- toString Tests ----------------------------------------------------//
 	
+	/**
+	 * Tests that an empty train returns nothing
+	 * @throws TrainException
+	 */
 	@Test
 	public void testToStringNull() throws TrainException {
 		DepartingTrain departingTrain = new DepartingTrain();
 		assertNull(departingTrain.toString());
 	}
 	
+	/**
+	 * Test single carriage ToString
+	 * @throws TrainException
+	 */
 	@Test
 	public void testToStringSingleCarriage() throws TrainException {
 		final Integer GROSS_WEIGHT = 90;
@@ -935,6 +943,10 @@ public class TrainTests {
 		assertEquals(TO_STRING, departingTrain.toString());
 	}
 	
+	/**
+	 * Test Multiple Carriages toString no passengers
+	 * @throws TrainException
+	 */
 	@Test
 	public void testToStringMultipleCarriageNoPassengers() throws TrainException {
 		final Integer GROSS_WEIGHT = 90;
@@ -966,6 +978,10 @@ public class TrainTests {
 		assertEquals(TO_STRING, departingTrain.toString());
 	}
 	
+	/**
+	 * Test toString with passengers
+	 * @throws TrainException
+	 */
 	@Test
 	public void testToStringMultipleCarriagePassengers() throws TrainException {
 		final Integer GROSS_WEIGHT = 90;
