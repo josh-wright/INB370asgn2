@@ -3,19 +3,18 @@
  */
 package asgn2RollingStock;
 
+import java.util.Arrays;
+
 import asgn2Exceptions.TrainException;
 
 /**
- * @author Robert Dempsey (Student Number: N5400872)
- *
+ * FreightCar.java
+ * Extends RollingStock Class. Provides functions 
+ * @author Robert Dempsey (n5400872)
+ * @author Joshua Wright (n6366066)
  */
 public class FreightCar extends RollingStock {
-	private static final String General = "G";
-	private static final String Refrigerated = "R";
-	private static final String Dangerous = "D";
-	
-	// I'd possibly create a char array and then do if(in array){..} else {..} - JW
-	// Thought about it. The code might look a bit cleaner but I think it's okay like this - RD
+	private static final Character[] GOODS_TYPES = {'G', 'R', 'D'};
 	
 	private String goodsType;		
 	
@@ -23,20 +22,30 @@ public class FreightCar extends RollingStock {
 	 * Construct FreightCar 
 	 * @param Integer grossWeight - the gross weight of the freight car 
 	 * @param String goodsType - the type of goods the freight car will carry
-	 * @throws TrainException if gross weight is zero or less or type of goods is invalid
+	 * @throws TrainException if gross weight is zero or less or type of goods 
+	 * is invalid
 	 */
-	public FreightCar(Integer grossWeight, String goodsType) throws TrainException {
+	public FreightCar(Integer grossWeight, String goodsType) 
+			throws TrainException {
 		super(grossWeight);
-		if (!goodsType.equals(General) && !goodsType.equals(Refrigerated) && !goodsType.equals(Dangerous)) {
-			throw new TrainException ("Goods type must be one of the following: " +
-					General + ", " + Refrigerated + ",  or " + Dangerous);
+		if (goodsType.length() > 1){
+			throw new TrainException (goodsType + 
+					" is not a valid Goods Type, Please select G, R, or D.");
+		} else {
+			goodsType = goodsType.toUpperCase();
+			Character type = goodsType.charAt(0);
+			if (Arrays.asList(GOODS_TYPES).contains(type)){
+				this.goodsType = goodsType;
+			} else {
+				throw new TrainException (goodsType + 
+						" is not a valid Goods Type, Please select G, R, or D.");
+			}
 		}
-		this.goodsType = goodsType;
 	}
 	
 	/**
 	 * Get goods type for the freight car
-	 * @return String goodsType
+	 * @return (String) goodsType
 	 */
 	public String goodsType() {
 		return goodsType;
