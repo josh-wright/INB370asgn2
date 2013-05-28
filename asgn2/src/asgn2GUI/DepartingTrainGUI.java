@@ -1,6 +1,9 @@
 package asgn2GUI;
 
 /**
+ * DepartingTrainGUI.java 
+ * Implementation of a Graphical User Interface for the DepartingTrain.java 
+ * class
  * @author Joshua Wright (n6366066)
  * @author Robert Dempsey (n5400872)
  */

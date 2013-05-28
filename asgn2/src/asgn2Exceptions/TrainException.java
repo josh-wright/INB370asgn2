@@ -3,10 +3,11 @@ package asgn2Exceptions;
 @SuppressWarnings("serial")
 
 /**
- * This class controls exceptions thrown by the application.
- *
- * @author Joshua
- *
+ * TrainException.java 
+ * Extension of the java class Exception. Used when an exception is thrown
+ * within DepartingTrain, RollingStock, FreightCar, PassengerCar, and Locomotive
+ * Classes
+ * @author Joshua Wright (n6366066)
  */
 public class TrainException extends Exception {
 	public TrainException(String expMsg) {
