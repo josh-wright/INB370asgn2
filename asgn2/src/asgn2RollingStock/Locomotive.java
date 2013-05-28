@@ -55,7 +55,7 @@ public class Locomotive extends RollingStock {
 	private final static Integer POWERCLASS_MIN = 1;
 	private final static Integer POWERCLASS_MAX = 9;
 		
-	public String classification;
+	private String classification;
 	private Integer powerClass;
 	
 	/**

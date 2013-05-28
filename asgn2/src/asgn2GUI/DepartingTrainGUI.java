@@ -1089,17 +1089,12 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			} else if (carriageAdd.getClass() == Locomotive.class){
 				Locomotive loco = (Locomotive) carriageAdd;
 				carriageLabel = loco.toString();
-				char[] type = loco.classification.toCharArray();
-				switch(type[type.length - 1]) {
-				case 'D':
+				if (carriageLabel.contains("D")) {
 					imgFile = new File("rsc/diesel.jpg");
-					break;
-				case 'E':
+				} else if (carriageLabel.contains("E")) {
 					imgFile = new File("rsc/electric.jpg");
-					break;
-				case 'S':
+				} else if (carriageLabel.contains("S")) {
 					imgFile = new File("rsc/steam.jpg");
-					break;
 				}
 			}
 			

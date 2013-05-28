@@ -352,7 +352,6 @@ public class RollingStockTests {
 		
 		Locomotive locomotive = new Locomotive(GROSS_WEIGHT, CLASSIFICATION);
 		
-		assertFalse(CLASSIFICATION.equals(locomotive.classification));
 		assertEquals(TO_STRING, locomotive.toString());
 	}
 
