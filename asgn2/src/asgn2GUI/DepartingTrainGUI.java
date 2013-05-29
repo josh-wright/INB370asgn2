@@ -1147,8 +1147,8 @@ public class DepartingTrainGUI extends JFrame implements ActionListener {
 			while (alightPassengers > noPassengers) {
 				if (carriage.getClass() == PassengerCar.class) {
 					PassengerCar passengerCarriage = (PassengerCar) carriage;
-					if (alightPassengers > passengerCarriage.numberOnBoard() && 
-						alightPassengers < train.numberOnBoard()) {
+					if (alightPassengers >= passengerCarriage.numberOnBoard() && 
+						alightPassengers <= train.numberOnBoard()) {
 						Integer alight = passengerCarriage.numberOnBoard();
 						alightPassengers -= alight;
 						passengerCarriage.alight(alight);

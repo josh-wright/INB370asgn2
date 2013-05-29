@@ -1,0 +1,680 @@
+commit e795964fb6824ed92fd16d93f8cfdc378e3526f7
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Tue May 28 23:28:28 2013 +1000
+
+    Final version. Set classification back to private. Fixed lower case
+    test.
+
+commit bf91dea5744b6e8bea4cfceb69c0b2216565fd11
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Tue May 28 22:36:15 2013 +1000
+
+    Bug fixes, comments and code fixes
+
+commit 902015056e680adf8982fe861d509438d97f72de
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 13:09:44 2013 +1000
+
+    Corrected constants to Naming conventions where required
+
+commit d6cea320959b3657264911096ee5eaa69a8badc7
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 12:44:30 2013 +1000
+
+    Minor Code Cleanup
+
+commit 013e9c0d13c16abc3a39e9655043782b1494299a
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 12:30:03 2013 +1000
+
+    Cleanup - Coding Conventions
+
+commit 725d0fca7ebfa1df8964317425c430bf305aaf55
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 12:26:27 2013 +1000
+
+    Cleanup - Coding Best Practice
+
+commit 41c03091bd4d2a2eb530d4518fb70c98b5357cc0
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 12:07:39 2013 +1000
+
+    Minor Cleanup
+
+commit bb8c9b2d870a06d3fe9ef2293e94a7e3163de1c9
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 12:00:50 2013 +1000
+
+    Corrected Constant Naming COnvention
+
+commit 6fb64dc4fcff91d35d2159e3f954f5bb55a05a25
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 11:54:54 2013 +1000
+
+    adjusted and optimised Locomotive and added new tests
+
+commit 4e8671638ccfd545d7ebedda8bede7fc7341634c
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 11:09:22 2013 +1000
+
+    git fix.... maybe
+
+commit 7ff41c3b877551dfb6d95f3eb7e7f57aabd20938
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 11:05:50 2013 +1000
+
+    fix git issues
+
+commit 9e17ec2322451a54f50657bf78e3539181e095d4
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 28 11:03:54 2013 +1000
+
+    Updated Freight car to handle invalid input better
+    upper/lowercase
+    strings longer than 1
+    refactored code to suit array of goods types rather than individual
+    strings
+    
+    Included two new tests for string length and upper/lower
+
+commit 5a55487a4a471b21e871a517162e90eb6aee539a
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Fri May 24 09:22:20 2013 +1000
+
+    fixed label issue with train weight throwing exception because calling
+    next carriage before getting weight of current carriage
+
+commit 9ff0b3e9b10f6ff5b588340fa34c1e57fab465c7
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Fri May 24 09:18:19 2013 +1000
+
+    fixed train weight label update on train shunt
+
+commit a34e995eb6c274a922ad89ea8bf53f737a7ad5c5
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 23:24:07 2013 +1000
+
+    Code Clean up and final implementations
+    all methods implemented
+    
+    Removed testGUI, mkII GUI and TrainImage
+    
+    //TO-DO
+    **Code Cleanup
+    **Testing
+    **Additional Test Cases for RollingStock
+    **Additional Test Cases for PassengerCar
+    **Additional Test Cases for FreightCar
+    **Additional Test Cases for Locomotive
+    **GUI Button Enabled/Disabled appropriately
+    **Conditional Button Updates
+    ****If overweight only show remove etc..
+
+commit 7fd5ec823ed184a52eacf24ae126e70ec4bfaf6b
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 23:04:57 2013 +1000
+
+    Removed Alight to comply with spec
+
+commit 8fd46928dca2507d37f7ffec69affe933e88277b
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 23:02:18 2013 +1000
+
+    Corrected TrainCanMove method to allow trainpower == trainweight to be
+    valid
+
+commit 745f9166765622fc9ef9358101b9f1d21257b5e5
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 03:04:50 2013 +1000
+
+    Fixed Issue with numberOnBoard and numberOfSeats and respectively
+    updated the train statistics code to match to corrected code.
+    
+    general code cleanup from depreciated code
+
+commit 30246ec03e73131062d6295b0fdffe2956ef0d52
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 02:59:14 2013 +1000
+
+    changed Shunt Process to a new DepartingTrain rather than array
+    
+    add locomotive to the front of the train to stipulate 'Moving' the
+    trains around the holding yard. This loco does not get re-added back
+    into the departing train as it is only to 'move' the trains around the
+    yard. -> some issues currently
+    
+    implemented new redraw where applicable
+
+commit c58669b72c4881c4d05715bbcde41d9f565cb6d4
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 02:57:17 2013 +1000
+
+    corrected method numberOfSeats to use an initialized local variable no
+    refer to global private variable such as currently implemented
+
+commit 7a04cbe7efda6ae04a8932e53c8e005ea68553e4
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 02:32:11 2013 +1000
+
+    replaced redundant functions in Alight Now and Board Now actions with
+    RedrawTrainImage which is a new function which drops the entire panel
+    contents and redraws it based on the provided train
+    
+    it can be recycled for shunted train as well as it only asks for a
+    DepartingTrain and JPanel parameters to specify what source information
+    to use and what panel to update
+
+commit 86d1d1dfe47ed8a7a79cedea885aac0995e31f24
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Thu May 23 02:27:12 2013 +1000
+
+    fixed numberOnBoard() -> initiated variable within method rather than as
+    a global private as previously implemented
+
+commit 8090e28907f36637fd0d997272970b12860ebb8a
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 19:34:27 2013 +1000
+
+    supressed warnings in DepartingTrainGUImkII
+
+commit cde7afbfc5ae595a49fff15ccf34efddcfb37926
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 19:30:29 2013 +1000
+
+    Revised Code moved to DepartingTrainGUImkII.java
+    TestGUI.java Depreciated
+    DepartingTrainGUI.java now current working version based on TestGUI.java
+    
+    colors removed from interface to clean it up except for white in
+    traininfo and shuntinfo
+
+commit 27078b9598865af4cb18810d2a8c524c97ceeaef
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 17:55:37 2013 +1000
+
+    Revised DepartingTrainGUI not allowing to hide/show panels correctly
+    
+    revision to departingTrain had no affect on PassengerString issue
+
+commit fa4dc182a3d761cf00f45dddbf5bc3a45c823b2d
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 13:34:32 2013 +1000
+
+    Cleaned DepartingTrainGUI preparing for cleanup and move of TestGUI to
+    DepartingTrainGUI in line with submission
+
+commit 4878d96234f7bbfaa12b994ded55f3bdc7ac5b73
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 13:32:03 2013 +1000
+
+    optimize dptTrn.alight
+
+commit 0a5e1b1366147ca585609055c743832219d729ed
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 11:50:57 2013 +1000
+
+    Moved Label update to method
+    still issue with label doubling up on values for no particular reason
+    will try moving it to a variable rather than calling method into it
+
+commit 6e9538414416c9290919a5a8894ac04bd2560929
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 03:52:09 2013 +1000
+
+    cleanup
+
+commit ac4a39fd8b2b033cc3cc38ae3121d8e58f3cc4d6
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 03:47:01 2013 +1000
+
+    Variable Cleanup
+
+commit 517920406bfb224be75fd537c50fce28dd543b29
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 03:42:05 2013 +1000
+
+    cleaned up imports
+
+commit e729d726e05e9fc4caac03dc835322adec90967b
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 03:40:43 2013 +1000
+
+    fixed add loco page staying up after loco added
+
+commit 54f8c07a2d91eea3d7192d6b0ff939cb47d5e017
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 03:36:08 2013 +1000
+
+    alight passengers completed as per board passengers, created new method
+    in departingTrain to support this.
+    
+    issue with labels updating for boarding/alight incorrectly
+
+commit 9f65b65e358b272edefd1f5a7b75b31dd5cbebde
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 22 03:12:50 2013 +1000
+
+    added Train Information, issue with boarding passengers keeps adding to
+    the amount without actual carriages being added..?
+
+commit cc2735b814d71a404d2be46866d55c0662c7d926
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Tue May 21 20:50:17 2013 +1000
+
+    BoardPassengers in DepartingTrain and GUI fixed. Use same code for
+    updating
+    the display for AlightPassengers. Rest of what needs to be done is in
+    the
+    smses. Have fun!
+
+commit 3ab9608f15501870ee312bc24ebe8e0196ae20c2
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Tue May 21 14:46:50 2013 +1000
+
+    Added some comments in "Board Now" event handler
+
+commit 688ef498111d73b59d56cc6b4e72b3efdd4e8419
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Tue May 21 14:45:41 2013 +1000
+
+    Board and alight panels and controls done. We'll need an info panel with
+    number of passengers that weren't able to get onboard, and maybe some
+    other things.
+    
+    Board passengers is not quite working. Because I have to update the
+    displays of
+    the carriages when passengers are boarded, I'm grabbing all of the old
+    panels, getting their toStrings again and updating them, then adding
+    these to an array,
+    removing the old panels and then adding them back on. Except that the
+    new panels are not being added. I have to go out now, will be back home
+    around 6 or 7.
+
+commit 24778884cb69d9068589090ebda2f97e8fd673d7
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Tue May 21 11:39:22 2013 +1000
+
+    New Class: TrainGraphics. Creates a Panel that extends JPanel showing
+    an index label for the carriage number on the train, the carriage image,
+    and the carriage.ToString label. This allows us to be able to change the
+    values in the labels when necessary.
+    
+    Have shunt train working and appears to be bug free. Although we need to
+    fix the disabled and enabled buttons to disallow a user from shunting
+    while a train is shunted.
+
+commit add3eaecebb27e5db3afccfaf3508531cb0fe888
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Mon May 20 16:33:02 2013 +1000
+
+    Added shunt panel controls. Combo box updates when a train is added to
+    trainInfo. Changed each train to a panel and updated button and panel
+    enable/disables. Shunt will currently remove the selected carriages, but
+    still need to implement spur line functionality. Also need to implement
+    conductor still.
+    
+    P.S. we might need two panels in trainInfo, one for spur line as well.
+    Or I could just add a spur line panel down the bottom of trainInfo.
+
+commit 2d1653260bf47c493690ccf3015b729a43ed77f0
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 23:54:09 2013 +1000
+
+    added Loco(DES), Passenger and Freight images to show in Train Info on
+    add,
+    
+    will have to change to grid layout and force train info below image
+
+commit 9a76b0bbdeafd9e794d1379e8929a6c1d98fee8c
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 23:21:32 2013 +1000
+
+    Added New Tests for valid goods types R and D to supplement G
+    Added New Test for str.SubStr() to validate move to str.equals(str2)
+    from ==
+
+commit 825f5ff5d7dc10fd523117722275e4ec3935e77d
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 23:17:29 2013 +1000
+
+    Code Cleanup
+    
+    move driverbutton enable/disable to method
+    
+    move driverbutton enable on locomotive to "Add Locomotive" button from
+    "New Train"
+
+commit 1c0ae5fd4885327cc60ee03a7b0997d90a436051
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 23:05:20 2013 +1000
+
+    removed unessary tests to verify goodstype validation was working
+
+commit 8f96850c7db4c6c635c21555c9af8a3767abca95
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 23:03:11 2013 +1000
+
+    addCarriage interface working and submitting correctly.
+    
+    changed FreightCar and PassengerCar show/hide to method
+    
+    require buttons disabled until loco is added instead of when begin train
+    is added.
+    
+    require new button TrainDepart which throws exception if train can't
+    move - possibly show train weight dynamically and throw exception when
+    train weight exceeds its pulling power
+
+commit a2658d04820c294847c21eaf01708bc9772801e0
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 23:00:42 2013 +1000
+
+    fixed issue with goodstype validation in part one code, changed != and
+    == to !str1.equals(str2) and str1.equals(str2) respectively
+
+commit 0edab6b22bfd6a86e7e309c8c177b9a42958a1ab
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sun May 19 19:44:24 2013 +1000
+
+    Major Interface Design, Displaying Basic Train Information as well as
+    adding Locomotive to Departing Train
+
+commit a049b0f4a9e909995857f2f51cddabd3ccd8663f
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sun May 19 16:18:41 2013 +1000
+
+    Added buttons as listeners.
+
+commit 360c83791f014c2cf26e18d1ecf4fae91ecff844
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sun May 19 16:06:06 2013 +1000
+
+    Implemented ActionListener. Set frame to listen to buttons, etc.
+
+commit 600fdf46138c81924a3a1b72c057343d32ed5c9e
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sun May 19 15:40:10 2013 +1000
+
+    Added trainControls panel to JFrame which fixed the problem of the frame
+    being blank.
+
+commit 93018bf136e6e949796047ca456f4d1707d56bfc
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 15:25:37 2013 +1000
+
+    Added buttons and Panels and button controls for separate functions
+
+commit 8242575cebbc169b5ab9c46f39a9f027a8f5822d
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 13:10:05 2013 +1000
+
+    Added Buttons to Conductor and Driver Panels, minor change to draft
+    design,
+    
+    -> require onclick task to show new panel respective to user selection
+    -> create panels for buttons with user friendly information
+    -> add carriageAddImage function to show info about train with
+    respective train
+    
+    ** Train Info limited to 3 rows of 20 carriages -> need to either expand
+    train info panel programatically (best case senario) or physically limit
+    train length to 60 carriages (worst case senario)
+
+commit 0c59d209791c0aa64fbeccc6b8b6ff65f0151461
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 19 12:41:41 2013 +1000
+
+    See TestGUI => redesigned UI to properly implement Layouts, currently
+    showing six nested frames.
+    
+    -- breakdown --
+    trainControl
+    >train
+    >>trainInfo
+    >users
+    >>driver
+    >>conductor
+
+commit 9e179dd684989db134f6f52f6634abc9d0677776
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sat May 18 21:44:45 2013 +1000
+
+    Some GUI layout done.
+
+commit dc2eea0ff223c60af119da16c358dc651ad2fa55
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sat May 18 20:39:56 2013 +1000
+
+    Fixed Warning, added @Suppress to JUnit Tests, added serialVersionUID to
+    DepartingTrainGUI
+
+commit bb039746c4af6627a0211957f9ac44cbfe7e79ac
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sat May 18 20:36:23 2013 +1000
+
+    Fixed JUnit issue, do not add local libraries, JUnit 4.11 and Hamcrest
+    1.3 included as part of project already
+
+commit 49017e6f7b8390061fa9ea54aea6b8c6ee600d06
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sat May 18 20:28:45 2013 +1000
+
+    Created JFrame
+
+commit 45c7d2c2974685ada85b70314d8a4856ba732de3
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Wed May 15 22:22:18 2013 +1000
+
+    All tests fixed and passed. Still no word from Jim about naming
+    conventions yet, but I don't think we're supposed to have underscores in
+    our method names as some of your tests have.
+    
+    Other than that, we're ready for part B I think.
+
+commit aaa5796a540d56866ef0c3758b8b4f3129aad171
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Wed May 15 17:47:15 2013 +1000
+
+    All Methods completed to specification, one test failed
+    
+    test departingTrain.toString() with passengers aboard
+
+commit d3fd48d1375e4af189e1a8afb453f1439a173749
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Wed May 15 01:42:41 2013 +1000
+
+    Added to TrainTests.java (12 tests that need passing):
+    
+    testIndividualPassengerCarsAreBeingAddedTo()
+    testTwoLocomotivesCannotBeAdded()
+    testNextCarriageFullTraversalOfTrain()
+    testFirstThenNextCarriageFullTraversalOfTrain() **** ALREADY PASSES ****
+    testFirstCarriageAlwaysReturnsFirstCarriage()   **** ALREADY PASSES ****
+    testAddFreightCarToEmptyTrain()			**** ALREADY PASSES ****
+    testAddPassengerCarToEmptyTrain()		**** ALREADY PASSES ****
+    
+    -------- trainCanMove() tests
+    
+    testTrainCanMoveTrueOneCarriage()
+    testTrainCanMoveFalseOneCarriage()   **** CURRENTLY PASSES BECAUSE STUB
+    RETURNS FALSE, STILL NEED TO IMPLEMENT METHOD CORRECTLY ****
+    testTrainCanMoveTrueMultipleCarriages()
+    testTrainCanMoveFalseMultipleCarriages() **** CURRENTLY PASSES BECAUSE
+    STUB RETURNS FALSE, STILL NEED TO IMPLEMENT METHOD CORRECTLY ****
+    
+    -------- removeCarriage() tests
+    
+    testRemoveCarriageNoRollingStockOnTrain()
+    testRemoveCarriagePassengersOnTrain()
+    testRemoveCarriageLastCarriagePassenger()
+    testRemoveCarriageLastCarriageFreight()
+    testRemoveCarriageLastCarriageLoco()
+    
+    -------- toString() test
+    
+    Will be added later as it depends on others being correct.
+    
+    Fixed tests:
+    
+    Removed assertEquals from tests that expect an exception
+
+commit bef18fe65449e3125a50c8063a39a922ecf76b19
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Tue May 14 23:42:23 2013 +1000
+
+    Added to RollingStockTests.java - please fix code to pass these:
+    
+    testExcessPassengersNotAllowedToBoard()
+    testBoardReturnsZeroIfCarriageNotFull()
+    
+    Fixed in TrainTests.java (errors):
+    
+    testDepartingTrain() - removed erroneous "null" in assertNull
+    testBoardPassengersValidTrainNegative() - Changed "PASSENGERS" (Integer)
+    to "PASSENGER" (Carriage)
+    testGetFirstCarriage_MultipleCarriage() - Changed "Freight" to
+    "GOODS_TYPE"
+    testNumberOfSeats_MultiplePassengerCar() - Moved all passenger cars to
+    be added before freight car
+    testBoardPassengersValidComboTrainPassengerMultiple() - Moved all
+    passenger cars to be added before freight car
+    testNumberOfSeats_DualPassengerCars() - Moved all passenger cars to be
+    added before freight car
+    
+    Fixed in TrainTests.java (Invalid tests):
+    
+    testBoardPassengersInvalidTrain() - should not produce exception;
+    changed to test that "board" returned all 20 passengers
+    testAddPassengerToLocoFreight() - Changed so that it expects and
+    exception. Cannot add a passenger car after a freight car
+    
+    -------------------------------------------------------------------------------------
+    
+    25/26 tests passed.
+    
+    testBoardTooManyPassengersValidTrain() DID NOT PASS.
+    
+    Only 1 didn't pass, despite numberOnBoard() not being implemented
+    correctly (it's currently trying to get the number of people on board
+    individual carriages and adding this to the total, however, our program
+    is not currently adding passengers to individual carriages.
+    
+    More tests to come to test for these cases.
+    
+    Naming conventions need some consistency - have emailed Jim about which
+    conventions to use.
+
+commit bd0337f11ef5ac67e8680a2e57b87607e575438e
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Tue May 14 15:03:34 2013 +1000
+
+    Implemented TrainTests Class
+    *addCarriage
+    *board
+    *firstCarriage
+    *nextCarriage
+    *numberOfSeats
+    *numberOnBoard
+    
+    Tests to Complete
+    *removeCarriage
+    *toString
+    *trainCanMove
+    
+    Minor changes to RollingStockTests class
+    
+    some suggestions in FreightCar and PassengerCar classes
+
+commit 3d5405c6d41bd09d017adb9c1f65baae662b81a1
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Mon May 13 23:05:54 2013 +1000
+
+    All tests pass bar TestLocomotivePowerLessThanWeight - please remove
+    this test as it's not in the spec. Fixed up constant names in
+    implementation classes and added "static" to them. Slight tidying up of
+    implementation code.
+    
+    Please test alight and board more. Specifically:
+    board (test if new passengers are negative)
+    alight (test if departing passengers are negative)
+
+commit ea104163a5b26f1999612002dd14371b31ef9fc6
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Mon May 13 19:40:35 2013 +1000
+
+    Created PassengerCar class tests
+
+commit 3f10968be59a72d53c569dd32cfcbdfa37d55548
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Mon May 13 15:46:30 2013 +1000
+
+    Removed unnecessary tests from RollingStockTests, Adjusted Tests to suit
+    API Methods
+    
+    Added JUnit 4.11 and Hamcrest Core 1.3 to GIT
+    
+    19 Tests (1 Failing - Locomotive Too Heavy)
+
+commit b0c44a835261a471e19e3181810a395696cdb611
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Mon May 13 12:51:27 2013 +1000
+
+    2 Test not passed. Equal weight (should not generate exception?) and
+    power less than weight (don't need to test for this?). 4 tests commented
+    out - don't need to test for invalid parameter type, i.e. double when
+    expecting int.
+
+commit 80ca24c21cf58be632556cdee1a970a254312115
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Mon May 13 00:12:39 2013 +1000
+
+    Completed asgn2Test.RollingStockTest for classes FreightCar, Locomotive.
+    PassengerCar still to be implemented
+
+commit 122a36a7ba6680b22428809f8f31393ef6972794
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 12 20:06:55 2013 +1000
+
+    Completed TrainException Class
+
+commit 4bc46eb6309e60acb09ba4f19882b5bfd8123418
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 12 19:49:34 2013 +1000
+
+    Created Packages as per API
+
+commit 84acea489515e4dc24fa18c333a31b737d2c3ef4
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sun May 12 19:28:36 2013 +1000
+
+    Testhpush3
+
+commit 7f91072dadbf6020123dfacda0d152fb1f85d2c1
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sun May 12 19:20:58 2013 +1000
+
+    test2push
+
+commit f97e886a9a957fca84fc1e09e444e58e17ab72d6
+Author: Robert Dempsey <arrdee@internode.on.net>
+Date:   Sun May 12 19:20:20 2013 +1000
+
+    Test pushback
+
+commit 4dc056c7a80ac71dfdc85a89af960173d1d3dfc3
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 12 19:17:31 2013 +1000
+
+    test push
+
+commit 99ed8e436e4440d0fb23947eb6bf55e85afce99e
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 12 19:13:28 2013 +1000
+
+    Test that data is being shared correctly between authors
+
+commit a059f7d453165eba3b5fbb0e4d076dc20bdd2078
+Author: Josh Wright <josh.wright@live.com.au>
+Date:   Sun May 12 18:24:51 2013 +1000
+
+    TestCommit to GitHub
